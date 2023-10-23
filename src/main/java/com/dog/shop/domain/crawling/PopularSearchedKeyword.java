@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "popular_searched_keyword")
 public class PopularSearchedKeyword {
 
+    // 고유키
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
