@@ -36,6 +36,7 @@ public class NewSecuityConfig {
                         exceptionHandling -> exceptionHandling.authenticationEntryPoint(customAuthenticationEntryPoint))
                 .authorizeHttpRequests(requests -> requests
                         .requestMatchers("/api/register").permitAll()
+                        .requestMatchers("/CartItem/**").permitAll()
                         .requestMatchers("/user/**").authenticated()
                 )
                 .logout(logout -> logout

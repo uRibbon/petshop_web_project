@@ -1,25 +1,18 @@
-package com.dog.shop.web;
+package com.dog.shop.web.TrackingNumber;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-public class TestConroller {
-
-    @GetMapping("/api/register")
-    @ResponseBody
-    public String test() {
-        return "test";
-    }
-
-    @GetMapping("/customLogin")
-    public String index() {
-        return "index";
-    }
+@RequestMapping("/Order")
+public class TrackingNumberConroller {
 
     @GetMapping("/info")
     public String info(){
         return "info";
     }
+
+
 }
