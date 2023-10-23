@@ -43,6 +43,8 @@ public class AuthService {
         if (!isValidPassword(userReqDto.getPassword())) {
             return false;
         }
+        String encodedPassword = passwordEncoder.encode(userReqDto.getPassword());
+        userReqDto.setPassword(encodedPassword);
         userReqDto.setRole(Role.valueOf("USER"));
         User user = modelMapper.map(userReqDto, User.class);
         User savedUser = userRepository.save(user);
