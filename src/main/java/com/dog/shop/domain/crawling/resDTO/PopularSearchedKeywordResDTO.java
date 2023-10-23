@@ -9,7 +9,10 @@ import lombok.*;
 @ToString
 @Builder
 public class PopularSearchedKeywordResDTO {
+
     private Long id;
+
     private String productName;
+
     private Integer keywordCount;
 }
