@@ -9,16 +9,19 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "popular_searched_keyword")
 public class PopularSearchedKeyword {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
-    @Column(name = "상품명")
-    private String product_name;
+    // 상품명
+    @Column(name = "product_name", nullable = false)
+    private String productName;
 
-    @Column(name = "한 페이지에 나오는 상품 이름의 갯수")
-    private Integer keyword_count;
+    // 한 페이지에 나오는 상품에 대한 갯수
+    @Column(name = "keyword_count", nullable = false)
+    private Integer keywordCount;
 
 }
