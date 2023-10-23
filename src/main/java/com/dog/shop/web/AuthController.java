@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @Slf4j
@@ -37,6 +38,22 @@ public class AuthController {
     @GetMapping
     public List<UserResDto> getUser() {
         return authService.getUser();
+    }
+
+    @PostMapping("/delete")
+    public ResponseEntity<Boolean> userDelete(@RequestBody UserReqDto userReqDto) {
+        String email = userReqDto.getEmail();
+        boolean result = authService.userDelete(email);
+        if (result) {
+            return new ResponseEntity<>(true, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/update/{email}")
+    public Boolean updateUser(@PathVariable String email, @RequestBody UserReqDto userReqDto) {
+        return authService.updateUserInfo(email, userReqDto);
     }
 
 }

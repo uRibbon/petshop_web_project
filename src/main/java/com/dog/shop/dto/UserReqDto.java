@@ -21,7 +21,6 @@ public class UserReqDto {
     private String address;
     private String phoneNumber;
     private LocalDate birthDate;
-    private char gender;
 
     @Enumerated(EnumType.STRING)
     private Role role;
