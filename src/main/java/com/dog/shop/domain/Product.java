@@ -22,8 +22,8 @@ public class Product {
 
     private String productName; //상품명
     private int price; // 상품 가격
-    private String mainImage; // 상품의 메인 이미지 경로 또는 URL
-    private String subImage; // 상품의 서브 이미지
+//    private String mainImage; // 상품의 메인 이미지 경로 또는 URL
+//    private String subImage; // 상품의 서브 이미지
     private String description; // 상품에 대한 상세 설명
     private int stock; // 상품의 현재 재고
 
