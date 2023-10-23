@@ -8,6 +8,5 @@ import java.util.Optional;
 
 public interface PopularKeywordRepository extends JpaRepository<PopularSearchedKeyword, Integer> {
 
-//    public Optional<PopularSearchedKeyword> findAllByOrderBykeywordCountDesc();
 
 }
