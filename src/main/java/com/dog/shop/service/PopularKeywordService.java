@@ -21,7 +21,7 @@ public class PopularKeywordService {
 
     private final ModelMapper modelMapper;
 
-    // 전체 조회
+    // 전체 조회(내림차순)
     @Transactional(readOnly = true)
     public List<PopularSearchedKeywordResDTO> getResult() {
         List<PopularSearchedKeyword> popularSearchedKeywordList = popularKeywordRepository.findAll(Sort.by(Sort.Direction.DESC, "keywordCount"));
