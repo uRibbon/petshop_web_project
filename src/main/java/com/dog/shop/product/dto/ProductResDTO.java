@@ -17,7 +17,5 @@ public class ProductResDTO {
     private String salesStatus;
     private int stock;
 
-
-
 }
 
