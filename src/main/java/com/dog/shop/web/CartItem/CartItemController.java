@@ -22,4 +22,5 @@ public class CartItemController {
         List<CartItemResDto> cartItems = cartItemService.getCartItems();
         return new ModelAndView("CartItem", "cartItems", cartItems);
     }
+
 }

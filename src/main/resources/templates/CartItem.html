@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+<head>
 <meta charset="UTF-8">
+<title>Title</title>
+</head>
 <body>
 <table>
     <tr>
@@ -14,10 +17,10 @@
     <tr th:each="cartItem, cartItemStat : ${cartItems}">
         <td th:text="${cartItemStat.count}"></td>
         <td th:text="${cartItem.quantity}" ></td>
-        <td th:text="${cartItem.sub_total}"></td>
-        <td th:text="${cartItem.unit_price}"></td>
-        <td th:text="${cartItem.cart_id}"></td>
-        <td th:text="${cartItem.product_id}"></td>
+        <td th:text="${cartItem.subTotal}"></td>
+        <td th:text="${cartItem.unitPrice}"></td>
+        <td th:text="${cartItem.cart}"></td>
+        <td th:text="${cartItem.product}"></td>
     </tr>
 </table>
 </body>
