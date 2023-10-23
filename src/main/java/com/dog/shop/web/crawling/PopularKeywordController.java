@@ -19,6 +19,7 @@ public class PopularKeywordController {
 
     private final ModelMapper modelMapper;
 
+
     // 전체 조회
     @GetMapping
     public List<PopularSearchedKeywordResDTO> getResults() {
