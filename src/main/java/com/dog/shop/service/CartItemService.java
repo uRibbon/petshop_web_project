@@ -1,8 +1,10 @@
 package com.dog.shop.service;
 
 import com.dog.shop.domain.CartItem;
+import com.dog.shop.domain.Product;
 import com.dog.shop.dto.CartItemReqDto;
 import com.dog.shop.dto.CartItemResDto;
+import com.dog.shop.dto.ProductResDTO;
 import com.dog.shop.repository.CartItemRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -29,11 +31,22 @@ public class CartItemService {
                 return cartItemResDtoList;
         }
 
-        public CartItemResDto saveCartItem(CartItemReqDto cartItemReqDTO) {
-                CartItem cartItem = modelMapper.map(cartItemReqDTO,CartItem.class); // entity 타입으로 변환 db와직접적연결
-                CartItem savedCartItem = cartItemRepository.save(cartItem); // 그이후 레파지토리에서 엔티티객체를 넣어준다.
-                return modelMapper.map(savedCartItem,CartItemResDto.class); //레파지토리.save도 스프링에서 제공해줌
+        public void saveCartItem(CartItemReqDto cartItemReqDto, ProductResDTO productResDTO) {
+                // ProductResDTO를 Product 엔티티로 변환
+                Product product = new Product();
+                product.setId(productResDTO.getId());
+                product.setPrice(productResDTO.getPrice());
+                // 필요한 경우 더 많은 필드를 복사
+
+                //CartItem 엔티티에 데이터 설정
+                CartItem cartItem = new CartItem();
+                cartItem.setQuantity(cartItem.getQuantity());
+                cartItem.setSubTotal(cartItem.getSubTotal());
+                cartItem.setUnitPrice(productResDTO.getPrice());
+                cartItem.setProduct(product);
+                // 이부분은 product에 id와 price가 담기지만 부트내부적으로 외래키값을 직접 매핑한다.
+                // CartItem 엔티티 저장
+                cartItemRepository.save(cartItem);
+
         }
-
-
 }
