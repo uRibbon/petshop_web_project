@@ -21,6 +21,8 @@
         <td th:text="${product.productName}"></td>
         <td th:text="${product.salesStatus}"></td>
         <td th:text="${product.stock}"></td>
+        <td><a th:href="@{/products/edit/{id}(id=${product.id})}">update</a></td>
+        <td><a th:href="@{/products/delete/{id}(id=${product.id})}">delete</a></td>
     </tr>
 </table>
 <p><a href="/products/signup">Create</a></p>

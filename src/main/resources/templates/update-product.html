@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <meta charset="UTF-8">
 <body>
-<form action="#" th:action="@{/products/create}" th:object="${productReqDTO}"method="post">
+<form action="#" th:action="@{/products/update/{id}(id=${product.id})}" th:object="${product}"method="post">
     <label for="description">Description</label>
     <input type="text" th:field="*{description}" id="description">
     <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span>
@@ -23,7 +23,7 @@
     <input type="text" th:field="*{stock}" id="stock">
     <span th:if="${#fields.hasErrors('stock')}" th:errors="*{stock}"></span>
     <br/>
-    <input type="submit" value="Create">
+    <input type="submit" value="Update">
 </form>
 </body>
 </html>
