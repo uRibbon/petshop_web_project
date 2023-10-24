@@ -1,8 +1,7 @@
 package com.dog.shop.web.inquiry;
 
-import com.dog.shop.domain.inquiry.Inquiry;
-import com.dog.shop.domain.inquiry.reqDTO.InquiryReqDTO;
-import com.dog.shop.domain.inquiry.resDTO.InquiryResDTO;
+import com.dog.shop.dto.inquiryDto.InquiryReqDTO;
+import com.dog.shop.dto.inquiryDto.InquiryResDTO;
 import com.dog.shop.service.inquiry.InquiryService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -10,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.awt.print.Book;
 import java.util.List;
 
 @RestController
@@ -48,7 +46,7 @@ public class InquiryController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteInquiry(@PathVariable Long id) {
         inquiryService.deleteInquiry(id);
-        return ResponseEntity.ok(id + " 번째 책이 삭제처리 되었습니다.");
+        return ResponseEntity.ok(id + " 번째 문의글이 삭제처리 되었습니다.");
     }
 
     // 수정
