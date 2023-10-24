@@ -4,16 +4,14 @@ import com.dog.shop.domain.Product;
 import com.dog.shop.domain.User;
 import com.dog.shop.myenum.InquiryStatus;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
 @Setter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "inquiry")
