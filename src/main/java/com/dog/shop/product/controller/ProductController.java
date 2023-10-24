@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -28,7 +29,7 @@ public class ProductController {
         return new ModelAndView("product-list", "products", products);
     }
     @GetMapping("/signup")
-    public String SignUpForm(ProductReqDTO product) {
+    public String showSignUpForm(ProductReqDTO product) {
         return "create-product";
     }
 
@@ -41,4 +42,26 @@ public class ProductController {
         productService.saveProduct(product);
         return "redirect:/products/list";
     }
+
+//    @GetMapping("/edit/{id}")
+//    public String showUpdateForm(@PathVariable Long id, Model model){
+//        ProductResDTO bookResDTO = productService.getProdutBy(id);
+//        model.addAttribute("book",bookResDTO);
+//        return "update-book";
+//    }
+//
+//    @PostMapping("/update/{id}")
+//    public String updateBook(@PathVariable("id") long id, @Valid BookReqForm book,
+//                             BindingResult result, Model model) {
+//        if (result.hasErrors()) {
+//            System.out.println(">>> hasErros book "  + book);
+//            model.addAttribute("book",book);
+//
+//            return "update-book";
+//
+//        }
+//        bookService.updateBookForm(book);
+//
+//        return "redirect:/bookspage/index";
+//    }
 }
