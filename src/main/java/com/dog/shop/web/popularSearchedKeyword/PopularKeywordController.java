@@ -1,7 +1,7 @@
-package com.dog.shop.web.crawling;
+package com.dog.shop.web.popularSearchedKeyword;
 
-import com.dog.shop.domain.crawling.resDTO.PopularSearchedKeywordResDTO;
-import com.dog.shop.service.PopularKeywordService;
+import com.dog.shop.domain.popularSearchedKeyword.resDTO.PopularSearchedKeywordResDTO;
+import com.dog.shop.service.popularKeyword.PopularKeywordService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.GetMapping;
