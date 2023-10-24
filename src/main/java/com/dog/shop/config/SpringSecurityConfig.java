@@ -34,12 +34,15 @@ public class SpringSecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf().disable().cors().disable()
                 .authorizeHttpRequests(request -> request
-                        .dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
-                        .anyRequest().authenticated()    // 어떠한 요청이라도 인증필요
+//                        .dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
+//                        .requestMatchers("/auth/signup").permitAll()
+//                        .anyRequest().authenticated()    // 어떠한 요청이라도 인증필요
+                                .requestMatchers("/api/**").authenticated()
+                                .anyRequest().permitAll()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                .exceptionHandling(
-                        exceptionHandling -> exceptionHandling.authenticationEntryPoint(customAuthenticationEntryPoint))
+//                .exceptionHandling(
+//                        exceptionHandling -> exceptionHandling.authenticationEntryPoint(customAuthenticationEntryPoint))
                 .formLogin(login -> login
                         .loginPage("/login")    // [A] 커스텀 로그인 페이지 지정
                         .loginProcessingUrl("/login-process")    // [B] submit 받을 url
@@ -55,8 +58,8 @@ public class SpringSecurityConfig {
     }
 
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+//    @Bean
+//    public PasswordEncoder passwordEncoder() {
+//        return new BCryptPasswordEncoder();
+//    }
 }

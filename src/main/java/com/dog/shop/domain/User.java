@@ -19,7 +19,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table
-@Setter
 public class User extends BaseTimeEntity{ // 사용자 가입일에 대한 내용은 BaseTimeEntity에서 자동으로 생성해줌
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
