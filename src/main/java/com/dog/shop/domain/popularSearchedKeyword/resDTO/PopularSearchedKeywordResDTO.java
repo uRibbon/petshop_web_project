@@ -1,4 +1,4 @@
-package com.dog.shop.domain.crawling.resDTO;
+package com.dog.shop.domain.popularSearchedKeyword.resDTO;
 
 import lombok.*;
 

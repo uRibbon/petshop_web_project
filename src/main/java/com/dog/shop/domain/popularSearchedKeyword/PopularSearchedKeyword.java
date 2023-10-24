@@ -1,4 +1,4 @@
-package com.dog.shop.domain.crawling;
+package com.dog.shop.domain.popularSearchedKeyword;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
