@@ -23,7 +23,6 @@ public class CustomUserDetailService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
-
         User member = userRepository.findByEmail(email).orElseThrow(() -> new MemberNotFoundException("해당 멤버가 존재하지 않습니다."));
         List<GrantedAuthority> roles = new ArrayList<>();
         String role = String.valueOf(member.getRole());
