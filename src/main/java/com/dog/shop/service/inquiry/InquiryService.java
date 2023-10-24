@@ -4,6 +4,7 @@ import com.dog.shop.domain.inquiry.Inquiry;
 import com.dog.shop.dto.inquiryDto.InquiryReqDTO;
 import com.dog.shop.dto.inquiryDto.InquiryResDTO;
 import com.dog.shop.exception.MemberNotFoundException;
+import com.dog.shop.product.repository.ProductRepository;
 import com.dog.shop.repository.UserRepository;
 import com.dog.shop.repository.inquiry.InquiryRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,7 @@ import static java.util.stream.Collectors.toList;
 @Slf4j
 @RequiredArgsConstructor
 public class InquiryService {
+    private final ProductRepository productRepository;
 
     private final InquiryRepository inquiryRepository;
 
@@ -29,16 +31,21 @@ public class InquiryService {
     private final ModelMapper modelMapper;
 
     // 등록
-    public InquiryResDTO regInquiry(Long userId, InquiryReqDTO inquiryReqDTO) {
+    public InquiryResDTO regInquiry(Long userId, Long productId, InquiryReqDTO inquiryReqDTO) {
         Inquiry inquiry = new Inquiry(); // todo 에러 처리하기
-        inquiry.setUser(userRepository.findById(userId).orElseThrow(() -> new MemberNotFoundException("user not found")));
-        Inquiry savedInquiry = inquiryRepository.save(inquiry);
-        inquiry = modelMapper.map(inquiryReqDTO, Inquiry.class);
-
         InquiryResDTO inquiryResDTO = new InquiryResDTO();
-        inquiryResDTO.setEmail(inquiry.getUser().getEmail());
 
-        return modelMapper.map(savedInquiry, InquiryResDTO.class);
+        inquiry.setUser(userRepository.findById(userId).orElseThrow(() -> new MemberNotFoundException("user not found")));
+        inquiry.setProduct(productRepository.findById(productId).orElseThrow());
+        inquiryResDTO.setEmail(inquiry.getUser().getEmail());
+        inquiryResDTO.setProductName(inquiry.getProduct().getProductName());
+        inquiryResDTO.setTitle(inquiryReqDTO.getTitle());
+        inquiryResDTO.setContent(inquiryReqDTO.getContent());
+        inquiryResDTO.setInquiryStatus(inquiry.getInquiryStatus());
+        inquiryResDTO.setResponse(inquiry.getResponse());
+        inquiryResDTO.setResponseDate(inquiry.getResponseDate());
+
+        return modelMapper.map(inquiryResDTO, InquiryResDTO.class);
     }
 
     // 전체 조회
