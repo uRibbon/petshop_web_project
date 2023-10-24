@@ -3,6 +3,8 @@ package com.dog.shop.service.inquiry;
 import com.dog.shop.domain.inquiry.Inquiry;
 import com.dog.shop.dto.inquiryDto.InquiryReqDTO;
 import com.dog.shop.dto.inquiryDto.InquiryResDTO;
+import com.dog.shop.exception.MemberNotFoundException;
+import com.dog.shop.repository.UserRepository;
 import com.dog.shop.repository.inquiry.InquiryRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,12 +24,20 @@ public class InquiryService {
 
     private final InquiryRepository inquiryRepository;
 
+    private final UserRepository userRepository;
+
     private final ModelMapper modelMapper;
 
     // 등록
     public InquiryResDTO regInquiry(Long userId, InquiryReqDTO inquiryReqDTO) {
-        Inquiry inquiry = modelMapper.map(inquiryReqDTO, Inquiry.class);
+        Inquiry inquiry = new Inquiry(); // todo 에러 처리하기
+        inquiry.setUser(userRepository.findById(userId).orElseThrow(() -> new MemberNotFoundException("user not found")));
         Inquiry savedInquiry = inquiryRepository.save(inquiry);
+        inquiry = modelMapper.map(inquiryReqDTO, Inquiry.class);
+
+        InquiryResDTO inquiryResDTO = new InquiryResDTO();
+        inquiryResDTO.setEmail(inquiry.getUser().getEmail());
+
         return modelMapper.map(savedInquiry, InquiryResDTO.class);
     }
 
