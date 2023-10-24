@@ -56,4 +56,9 @@ public class AuthController {
         return authService.updateUserInfo(email, userReqDto);
     }
 
+    @PostMapping("/resetPwd/{email}")
+    public Boolean resetPwd(@PathVariable String email, @RequestBody UserReqDto userReqDto) {
+       return authService.resetPwd(email, userReqDto);
+    }
+
 }

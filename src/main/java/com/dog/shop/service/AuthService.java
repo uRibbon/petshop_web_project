@@ -15,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -85,6 +86,16 @@ public class AuthService {
         user.setAddress(userReqDto.getAddress());
         user.setPhoneNumber(userReqDto.getPhoneNumber());
         user.setBirthDate(userReqDto.getBirthDate());
+        userRepository.save(user);
+        return true;
+    }
+
+    // 비밀번호 재설정
+    public boolean resetPwd(String email, UserReqDto userReqDto) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new MemberNotFoundException("user not found"));
+        String encodedPassword = passwordEncoder.encode(userReqDto.getPassword());
+        user.setPassword(encodedPassword);
         userRepository.save(user);
         return true;
     }

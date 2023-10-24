@@ -52,5 +52,10 @@ public class User extends BaseTimeEntity{ // 사용자 가입일에 대한 내�
     @OneToMany(mappedBy = "user")
     private List<Review> reviews = new ArrayList<>();
 
-
+    // 개인정보 동의(필수)
+    private char personalInfo;
+    // 이용약관 동의(필수)
+    private char useInfo;
+    // 쇼핑정보 수신 동의(선택)
+    private char shopInfo;
 }

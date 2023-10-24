@@ -35,7 +35,7 @@ public class NewSecuityConfig {
                 .exceptionHandling(
                         exceptionHandling -> exceptionHandling.authenticationEntryPoint(customAuthenticationEntryPoint))
                 .authorizeHttpRequests(requests -> requests
-                        .requestMatchers("/api/register", "/auth/**", "/update/**").permitAll()
+                        .requestMatchers("/api/register", "/auth/**", "/update/**", "/resetPwd/**").permitAll()
                         .requestMatchers("/user/**").authenticated()
                 )
                 .logout(logout -> logout
