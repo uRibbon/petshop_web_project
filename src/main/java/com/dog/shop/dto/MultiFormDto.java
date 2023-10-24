@@ -8,5 +8,7 @@ import lombok.Setter;
 public class MultiFormDto {
 
     private CartItemReqDto cartItemReqDto;
-    private ProductReqDTO productReqDTO;
+    private ProductResDTO productResDTO;
+
+
 }

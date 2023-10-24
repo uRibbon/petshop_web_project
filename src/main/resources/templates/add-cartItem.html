@@ -2,29 +2,19 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <meta charset="UTF-8">
 <body>
-<form action="#" th:action="@{/CartItem/addcartItem}" th:object="${multiFormDto}" method="post">
+<form action="#" th:action="@{/CartItem/addcartItem}" th:object="${multiFormDto}"method="post">
 
-    <label for="cartItemReqDto.quantity">quantity</label>
-    <input type="text" th:field="*{cartItemReqDto.quantity}" id="cartItemReqDto.quantity">
-    <span th:if="${#fields.hasErrors('cartItemReqDto.quantity')}" th:errors="*{cartItemReqDto.quantity}"></span>
-    <br/>
-
-    <label for="cartItemReqDto.subTotal">subTotal</label>
-    <input type="text" th:field="*{cartItemReqDto.subTotal}" id="cartItemReqDto.subTotal">
-    <span th:if="${#fields.hasErrors('cartItemReqDto.subTotal')}" th:errors="*{cartItemReqDto.subTotal}"></span>
-    <br/>
-
-    <label for="cartItemReqDto.unitPrice">unitPrice</label>
+    <label for="cartItemReqDto.unitPrice">Author</label>
     <input type="text" th:field="*{cartItemReqDto.unitPrice}" id="cartItemReqDto.unitPrice">
     <span th:if="${#fields.hasErrors('cartItemReqDto.unitPrice')}" th:errors="*{cartItemReqDto.unitPrice}"></span>
     <br/>
 
-    <label for="productReqDTO.id">product</label>
-    <input type="text" th:field="*{productReqDTO.id}" id="productReqDTO.id">
-    <span th:if="${#fields.hasErrors('productReqDTO.id')}" th:errors="*{productReqDTO.id}"></span>
+    <label for="productResDTO.id">Author</label>
+    <input type="text" th:field="*{productResDTO.id}" id="productResDTO.id">
+    <span th:if="${#fields.hasErrors('productResDTO.id')}" th:errors="*{productResDTO.id}"></span>
     <br/>
 
-    <input type="submit" value="Add CartItem">
+    <input type="submit" value="Add Book">
 </form>
 </body>
 </html>
