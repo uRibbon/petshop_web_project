@@ -1,4 +1,4 @@
-package com.dog.shop.domain.inquiry.resDTO;
+package com.dog.shop.dto.inquiryDto;
 
 import com.dog.shop.myenum.InquiryStatus;
 import jakarta.persistence.EnumType;
@@ -15,17 +15,14 @@ import java.time.LocalDateTime;
 @Builder
 public class InquiryResDTO {
 
-//    private Long id = 2L;
-
     private String email;
 
-    private Long productName;
+    private String productName;
 
     private String title;
 
     private String content;
 
-    @Enumerated(EnumType.STRING)
     private InquiryStatus inquiryStatus;
 
     private String response;
