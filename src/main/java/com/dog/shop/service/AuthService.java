@@ -1,8 +1,8 @@
 package com.dog.shop.service;
 
 import com.dog.shop.domain.User;
-import com.dog.shop.dto.UserReqDto;
-import com.dog.shop.dto.UserResDto;
+import com.dog.shop.dto.userDto.UserReqDto;
+import com.dog.shop.dto.userDto.UserResDto;
 import com.dog.shop.exception.MemberNotFoundException;
 import com.dog.shop.myenum.Role;
 import com.dog.shop.repository.UserRepository;
@@ -10,12 +10,10 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service

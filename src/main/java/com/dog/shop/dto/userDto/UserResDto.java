@@ -1,4 +1,4 @@
-package com.dog.shop.dto;
+package com.dog.shop.dto.userDto;
 
 import com.dog.shop.myenum.Role;
 import jakarta.persistence.EnumType;

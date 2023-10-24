@@ -1,7 +1,7 @@
 package com.dog.shop.web;
 
-import com.dog.shop.dto.UserReqDto;
-import com.dog.shop.dto.UserResDto;
+import com.dog.shop.dto.userDto.UserReqDto;
+import com.dog.shop.dto.userDto.UserResDto;
 import com.dog.shop.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @Slf4j
