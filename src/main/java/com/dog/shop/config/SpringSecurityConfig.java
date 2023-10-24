@@ -37,7 +37,7 @@ public class SpringSecurityConfig {
 //                        .dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
 //                        .requestMatchers("/auth/signup").permitAll()
 //                        .anyRequest().authenticated()    // 어떠한 요청이라도 인증필요
-                                .requestMatchers("/api/**").authenticated()
+                                .requestMatchers("/register/**").authenticated()
                                 .anyRequest().permitAll()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
