@@ -29,7 +29,9 @@ public class InquiryController {
     public ResponseEntity<InquiryResDTO> registerInquiry(@RequestBody InquiryReqDTO inquiryReqDTO) {
         // userId 값을 2L로 고정
         Long userId = 2L;
-        InquiryResDTO result = inquiryService.regInquiry(userId, inquiryReqDTO);
+        Long productId = 2L;
+
+        InquiryResDTO result = inquiryService.regInquiry(userId, productId, inquiryReqDTO);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
