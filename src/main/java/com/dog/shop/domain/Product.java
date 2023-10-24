@@ -28,7 +28,6 @@ public class Product {
     private String subImage; // 상품의 서브 이미지
     private String description; // 상품에 대한 상세 설명
     private int stock; // 상품의 현재 재고
-
     @Enumerated(EnumType.STRING)
     private SalesStatus salesStatus; // 판매 상태
 
@@ -40,6 +39,5 @@ public class Product {
 
     @OneToMany(mappedBy = "product")
     private List<CartItem> cartItems = new ArrayList<>();
-
 
 }

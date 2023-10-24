@@ -38,8 +38,6 @@ public class User extends BaseTimeEntity{ // 사용자 가입일에 대한 내�
 
     private LocalDate birthDate; // 생년월일
 
-    private char gender; // 성별
-
     @JsonIgnore
     @Enumerated(EnumType.STRING)
     private Role role; // 권한
