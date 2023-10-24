@@ -35,7 +35,7 @@ public class NewSecuityConfig {
                 .exceptionHandling(
                         exceptionHandling -> exceptionHandling.authenticationEntryPoint(customAuthenticationEntryPoint))
                 .authorizeHttpRequests(requests -> requests
-                        .requestMatchers("/api/keywords").permitAll()
+                        .requestMatchers("/api/keywords", "/api/inquiry").permitAll()
                         .requestMatchers("/user/**").authenticated()
                 )
                 .logout(logout -> logout
