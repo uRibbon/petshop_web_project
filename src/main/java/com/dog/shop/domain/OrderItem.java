@@ -21,6 +21,10 @@ public class OrderItem {
     private int subtotal; // (unitPrice * quantity)로 계산된 합계 금액
 
     @ManyToOne
+    @JoinColumn(name = "product_id")
+    private Product product;  // <-- 이 관계를 추가합니다
+
+    @ManyToOne
     @JoinColumn(name = "order_id")
     private Order order;
 
