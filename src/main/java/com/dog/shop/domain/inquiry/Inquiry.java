@@ -1,16 +1,19 @@
-package com.dog.shop.domain;
+package com.dog.shop.domain.inquiry;
 
+import com.dog.shop.domain.Product;
+import com.dog.shop.domain.User;
 import com.dog.shop.myenum.InquiryStatus;
-import com.dog.shop.myenum.SalesStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Table
@@ -22,7 +25,6 @@ public class Inquiry {
 
     private String title; // 문의 제목
     private String content; // 문의 내용
-//    private String status; // 문의 처리 상태 Enum으로 변경 예정
 
     @Enumerated(EnumType.STRING)
     private InquiryStatus inquiryStatus; // 문의 처리 상태
