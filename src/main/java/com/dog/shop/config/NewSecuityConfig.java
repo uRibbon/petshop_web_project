@@ -37,6 +37,7 @@ public class NewSecuityConfig {
                 .authorizeHttpRequests(requests -> requests
                         .requestMatchers("/api/register").permitAll()
                         .requestMatchers("/CartItem/**").permitAll()
+                        .requestMatchers("/").permitAll()
                         .requestMatchers("/user/**").authenticated()
                 )
                 .logout(logout -> logout
