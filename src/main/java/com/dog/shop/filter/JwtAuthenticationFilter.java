@@ -29,23 +29,26 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private MapperDao mapperDao;
 
     @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        String path = request.getRequestURI();
+        return path.startsWith("/auth/signup");
+    }
+
+    @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         String header = request.getHeader(HttpHeaders.AUTHORIZATION);
 
-        if (request.getRequestURI().equals("/api/register")) {
-            filterChain.doFilter(request, response);
-            return;
-        }
 
-        if(header != null && header.startsWith("Bearer") ) {
+
+        if (header != null && header.startsWith("Bearer")) {
             try {
                 String accessToken = header.substring(7);
                 Claims claims = jwtUtil.decode(accessToken);
 
-                boolean valid = ! claims.getExpiration().before(new Date());
-                if(valid) {
-                    if(mapperDao.getValues(accessToken) == null) {
+                boolean valid = !claims.getExpiration().before(new Date());
+                if (valid) {
+                    if (mapperDao.getValues(accessToken) == null) {
                         String memberId = claims.get("id", String.class);
                         Authentication authentication = jwtUtil.getAuthentication(memberId);
                         SecurityContextHolder.getContext().setAuthentication(authentication);

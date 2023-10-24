@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ import java.util.List;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Table
@@ -38,7 +40,7 @@ public class User extends BaseTimeEntity{ // 사용자 가입일에 대한 내�
 
     private LocalDate birthDate; // 생년월일
 
-    private char gender; // 성별
+    //private char gender; // 성별
 
     @JsonIgnore
     @Enumerated(EnumType.STRING)

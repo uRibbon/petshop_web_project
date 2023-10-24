@@ -9,6 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -20,8 +21,9 @@ public class CustomUserDetailService implements UserDetailsService {
     private UserRepository userRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws MemberNotFoundException {
-        // 여기는 main입니다..
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+
+
         User member = userRepository.findByEmail(email).orElseThrow(() -> new MemberNotFoundException("해당 멤버가 존재하지 않습니다."));
         List<GrantedAuthority> roles = new ArrayList<>();
         String role = String.valueOf(member.getRole());
@@ -32,4 +34,7 @@ public class CustomUserDetailService implements UserDetailsService {
         return memberContext;
 
     }
+
+
+
 }
