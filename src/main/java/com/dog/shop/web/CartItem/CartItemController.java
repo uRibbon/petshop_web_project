@@ -2,6 +2,7 @@ package com.dog.shop.web.CartItem;
 
 import com.dog.shop.dto.CartItemReqDto;
 import com.dog.shop.dto.CartItemResDto;
+import com.dog.shop.dto.ProductReqDTO;
 import com.dog.shop.service.CartItemService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +30,7 @@ public class CartItemController {
     }
 
     @GetMapping("/signup")
-    public String showSignUpForm(CartItemReqDto cartItem) {
+    public String showSignUpForm(CartItemReqDto cartItem, ProductReqDTO product) {
         return "add-cartItem";
     }
 

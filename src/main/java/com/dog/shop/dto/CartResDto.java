@@ -1,21 +1,20 @@
 package com.dog.shop.dto;
 
+import com.dog.shop.domain.CartItem;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-public class ProductReqDTO {
+public class CartResDto {
 
     private Long id;
-    private String description;
-    private int price;
-    private String productName;
-    private String salesStatus;
-    private int stock;
+    private List<CartItem> cartItems;
 
 }

@@ -27,7 +27,7 @@ public class CartItem {
     private Product product;
 
     @ManyToOne
-    @JoinColumn(name = "cart_id")
+    @JoinColumn(name = "cart_id") // 외래키 이름명명
     private Cart cart;
 
 }

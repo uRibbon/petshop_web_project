@@ -21,8 +21,7 @@ public class Cart { // 장바구니
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(mappedBy = "cart")
+    @OneToMany(mappedBy = "cart")   //디비에안생김 mappedBy = "cart"라는것은 밑에 CartItem의 필드를 나타낸다.
     private List<CartItem> cartItems = new ArrayList<>();
-
-
+      // List<타입명>
 }
