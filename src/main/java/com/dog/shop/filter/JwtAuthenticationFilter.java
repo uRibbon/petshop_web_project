@@ -29,9 +29,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private MapperDao mapperDao;
 
     @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        String path = request.getRequestURI();
+        return path.startsWith("/auth/signup");
+    }
+
+    @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         String header = request.getHeader(HttpHeaders.AUTHORIZATION);
+
 
 
         if (header != null && header.startsWith("Bearer")) {
