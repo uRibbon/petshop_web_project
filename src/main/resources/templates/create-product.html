@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<meta charset="UTF-8">
+<body>
+<form action="#" th:action="@{/products/create}" th:object="${productReqDTO}"method="post">
+    <label for="description">Description</label>
+    <input type="text" th:field="*{description}" id="description">
+    <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span>
+    <br/>
+    <label for="price">Price</label>
+    <input type="text" th:field="*{price}" id="price">
+    <span th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></span>
+    <br/>
+    <label for="productName">ProductName</label>
+    <input type="text" th:field="*{productName}" id="productName">
+    <span th:if="${#fields.hasErrors('productName')}" th:errors="*{productName}"></span>
+    <br/>
+    <label for="salesStatus">SalesStatus</label>
+    <input type="text" th:field="*{salesStatus}" id="salesStatus">
+    <span th:if="${#fields.hasErrors('salesStatus')}" th:errors="*{salesStatus}"></span>
+    <br/>
+    <label for="stock">Stock</label>
+    <input type="text" th:field="*{stock}" id="stock">
+    <span th:if="${#fields.hasErrors('stock')}" th:errors="*{stock}"></span>
+    <br/>
+    <input type="submit" value="Create">
+</form>
+</body>
+</html>
