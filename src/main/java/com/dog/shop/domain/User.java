@@ -34,6 +34,7 @@ public class User extends BaseTimeEntity{ // 사용자 가입일에 대한 내�
     private String name; // 이름
 
     private String address; // 주소
+    private String detailAddress; // 상세주소
 
     @Column(unique = true)
     private String phoneNumber; // 전화번호
