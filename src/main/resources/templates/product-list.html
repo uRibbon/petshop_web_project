@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<table>
+    <tr>
+        <th>Seq</th>
+        <th>description</th>
+        <th>price</th>
+        <th>product_name</th>
+        <th>sales_status</th>
+        <th>stock</th>
+    </tr>                  <!-- 규칙은 이름 똑같은거에 Stat 인듯 -->
+    <tr th:each="product, bookStat : ${products}">
+        <td th:text="${bookStat.count}"></td>
+        <td th:text="${product.description}" ></td>
+        <td th:text="${product.price}"></td>
+        <td th:text="${product.productName}"></td>
+        <td th:text="${product.salesStatus}"></td>
+        <td th:text="${product.stock}"></td>
+    </tr>
+</table>
+</body>
+</html>

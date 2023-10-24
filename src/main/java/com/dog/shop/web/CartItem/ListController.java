@@ -8,7 +8,7 @@ public class ListController {
 
     @GetMapping("/")
     public String index() {
-        return"redirect:/CartItem/getList";
+        return"redirect:/products/list";
     }
 
 }

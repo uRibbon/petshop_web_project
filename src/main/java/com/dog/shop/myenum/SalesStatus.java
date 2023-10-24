@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum SalesStatus {
-    SALE("SALE", "판매중"),
+    판매중("SALE", "판매중"),
     SOLDOUT("SOLDOUT", "품절"),
     RESERVATION("RESERVATION", "예약"),
     STOP("STOP", "중지");

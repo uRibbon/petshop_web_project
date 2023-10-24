@@ -38,6 +38,7 @@ public class NewSecuityConfig {
                         .requestMatchers("/api/register").permitAll()
                         .requestMatchers("/CartItem/**").permitAll()
                         .requestMatchers("/").permitAll()
+                        .requestMatchers("/products/**").permitAll()
                         .requestMatchers("/user/**").authenticated()
                 )
                 .logout(logout -> logout
