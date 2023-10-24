@@ -2,6 +2,7 @@ package com.dog.shop.filter;
 
 import com.dog.shop.errorcode.ErrorCode;
 import com.dog.shop.map.MapperDao;
+import com.dog.shop.myenum.Role;
 import com.dog.shop.utils.JwtUtil;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -9,12 +10,15 @@ import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.security.SignatureException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -34,23 +38,26 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         return path.startsWith("/auth/signup");
     }
 
+
+
+
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-        String header = request.getHeader(HttpHeaders.AUTHORIZATION);
 
+        String accessToken = getJwtFromCookie(request);
 
-
-        if (header != null && header.startsWith("Bearer")) {
+        if (accessToken != null) {
             try {
-                String accessToken = header.substring(7);
                 Claims claims = jwtUtil.decode(accessToken);
 
                 boolean valid = !claims.getExpiration().before(new Date());
                 if (valid) {
+                    String email = claims.get("email", String.class); // JWT에서 이메일 추출
+
                     if (mapperDao.getValues(accessToken) == null) {
-                        String memberId = claims.get("id", String.class);
-                        Authentication authentication = jwtUtil.getAuthentication(memberId);
+                        Authentication authentication = jwtUtil.getAuthentication(email); // 이메일을 사용하여 인증 정보 가져오기
                         SecurityContextHolder.getContext().setAuthentication(authentication);
                     } else {
                         request.setAttribute("exception", ErrorCode.WRONG_ID_TOKEN);
@@ -66,10 +73,23 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             } catch (IllegalArgumentException e) {
                 request.setAttribute("exception", ErrorCode.INVALID_TOKEN);
             }
-
         }
 
         filterChain.doFilter(request, response);
-
     }
+
+    private String getJwtFromCookie(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("JWT-TOKEN".equals(cookie.getName())) {
+                    return cookie.getValue();
+                }
+            }
+        }
+        return null;
+    }
+
+
+
 }
