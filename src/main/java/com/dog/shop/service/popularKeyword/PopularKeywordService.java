@@ -1,14 +1,14 @@
-package com.dog.shop.service;
+package com.dog.shop.service.popularKeyword;
 
-import com.dog.shop.domain.crawling.PopularSearchedKeyword;
-import com.dog.shop.domain.crawling.resDTO.PopularSearchedKeywordResDTO;
-import com.dog.shop.repository.crawling.PopularKeywordRepository;
+import com.dog.shop.domain.popularSearchedKeyword.PopularSearchedKeyword;
+import com.dog.shop.domain.popularSearchedKeyword.resDTO.PopularSearchedKeywordResDTO;
+import com.dog.shop.repository.popularSearchedKeyword.PopularKeywordRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
-import java.util.Optional;
+
 import org.modelmapper.ModelMapper;
 import static java.util.stream.Collectors.toList;
 
