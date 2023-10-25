@@ -5,7 +5,7 @@
 <form action="#" th:action="@{/CartItem/addcartItem}" th:object="${multiFormDto}" method="post">
 
     <label for="cartItemReqDto.quantity">quantity</label>
-    <input type="text" th:field="*{cartItemReqDto.quantity}" id="cartItemReqDto.quantity">
+    <input type="text" th:field="*{cartItemReqDto.quantity}" id="cartItemReqDto.quantity" oninput="calculateSubtotal()">
     <span th:if="${#fields.hasErrors('cartItemReqDto.quantity')}" th:errors="*{cartItemReqDto.quantity}"></span>
     <br/>
 
@@ -26,5 +26,26 @@
 
     <input type="submit" value="Add Book">
 </form>
+
+<script>
+    // 페이지 로딩 시 초기값 계산
+    window.onload = function() {
+        calculateSubtotal();
+    };
+    function calculateSubtotal() {
+        var quantity = document.getElementById("cartItemReqDto.quantity").value;
+        var unitPrice = document.getElementById("productResDTO.price").value;
+
+        // quantity와 unitPrice가 숫자인지 확인
+        if (!isNaN(quantity) && !isNaN(unitPrice)) {
+            var subtotal = quantity * unitPrice;
+            document.getElementById("cartItemReqDto.subTotal").value = subtotal;
+        } else {
+            // 에러 처리: 유효한 숫자가 아닌 경우 메시지 표시 또는 다른 처리 수행
+            alert("Invalid input. Please enter valid numbers.");
+        }
+    }
+</script>
+
 </body>
 </html>

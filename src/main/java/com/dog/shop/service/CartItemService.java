@@ -40,8 +40,8 @@ public class CartItemService {
 
                 //CartItem 엔티티에 데이터 설정
                 CartItem cartItem = new CartItem();
-                cartItem.setQuantity(cartItem.getQuantity());
-                cartItem.setSubTotal(cartItem.getSubTotal());
+                cartItem.setQuantity(cartItemReqDto.getQuantity());
+                cartItem.setSubTotal(cartItemReqDto.getSubTotal());
                 cartItem.setUnitPrice(productResDTO.getPrice());
                 cartItem.setProduct(product);
                 // 이부분은 product에 id와 price가 담기지만 부트내부적으로 외래키값을 직접 매핑한다.

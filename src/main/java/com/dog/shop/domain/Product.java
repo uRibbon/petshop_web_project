@@ -40,4 +40,8 @@ public class Product {
     @OneToMany(mappedBy = "product")
     private List<CartItem> cartItems = new ArrayList<>();
 
+    @Override
+    public String toString() {
+        return "" + id;
+    }
 }
