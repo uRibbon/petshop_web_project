@@ -1,5 +1,6 @@
 package com.dog.shop.web.CartItem;
 
+import com.dog.shop.domain.Cart;
 import com.dog.shop.domain.CartItem;
 import com.dog.shop.dto.*;
 import com.dog.shop.product.dto.ProductResDTO;
@@ -21,10 +22,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CartItemController {
 
+    // 장바구니 목록 보여주기
     private final CartItemService cartItemService;
     private final ProductService productService;
 
-    // 장바구니 목록 보여주기
     @GetMapping("/getList")
     public ModelAndView getList() {
         List<CartItemResDto> cartItems = cartItemService.getCartItems();
@@ -32,10 +33,13 @@ public class CartItemController {
     }
     // 상품의 정보를 가져오면서 장바구니 등록설정창 들어가기
     @GetMapping("/signup/{id}")
-    public String showSignUpForm(@PathVariable Long id, Model model, CartItemReqDto cartItemReqDto) {
+    public String showSignUpForm(@PathVariable Long id, Model model, CartItemReqDto cartItemReqDto,CartReqDto cartReqDto) {
+        // product_id 가져오는부분
         ProductResDTO productResDTO = productService.getProductById(id);
         MultiFormDto multiFormDto = new MultiFormDto();
+        //CartItemReqDto 객체 넣어주기 값은디폴트값들어있음
         multiFormDto.setCartItemReqDto(cartItemReqDto);
+        // product_id만 담겨있는 ProductResDTO값 가져오기 부트가 자동으로 외래키를 매핑함
         multiFormDto.setProductResDTO(productResDTO);
 
         model.addAttribute("multiFormDto", multiFormDto);
