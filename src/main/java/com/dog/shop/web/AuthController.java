@@ -20,6 +20,11 @@ import java.util.List;
 public class AuthController {
     private final AuthService authService;
 
+    @GetMapping("/signup")
+    public String signup() {
+        return "signup";
+    }
+
     @GetMapping("/check")
     public ResponseEntity<Boolean> memCheck(@RequestParam String email) {
         System.out.println("이메일 확인 : " + email);
