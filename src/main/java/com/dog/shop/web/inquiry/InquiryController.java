@@ -32,6 +32,15 @@ public class InquiryController {
         Long productId = 2L;
 
         InquiryResDTO result = inquiryService.regInquiry(userId, productId, inquiryReqDTO);
+
+        System.out.println("제목"+inquiryReqDTO.getTitle());
+        System.out.println("제목"+inquiryReqDTO.getContent());
+        System.out.println("제목"+inquiryReqDTO.getTitle());
+        System.out.println("제목"+inquiryReqDTO.getTitle());
+        System.out.println("제목"+inquiryReqDTO.getTitle());
+
+        InquiryResDTO result = inquiryService.regInquiry(userId, inquiryReqDTO);
+
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 

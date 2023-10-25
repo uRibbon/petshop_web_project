@@ -35,6 +35,12 @@ public class InquiryService {
     public InquiryResDTO regInquiry(Long userId, Long productId, InquiryReqDTO inquiryReqDTO) {
 
         Inquiry inquiry = new Inquiry(); // todo 에러 처리하기
+
+        inquiry.setUser(userRepository.findById(userId).orElseThrow(() -> new MemberNotFoundException("user not found")));
+        Inquiry savedInquiry = inquiryRepository.save(inquiry);
+//        inquiry = modelMapper.map(inquiryReqDTO, Inquiry.class);
+
+
         InquiryResDTO inquiryResDTO = new InquiryResDTO();
 
         inquiry.setUser(userRepository.findById(userId).orElseThrow(() -> new MemberNotFoundException("user not found")));
