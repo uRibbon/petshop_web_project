@@ -33,7 +33,7 @@ public class InquiryService {
         Inquiry inquiry = new Inquiry(); // todo 에러 처리하기
         inquiry.setUser(userRepository.findById(userId).orElseThrow(() -> new MemberNotFoundException("user not found")));
         Inquiry savedInquiry = inquiryRepository.save(inquiry);
-        inquiry = modelMapper.map(inquiryReqDTO, Inquiry.class);
+//        inquiry = modelMapper.map(inquiryReqDTO, Inquiry.class);
 
         InquiryResDTO inquiryResDTO = new InquiryResDTO();
         inquiryResDTO.setEmail(inquiry.getUser().getEmail());

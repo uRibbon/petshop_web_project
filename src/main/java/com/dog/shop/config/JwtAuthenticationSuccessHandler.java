@@ -65,7 +65,7 @@ public class JwtAuthenticationSuccessHandler extends SimpleUrlAuthenticationSucc
 
         // JWT 토큰 생성
         String token = jwtUtil.createAccessToken(email, role);
-
+        System.out.println("token ========== "+token);
         // 토큰을 HTTP-only 쿠키로 설정
         Cookie jwtCookie = new Cookie("JWT-TOKEN", token);
         jwtCookie.setHttpOnly(true);
