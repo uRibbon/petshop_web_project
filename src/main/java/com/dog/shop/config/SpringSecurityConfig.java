@@ -30,6 +30,7 @@ public class SpringSecurityConfig {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
         this.jwtUtil = jwtUtil;
     }
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf().disable().cors().disable()
@@ -37,7 +38,7 @@ public class SpringSecurityConfig {
 //                        .dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
 //                        .requestMatchers("/auth/signup").permitAll()
 //                        .anyRequest().authenticated()    // 어떠한 요청이라도 인증필요
-                                .requestMatchers("/register/**").authenticated()
+                                .requestMatchers("/api/register/**").authenticated()
                                 .anyRequest().permitAll()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
