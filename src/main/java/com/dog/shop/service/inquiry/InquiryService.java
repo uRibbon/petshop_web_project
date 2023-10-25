@@ -33,6 +33,7 @@ public class InquiryService {
 
     // 등록
     public InquiryResDTO regInquiry(Long userId, Long productId, InquiryReqDTO inquiryReqDTO) {
+
         Inquiry inquiry = new Inquiry(); // todo 에러 처리하기
         InquiryResDTO inquiryResDTO = new InquiryResDTO();
 
