@@ -22,5 +22,7 @@ public class ShopProjectApplication {
 	}
 
 	@Bean
-	public PasswordEncoder passwordEncoder() {return new BCryptPasswordEncoder();}
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
 }

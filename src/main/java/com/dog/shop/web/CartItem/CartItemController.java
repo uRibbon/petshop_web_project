@@ -23,7 +23,6 @@ public class CartItemController {
     private final CartItemService cartItemService;
     private final ProductService productService;
 
-
     @GetMapping("/getList")
     public ModelAndView getList() {
         List<CartItemResDto> cartItems = cartItemService.getCartItems();
@@ -41,7 +40,6 @@ public class CartItemController {
 
         return "add-cartItem";
     }
-
     @PostMapping("/addcartItem")
     public String addCartItem(@ModelAttribute("multiFormDto") MultiFormDto multiFormDto){
         CartItemReqDto cartItemReqDto = multiFormDto.getCartItemReqDto();

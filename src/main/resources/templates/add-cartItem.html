@@ -1,11 +1,19 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <meta charset="UTF-8">
+<head>
+    <style>
+        button {
+            display: inline-block;
+            margin-top: 10px; /* 버튼 상단 여백을 조절할 수 있습니다. */
+        }
+    </style>
+</head>
 <body>
-<form action="#" th:action="@{/CartItem/addcartItem}" th:object="${multiFormDto}" method="post">
+<form id="yourFormId" action="#" th:action="@{/CartItem/addcartItem}" th:object="${multiFormDto}" method="post" onsubmit="return false;">
 
     <label for="cartItemReqDto.quantity">quantity</label>
-    <input type="text" th:field="*{cartItemReqDto.quantity}" id="cartItemReqDto.quantity" oninput="calculateSubtotal()">
+    <input type="number" th:field="*{cartItemReqDto.quantity}" id="cartItemReqDto.quantity" oninput="calculateSubtotal()">
     <span th:if="${#fields.hasErrors('cartItemReqDto.quantity')}" th:errors="*{cartItemReqDto.quantity}"></span>
     <br/>
 
@@ -29,14 +37,32 @@
     <span th:if="${#fields.hasErrors('productResDTO.id')}" th:errors="*{productResDTO.id}"></span>
     <br/>
 
-    <input type="submit" value="Add Book">
+    <button id="submitButton">장바구니 담기</button>  <!--submit을 제어하기위해 submit을 없애고 전부 버튼태그로 지정-->
+
+    <button onclick="increaseQuantity()">수량추가</button>
+    <button onclick="decreaseQuantity()">수량제거</button>
 </form>
 
-<script>
-    // 페이지 로딩 시 초기값 계산
-    window.onload = function() {
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    function increaseQuantity() {
+        var quantity = parseInt(document.getElementById("cartItemReqDto.quantity").value);
+        quantity += 1;
+        document.getElementById("cartItemReqDto.quantity").value = quantity;
         calculateSubtotal();
-    };
+    }
+
+    function decreaseQuantity() {
+        var quantity = parseInt(document.getElementById("cartItemReqDto.quantity").value);
+        quantity -= 1;
+        if (quantity >= 0) {
+            document.getElementById("cartItemReqDto.quantity").value = quantity;
+            calculateSubtotal();
+        } else {
+            alert("더이상 수량을 제거할수 없습니다.");
+        }
+    }
+
     function calculateSubtotal() {
         var quantity = document.getElementById("cartItemReqDto.quantity").value;
         var unitPrice = document.getElementById("productResDTO.price").value;
@@ -50,6 +76,12 @@
             alert("유효한 숫자가 아닙니다.");
         }
     }
+    /*]]>*/
+
+    document.getElementById("submitButton").onclick = function() {
+        // 폼을 제출
+        document.getElementById("yourFormId").submit();
+    };
 </script>
 
 </body>
