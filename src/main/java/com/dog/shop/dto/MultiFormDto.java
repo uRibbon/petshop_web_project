@@ -1,5 +1,6 @@
 package com.dog.shop.dto;
 
+import com.dog.shop.product.dto.ProductResDTO;
 import lombok.Getter;
 import lombok.Setter;
 

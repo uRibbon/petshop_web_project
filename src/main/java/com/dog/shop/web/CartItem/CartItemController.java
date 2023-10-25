@@ -1,8 +1,9 @@
 package com.dog.shop.web.CartItem;
 
 import com.dog.shop.dto.*;
+import com.dog.shop.product.dto.ProductResDTO;
+import com.dog.shop.product.service.ProductService;
 import com.dog.shop.service.CartItemService;
-import com.dog.shop.service.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.Banner;

@@ -6,7 +6,7 @@ import com.dog.shop.domain.Product;
 import com.dog.shop.dto.CartItemReqDto;
 import com.dog.shop.dto.CartItemResDto;
 import com.dog.shop.dto.CartReqDto;
-import com.dog.shop.dto.ProductResDTO;
+import com.dog.shop.product.dto.ProductResDTO;
 import com.dog.shop.repository.CartItemRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -52,8 +52,6 @@ public class CartItemService {
                 cartItem.setProduct(product);
                 // 이부분은 product에 id와 price가 담기지만 부트내부적으로 외래키값을 직접 매핑한다.
                 // CartItem 엔티티 저장
-
-
 
                 cartItemRepository.save(cartItem);
 
