@@ -29,6 +29,12 @@ public class InquiryController {
     public ResponseEntity<InquiryResDTO> registerInquiry(@RequestBody InquiryReqDTO inquiryReqDTO) {
         // userId 값을 2L로 고정
         Long userId = 2L;
+        System.out.println("제목"+inquiryReqDTO.getTitle());
+        System.out.println("제목"+inquiryReqDTO.getContent());
+        System.out.println("제목"+inquiryReqDTO.getTitle());
+        System.out.println("제목"+inquiryReqDTO.getTitle());
+        System.out.println("제목"+inquiryReqDTO.getTitle());
+
         InquiryResDTO result = inquiryService.regInquiry(userId, inquiryReqDTO);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
