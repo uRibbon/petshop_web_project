@@ -14,7 +14,7 @@ public class ShopProjectApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ShopProjectApplication.class, args);
-
+	}
 	@Bean
 	public ModelMapper modelMapper() {
 		ModelMapper modelMapper = new ModelMapper();
