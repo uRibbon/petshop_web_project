@@ -2,7 +2,6 @@ package com.dog.shop.web.inquiry;
 
 import com.dog.shop.dto.inquiryDto.InquiryReqDTO;
 import com.dog.shop.dto.inquiryDto.InquiryResDTO;
-import com.dog.shop.myenum.InquiryStatus;
 import com.dog.shop.service.inquiry.InquiryService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -11,8 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
-import static com.dog.shop.myenum.InquiryStatus.INCOMPLETED;
 
 @RestController
 @RequestMapping("/api/inquiry")
@@ -29,11 +26,6 @@ public class InquiryController {
     public ResponseEntity<InquiryResDTO> registerInquiry(@RequestBody InquiryReqDTO inquiryReqDTO) {
         // userId 값을 2L로 고정
         Long userId = 2L;
-        System.out.println("제목"+inquiryReqDTO.getTitle());
-        System.out.println("제목"+inquiryReqDTO.getContent());
-        System.out.println("제목"+inquiryReqDTO.getTitle());
-        System.out.println("제목"+inquiryReqDTO.getTitle());
-        System.out.println("제목"+inquiryReqDTO.getTitle());
 
         InquiryResDTO result = inquiryService.regInquiry(userId, inquiryReqDTO);
         return new ResponseEntity<>(result, HttpStatus.OK);
