@@ -1,6 +1,7 @@
 package com.dog.shop.api.service;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -38,7 +39,7 @@ public class KakaoApiService {
         String x = location.getString("x");
         String y = location.getString("y");
 
-        // Construct the body for the second API call
+
         String body = "{ \"origin\": { \"x\": \"" + ORIGIN_X + "\", \"y\": \"" + ORIGIN_Y + "\" }, " +
                 "\"destinations\": [ { \"x\": \"" + x + "\", \"y\": \"" + y + "\", \"key\": \"0\" } ], " +
                 "\"radius\": 10000 }";
@@ -51,13 +52,17 @@ public class KakaoApiService {
                 requestEntity,
                 String.class);
 
-          JSONObject responseJson = new JSONObject(responseDirection.getBody());
-          JSONArray routes = responseJson.getJSONArray("routes");
-          JSONObject summary = routes.getJSONObject(0).getJSONObject("summary");
-          int distance = summary.getInt("distance");
+        JSONObject responseJson = new JSONObject(responseDirection.getBody());
+        JSONArray routes = responseJson.getJSONArray("routes");
+        try {
+            JSONObject summary = routes.getJSONObject(0).getJSONObject("summary");
+            int distance = summary.getInt("distance");
+            return "Distance: " + distance + " meter";
+        } catch (JSONException e) {
+            return "목적지가 너무 멀리있습니다.(범위 초과)";
+        }
 
-          return "Distance: " + distance + " meter";
-//        return responseDirection.getBody();
+        //return responseDirection.getBody();
     }
 }
 
