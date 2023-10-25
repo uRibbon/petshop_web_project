@@ -23,6 +23,19 @@ import java.util.Date;
 
 @Component
 public class JwtUtil {
+
+    @Value("${jwt.token-validity}")
+    private long TOKEN_VALIDITY;  // JWT 토큰의 유효 시간
+
+    /**
+     * JWT 토큰의 유효 시간을 밀리초 단위로 반환합니다.
+     *
+     * @return 토큰의 유효 시간 (밀리초)
+     */
+    public long getTokenValidityInMilliseconds() {
+        return TOKEN_VALIDITY;
+    }
+
     // access 토큰 유효 시간 3m
     // private final long accessTokenValidTime = Duration.ofMinutes(30).toMillis();
     // 테스트시 30일
@@ -40,15 +53,17 @@ public class JwtUtil {
         key = Keys.hmacShaKeyFor(secret.getBytes());
     }
 
-    public String createAccessToken(Long memberId, Role role) {
+                //.setId(id)
+    public String createAccessToken(String email, Role role) {
         Date now = new Date();
         return Jwts.builder()
-                .setId(Long.toString(memberId))
                 .setHeaderParam(Header.TYPE, Header.JWT_TYPE)
                 .setIssuer("ADMIN") // JWT 발급자를 설정
                 .setIssuedAt(now) // JWT 발급 시간을 설정
                 .setExpiration(new Date(now.getTime() + accessTokenValidTime))
-                .claim("id", Long.toString(memberId)) // JWT에 추가할 클레임 정보를 설정
+//                .claim("id", Long.toString(memberId)) // JWT에 추가할 클레임 정보를 설정
+                //.claim("id", id) // JWT에 추가할 클레임 정보를 설정
+                .claim("email", email) // JWT에 추가할 클레임 정보를 설정
                 .claim("role", role)
                 .signWith(key) // JWT 서명 알고리즘과 서명 키를 설정
                 .compact(); // JWT 문자열을 반환
@@ -81,8 +96,8 @@ public class JwtUtil {
         return (expiration.getTime() - now);
     }
 
-    public Authentication getAuthentication(String memberId) {
-        UserDetails userDetails = customUserDetailService.loadUserByUsername(memberId);
+    public Authentication getAuthentication(String id) {
+        UserDetails userDetails = customUserDetailService.loadUserByUsername(id);
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
@@ -107,4 +122,6 @@ public class JwtUtil {
             return 0L;
         }
     }
+
+
 }

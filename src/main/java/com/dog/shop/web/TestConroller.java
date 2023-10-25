@@ -15,11 +15,7 @@ public class TestConroller {
 
     @GetMapping("/customLogin")
     public String index() {
-        return "index";
+        return "redirect:/index";
     }
 
-    @GetMapping("/info")
-    public String info(){
-        return "info";
-    }
 }

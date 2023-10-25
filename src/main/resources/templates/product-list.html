@@ -13,7 +13,6 @@
         <th>product_name</th>
         <th>sales_status</th>
         <th>stock</th>
-        <th></th>
     </tr>                  <!-- 규칙은 이름 똑같은거에 Stat 인듯 -->
     <tr th:each="product, bookStat : ${products}">
         <td th:text="${bookStat.count}"></td>

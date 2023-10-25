@@ -14,6 +14,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Setter
 @Table(name = "order_history")
 public class Order extends BaseTimeEntity {
 

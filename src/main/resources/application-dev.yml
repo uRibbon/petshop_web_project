@@ -34,14 +34,17 @@ spring:
 logging:
   level:
     org.hibernate.type.descriptor.sql: trace
-    org.springframework.security: DEBUG
+    #org.springframework.security: DEBUG
+    #org.springframework: DEBUG
 jwt:
   header: Authorization
   secret: and0LXRlc3QtYWxqamFiYWVnaS1qd3QtdGVzdC1hbGpqYWJhZWdpLWp3dC10ZXN0LWFsamphYmFlZ2ktand0LXRlc3QtYWxqamFiYWVnaS1qd3QtdGVzdC1hbGpqYWJhZWdpLWp3dC10ZXN0LWFsamphYmFlZ2ktand0LXRlc3QtYWxqamFiYWVnaS1qd3QtdGVzdC1hbGpqYWJhZWdp
-  token-validity-in-seconds: 86400
+  #token-validity-in-seconds: 86400
+  token-validity: 3600000  # 1시간 (밀리초 단위)
 
 file:
   path: /var/upload/
 
 endpoint:
   path: /payment/api
+
