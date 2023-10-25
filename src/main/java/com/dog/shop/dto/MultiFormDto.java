@@ -9,6 +9,7 @@ public class MultiFormDto {
 
     private CartItemReqDto cartItemReqDto;
     private ProductResDTO productResDTO;
+    private CartReqDto cartReqDto;
 
 
 }

@@ -45,9 +45,10 @@ public class CartItemController {
     public String addCartItem(@ModelAttribute("multiFormDto") MultiFormDto multiFormDto){
         CartItemReqDto cartItemReqDto = multiFormDto.getCartItemReqDto();
         ProductResDTO productResDTO = multiFormDto.getProductResDTO();
+        CartReqDto cartReqDto = multiFormDto.getCartReqDto();
 
         // 여기에서 서비스 클래스를 호출하여 데이터를 저장
-        cartItemService.saveCartItem(cartItemReqDto,productResDTO);
+        cartItemService.saveCartItem(cartItemReqDto,productResDTO,cartReqDto);
 
         return "redirect:/CartItem/getList";
     }
