@@ -21,6 +21,7 @@ public class UserResDto {
     private String password;
     private String name;
     private String address;
+    private String detailAddress;
     private String phoneNumber;
     private LocalDate birthDate;
     private LocalDateTime createdDate;

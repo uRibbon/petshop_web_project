@@ -1,8 +1,6 @@
 package com.dog.shop.dto.inquiryDto;
 
 import com.dog.shop.myenum.InquiryStatus;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -28,5 +26,5 @@ public class InquiryResDTO {
     private String response;
 
     private LocalDateTime responseDate;
-
 }
+
