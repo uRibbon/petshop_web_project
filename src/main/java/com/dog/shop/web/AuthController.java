@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,7 +35,7 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public String saveUser(@RequestBody UserReqDto userReqDto) {
+    public String saveUser( UserReqDto userReqDto) {
         try {
             authService.signUser(userReqDto);
             System.out.println("컨트롤러 " + userReqDto.getEmail());
@@ -69,8 +70,15 @@ public class AuthController {
     }
 
     @PostMapping("/resetPwd/{email}")
-    public Boolean resetPwd(@PathVariable String email, @RequestBody UserReqDto userReqDto) {
-       return authService.resetPwd(email, userReqDto);
+    public String resetPwd(@PathVariable String email, @RequestBody UserReqDto userReqDto, Model model) {
+        boolean result = authService.resetPwd(email, userReqDto);
+
+        // 모델에 결과값을 담아서 템플릿에 전달
+        model.addAttribute("resetResult", result);
+
+        // 타임리프 템플릿의 경로를 리턴 (예: "resetPwdResult"는 타임리프 템플릿 파일의 경로)
+        return "resetPwdResult";
     }
+
 
 }
