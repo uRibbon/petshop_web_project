@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<meta charset="UTF-8">
+<body>
+<form action="#" th:action="@{/CartItem/update/{id}(id=${cartItem.id})}" th:object="${cartItem}" method="post">
+    <label for="quantity">Quantity</label>
+    <input type="text" th:field="*{quantity}" id="quantity">
+    <span th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}"></span>  <br/>
+
+    <label for="subTotal">SubTotal</label>
+    <input type="text" th:field="*{subTotal}" id="subTotal" readonly> <!--수정 안되게-->
+    <span th:if="${#fields.hasErrors('subTotal')}" th:errors="*{subTotal}"></span>  <br/>
+
+    <label for="unitPrice">UnitPrice</label>
+    <input type="text" th:field="*{unitPrice}" id="unitPrice" readonly>
+    <span th:if="${#fields.hasErrors('unitPrice')}" th:errors="*{unitPrice}"></span>  <br/>
+
+<!--    <label for="cart">Cart</label>-->
+<!--        <input type="text" th:field="*{cart}" id="cart" readonly>-->
+<!--    <span th:if="${#fields.hasErrors('cart')}" th:errors="*{cart}"></span>  <br/>-->
+
+    <label for="product">Product</label>
+    <input type="text" th:field="*{product}" id="product" readonly>
+    <span th:if="${#fields.hasErrors('product')}" th:errors="*{product}"></span>  <br/>
+
+    <input type="submit" value="수정하기">
+</form>
+</body>
+</html>

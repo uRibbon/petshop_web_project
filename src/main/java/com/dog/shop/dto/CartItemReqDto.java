@@ -2,6 +2,7 @@ package com.dog.shop.dto;
 
 import com.dog.shop.domain.Cart;
 import com.dog.shop.domain.Product;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
