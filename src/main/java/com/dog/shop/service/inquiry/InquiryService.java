@@ -4,6 +4,7 @@ import com.dog.shop.domain.inquiry.Inquiry;
 import com.dog.shop.dto.inquiryDto.InquiryReqDTO;
 import com.dog.shop.dto.inquiryDto.InquiryResDTO;
 import com.dog.shop.exception.MemberNotFoundException;
+import com.dog.shop.myenum.InquiryStatus;
 import com.dog.shop.product.repository.ProductRepository;
 import com.dog.shop.repository.UserRepository;
 import com.dog.shop.repository.inquiry.InquiryRepository;
@@ -41,7 +42,7 @@ public class InquiryService {
         inquiryResDTO.setProductName(inquiry.getProduct().getProductName());
         inquiryResDTO.setTitle(inquiryReqDTO.getTitle());
         inquiryResDTO.setContent(inquiryReqDTO.getContent());
-        inquiryResDTO.setInquiryStatus(inquiry.getInquiryStatus());
+        inquiryResDTO.setInquiryStatus(InquiryStatus.INCOMPLETED);
         inquiryResDTO.setResponse(inquiry.getResponse());
         inquiryResDTO.setResponseDate(inquiry.getResponseDate());
 
