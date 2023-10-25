@@ -2,7 +2,6 @@ package com.dog.shop.web.inquiry;
 
 import com.dog.shop.dto.inquiryDto.InquiryReqDTO;
 import com.dog.shop.dto.inquiryDto.InquiryResDTO;
-import com.dog.shop.myenum.InquiryStatus;
 import com.dog.shop.service.inquiry.InquiryService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -12,12 +11,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static com.dog.shop.myenum.InquiryStatus.INCOMPLETED;
-
 @RestController
 @RequestMapping("/api/inquiry")
 @RequiredArgsConstructor
-public class InquiryController {
+public class InquiryRestController {
 
     private final InquiryService inquiryService;
 
