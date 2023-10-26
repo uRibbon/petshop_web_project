@@ -57,7 +57,19 @@ public class KakaoApiService {
         try {
             JSONObject summary = routes.getJSONObject(0).getJSONObject("summary");
             int distance = summary.getInt("distance");
-            return "Distance: " + distance + " meter";
+
+            int fare;
+            if (distance <= 1000) {
+                fare = 1000;
+            } else if (distance <= 5000) {
+                fare = 2000;
+            } else if (distance <= 10000) {
+                fare = 3000;
+            } else {
+                return "무료";
+            }
+
+            return "Distance: " + distance + "m " + "｜" + " fare: " + fare + "원";
         } catch (JSONException e) {
             return "목적지가 너무 멀리있습니다.(범위 초과)";
         }
