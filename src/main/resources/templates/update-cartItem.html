@@ -1,19 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <meta charset="UTF-8">
-<head>
-    <style>
-        button {
-            display: inline-block;
-            margin-top: 10px; /* 버튼 상단 여백을 조절할 수 있습니다. */
-        }
-    </style>
-</head>
 <body>
-<form id="yourFormId" action="#" th:action="@{/CartItem/update/{id}(id=${cartItem.id})}" th:object="${cartItem}" method="post" onsubmit="return false;">
-
+<form action="#" th:action="@{/CartItem/update/{id}(id=${cartItem.id})}" th:object="${cartItem}" method="post">
     <label for="quantity">Quantity</label>
-    <input type="number" th:field="*{quantity}" id="quantity" oninput="calculateSubtotal()">
+    <input type="text" th:field="*{quantity}" id="quantity">
     <span th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}"></span>  <br/>
 
     <label for="subTotal">SubTotal</label>
@@ -32,50 +23,7 @@
     <input type="text" th:field="*{product}" id="product" readonly>
     <span th:if="${#fields.hasErrors('product')}" th:errors="*{product}"></span>  <br/>
 
-    <button id="submitButton">장바구니 수정</button>
-
-    <button onclick="increaseQuantity()">수량추가</button>
-    <button onclick="decreaseQuantity()">수량제거</button>
+    <input type="submit" value="수정하기">
 </form>
-<script th:inline="javascript">
-    /*<![CDATA[*/
-    function increaseQuantity() {
-        var quantity = parseInt(document.getElementById("quantity").value);
-        quantity += 1;
-        document.getElementById("quantity").value = quantity;
-        calculateSubtotal();
-    }
-
-    function decreaseQuantity() {
-        var quantity = parseInt(document.getElementById("quantity").value);
-        quantity -= 1;
-        if (quantity >= 0) {
-            document.getElementById("quantity").value = quantity;
-            calculateSubtotal();
-        } else {
-            alert("더이상 수량을 제거할수 없습니다.");
-        }
-    }
-
-    function calculateSubtotal() {
-        var quantity = parseInt(document.getElementById("quantity").value);
-        var unitPrice = parseInt(document.getElementById("unitPrice").value);
-
-        // quantity와 unitPrice가 숫자인지 확인
-        if (!isNaN(quantity) && !isNaN(unitPrice)) {
-            var subtotal = quantity * unitPrice;
-            document.getElementById("subTotal").value = subtotal;
-        } else {
-            // 에러 처리: 유효한 숫자가 아닌 경우 메시지 표시 또는 다른 처리 수행
-            alert("유효한 숫자가 아닙니다.");
-        }
-    }
-    /*]]>*/
-
-    document.getElementById("submitButton").onclick = function() {
-        // 폼을 제출
-        document.getElementById("yourFormId").submit();
-    };
-</script>
 </body>
 </html>
