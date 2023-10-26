@@ -16,13 +16,12 @@ import java.time.LocalDate;
 public class UserReqDto {
     //입력화면
     private String email;
+
     private String password;
     private String name;
     private String address;
     private String detailAddress;
     private String phoneNumber;
     private LocalDate birthDate;
-
-    @Enumerated(EnumType.STRING)
-    private Role role;
+    // private Role role;
 }
