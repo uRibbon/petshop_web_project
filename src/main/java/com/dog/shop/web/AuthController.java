@@ -35,7 +35,8 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public String saveUser( UserReqDto userReqDto) {
+    public String saveUser(UserReqDto userReqDto) {
+
         try {
             authService.signUser(userReqDto);
             System.out.println("컨트롤러 " + userReqDto.getEmail());
