@@ -1,21 +1,30 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>My Website</title>
+료    <script>
+
+    </script>
 </head>
 <body>
-<header>
-  <div id="header">
-    <h1>My Website</h1>
-      <nav>
-        <ul>
-          <li><a th:href="@{/}">Home</a></li>
-          <li><a th:href="@{/about}">About</a></li>
-          <li><a th:href="@{/contact}">Contact</a></li>
-        </ul>
-      </nav>
-  </div>
-</header>
+<!-- The header section -->
+<div th:fragment="header">
+    <div class="navbar">
+        <div class="box">
+            <a href="#"><img src="/img/logo/icon/menu_bar.png" alt="메뉴"></a>
+        </div>
+        <div class="box">
+            <a href="#"><img src="/img/logo/icon/search.png" alt="검색"></a>
+        </div>
+        <div class="box-image">
+            <img src="/img/logo/Dog_logo.png" alt="로고 이미지">
+        </div>
+        <div class="box">
+            <a href="#"><img src="/img/logo/icon/user.png" alt="회원정보"></a>
+        </div>
+        <div class="box">
+            <a href="#"><img src="/img/logo/icon/cart.png" alt="회원정보"></a>
+        </div>
+    </div>
+</div>
 </body>
 </html>
