@@ -6,6 +6,7 @@ import com.dog.shop.domain.Product;
 import com.dog.shop.dto.CartItemReqDto;
 import com.dog.shop.dto.CartItemResDto;
 import com.dog.shop.dto.CartReqDto;
+import com.dog.shop.dto.CartResDto;
 import com.dog.shop.errorcode.ErrorCode;
 import com.dog.shop.exception.CommonException;
 import com.dog.shop.product.dto.ProductResDTO;
@@ -36,7 +37,7 @@ public class CartItemService {
                 return cartItemResDtoList;
         }
 
-        public void saveCartItem(CartItemReqDto cartItemReqDto, ProductResDTO productResDTO, CartReqDto cartReqDto) {
+        public void saveCartItem(CartItemReqDto cartItemReqDto, ProductResDTO productResDTO, CartResDto cartResDto) {
                 // ProductResDTO를 Product 엔티티로 변환
                 Product product = new Product();
                 product.setId(productResDTO.getId());
@@ -44,7 +45,7 @@ public class CartItemService {
                 // 필요한 경우 더 많은 필드를 복사
 
                 Cart cart = new Cart();
-                cart.setId(cartReqDto.getId());
+                cart.setId(cartResDto.getId());
 
                 //CartItem 엔티티에 데이터 설정
                 CartItem cartItem = new CartItem();

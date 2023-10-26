@@ -23,9 +23,9 @@
     <input type="text" th:field="*{unitPrice}" id="unitPrice" readonly>
     <span th:if="${#fields.hasErrors('unitPrice')}" th:errors="*{unitPrice}"></span>  <br/>
 
-<!--    <label for="cart">Cart</label>-->
-<!--        <input type="text" th:field="*{cart}" id="cart" readonly>-->
-<!--    <span th:if="${#fields.hasErrors('cart')}" th:errors="*{cart}"></span>  <br/>-->
+    <label for="cart">Cart</label>
+    <input type="text" th:field="*{cart}" id="cart" readonly>
+    <span th:if="${#fields.hasErrors('cart')}" th:errors="*{cart}"></span>  <br/>
 
     <label for="product">Product</label>
     <input type="text" th:field="*{product}" id="product" readonly>

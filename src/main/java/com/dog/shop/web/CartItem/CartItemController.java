@@ -4,6 +4,7 @@ import com.dog.shop.domain.Cart;
 import com.dog.shop.domain.CartItem;
 import com.dog.shop.dto.*;
 import com.dog.shop.product.dto.ProductResDTO;
+import com.dog.shop.product.service.CartService;
 import com.dog.shop.product.service.ProductService;
 import com.dog.shop.service.CartItemService;
 import jakarta.validation.Valid;
@@ -25,6 +26,7 @@ public class CartItemController {
     // 장바구니 목록 보여주기
     private final CartItemService cartItemService;
     private final ProductService productService;
+    private final CartService cartService;
 
     @GetMapping("/getList")
     public ModelAndView getList() {
@@ -33,12 +35,15 @@ public class CartItemController {
     }
     // 상품의 정보를 가져오면서 장바구니 등록설정창 들어가기
     @GetMapping("/signup/{id}")
-    public String showSignUpForm(@PathVariable Long id, Model model, CartItemReqDto cartItemReqDto,CartReqDto cartReqDto) {
+    public String showSignUpForm(@PathVariable Long id, Model model, CartItemReqDto cartItemReqDto) {
         // product_id 가져오는부분
         ProductResDTO productResDTO = productService.getProductById(id);
+        //임의로 Long값 2 넣음 나중에 user_id와 동일한 cart_id를 받아서 여기에 넣어야함
+        CartResDto cartResDto = cartService.getCartById(2L);
         MultiFormDto multiFormDto = new MultiFormDto();
         //CartItemReqDto 객체 넣어주기 값은디폴트값들어있음
         multiFormDto.setCartItemReqDto(cartItemReqDto);
+        multiFormDto.setCartResDto(cartResDto);
         // product_id만 담겨있는 ProductResDTO값 가져오기 부트가 자동으로 외래키를 매핑함
         multiFormDto.setProductResDTO(productResDTO);
 
@@ -50,10 +55,10 @@ public class CartItemController {
     public String addCartItem(@ModelAttribute("multiFormDto") MultiFormDto multiFormDto){
         CartItemReqDto cartItemReqDto = multiFormDto.getCartItemReqDto();
         ProductResDTO productResDTO = multiFormDto.getProductResDTO();
-        CartReqDto cartReqDto = multiFormDto.getCartReqDto();
+        CartResDto cartResDto = multiFormDto.getCartResDto();
 
         // 여기에서 서비스 클래스를 호출하여 데이터를 저장
-        cartItemService.saveCartItem(cartItemReqDto,productResDTO,cartReqDto);
+        cartItemService.saveCartItem(cartItemReqDto,productResDTO,cartResDto);
 
         return "redirect:/CartItem/getList";
     }
