@@ -1,6 +1,6 @@
 package com.dog.shop.product.service;
 
-import com.dog.shop.domain.Product;
+import com.dog.shop.domain.product.Product;
 import com.dog.shop.errorcode.ErrorCode;
 import com.dog.shop.exception.CommonException;
 import com.dog.shop.myenum.SalesStatus;

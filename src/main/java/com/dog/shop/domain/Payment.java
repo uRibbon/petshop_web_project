@@ -1,5 +1,6 @@
 package com.dog.shop.domain;
 
+import com.dog.shop.domain.time.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table
-public class Payment extends BaseTimeEntity{ // 주문이 일어나고 그 다음에 결제가 일어남
+public class Payment extends BaseTimeEntity { // 주문이 일어나고 그 다음에 결제가 일어남
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

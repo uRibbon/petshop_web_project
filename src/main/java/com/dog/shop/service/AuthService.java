@@ -100,4 +100,15 @@ public class AuthService {
         userRepository.save(user);
         return true;
     }
+
+    public Long findUserIdByEmail(String email) {
+        // TODO 에러처리 필요
+        User user = userRepository.findByEmail(email).orElseThrow();
+        if (user != null) {
+            return user.getId();
+        } else {
+            return null;
+        }
+    }
+
 }

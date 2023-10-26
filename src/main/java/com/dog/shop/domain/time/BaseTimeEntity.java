@@ -1,4 +1,4 @@
-package com.dog.shop.domain;
+package com.dog.shop.domain.time;
 
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;

@@ -1,5 +1,6 @@
 package com.dog.shop.domain;
 
+import com.dog.shop.domain.product.Product;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

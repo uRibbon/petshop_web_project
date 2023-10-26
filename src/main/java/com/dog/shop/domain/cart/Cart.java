@@ -1,4 +1,4 @@
-package com.dog.shop.domain;
+package com.dog.shop.domain.cart;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
