@@ -34,7 +34,7 @@ public class CartItemController {
         return new ModelAndView("CartItem", "cartItems", cartItems);
     }
     // 상품의 정보를 가져오면서 장바구니 등록설정창 들어가기
-    @GetMapping("/signup/{id}")
+    @GetMapping("/signup/{id}") 
     public String showSignUpForm(@PathVariable Long id, Model model, CartItemReqDto cartItemReqDto) {
         // product_id 가져오는부분
         ProductResDTO productResDTO = productService.getProductById(id);
