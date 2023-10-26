@@ -69,7 +69,7 @@ public class JwtUtil {
                 .compact(); // JWT 문자열을 반환
     }
 
-    public String createRefreshToken(Long memberId, Role role) {
+    /*public String createRefreshToken(Long memberId, Role role) {
         Date now = new Date();
         return Jwts.builder()
                 .setId(Long.toString(memberId))
@@ -81,7 +81,7 @@ public class JwtUtil {
                 .claim("role", role)
                 .signWith(key)
                 .compact();
-    }
+    }*/
 
     public Long getExpirations(String token) {
         // accessToken 남은 유효시간
