@@ -2,3 +2,14 @@ spring:
   profiles:
     active:
       - dev
+  # Page Reload
+  thymeleaf:
+    cache: false
+    prefix: classpath:/templates/
+    suffix: .html
+    devtools:
+      livereload:
+        enabled: true
+      remote:
+        restart:
+          enabled: true
