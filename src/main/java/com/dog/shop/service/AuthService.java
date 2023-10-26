@@ -40,14 +40,15 @@ public class AuthService {
     // 회원가입
     public void signUser(UserReqDto userReqDto) {
         if (!isValidPassword(userReqDto.getPassword())) {
-            // 유효하지 않은 비밀번호 처리 (예외 던지기 또는 오류 응답 보내기 등)
+            // 유)효하지 않은 비밀번호 처리 (예외 던지기 또는 오류 응답 보내기 등
             throw new MemberNotFoundException("Invalid password");
         }
 
         String encodedPassword = passwordEncoder.encode(userReqDto.getPassword());
         userReqDto.setPassword(encodedPassword);
-        userReqDto.setRole(Role.USER); // "USER" 문자열을 사용할 필요 없이 Role 열거형 값으로 설정
+        // userReqDto.setRole(Role.USER); // "USER" 문자열을 사용할 필요 없이 Role 열거형 값으로 설정
         User user = modelMapper.map(userReqDto, User.class);
+        user.setRole(Role.USER);
         User savedUser = userRepository.save(user);
         // 적절한 응답값을 리턴 또는 예외 던지기 (등록 성공 또는 실패에 따라)
     }
