@@ -24,12 +24,7 @@ public class ShopProjectApplication {
 		return modelMapper;
 	}
 
-
 	@Bean
-	public PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
-}
 	public RestTemplate restTemplate() {
 		return new RestTemplate();
 	}
