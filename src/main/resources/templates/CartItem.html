@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Title</title>
+</head>
+<body>
+<table>
+    <tr>
+        <th>Seq</th>
+        <th>quantity</th>
+        <th>sub_total</th>
+        <th>unit_price</th>
+        <th>cart_id</th>
+        <th>product_id</th>
+        <th>Update</th>
+        <th>Delete</th>
+
+    </tr>                  <!-- 규칙은 이름 똑같은거에 Stat 인듯 -->
+    <tr th:each="cartItem, cartItemStat : ${cartItems}">
+        <td th:text="${cartItemStat.count}"></td>
+        <td th:text="${cartItem.quantity}" ></td>
+        <td th:text="${cartItem.subTotal}"></td>
+        <td th:text="${cartItem.unitPrice}"></td>
+        <td th:text="${cartItem.cart}"></td>
+        <td th:text="${cartItem.product}"></td>
+        <td><a th:href="@{/CartItem/edit/{id}(id=${cartItem.id})}">수정</a></td>
+        <td><a th:href="@{/CartItem/delete/{id}(id=${cartItem.id})}">삭제</a></td>
+
+    </tr>
+</table>
+</body>
+</html>
+
