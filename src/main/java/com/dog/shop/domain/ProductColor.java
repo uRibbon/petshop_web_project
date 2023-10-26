@@ -17,7 +17,7 @@ public class ProductColor {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "join_id")
+    @JoinColumn(name = "join_id") // @JoinColumn(name= 컬럼명)
     private Product product;
 
     @ManyToOne

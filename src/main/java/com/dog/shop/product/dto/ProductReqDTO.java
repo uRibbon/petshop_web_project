@@ -11,6 +11,7 @@ import lombok.Setter;
 @Setter
 public class ProductReqDTO {
 
+    private Long id;
     private String description;
     private int price;
     private String productName;
