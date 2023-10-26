@@ -36,6 +36,7 @@
     SMS 수신을 동의하십니까? <input type="checkbox" id="chkMarketing"><br>
     <br>
     <button id="btnConfirm">회원 가입</button>
+    <button id="btnCancel">가입 취소</button>
 </div>
 
 <div id="modal" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); border:1px solid #000; padding:20px; background:#fff;">
@@ -68,6 +69,16 @@
 
         $('#btnClose').on('click', function() {
             $('#modal').hide();
+        });
+        $('#btnConfirm').on('click', function() {
+            if(!$('#chkTerms').prop('checked') || !$('#chkPrivacy').prop('checked')) {
+                $('#modal').show();
+            } else {
+                window.location.href = '/check/signup';
+            }
+        });
+        $('#btnCancel').on('click', function() {
+            window.location.href = '/index';
         });
     });
 </script>
