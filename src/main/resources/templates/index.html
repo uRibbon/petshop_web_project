@@ -1,17 +1,53 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>D@g</title>
     <style>
-    </style>
-    <script>
+        /* CSS for navigation bar */
+        .navbar {
+            display: flex; /* Use flexbox for horizontal layout */
+            width: 100%; /* Set width to 100% */
+            background-color: white;
+        }
 
-    </script>
+        .box {
+            flex: 1; /* Each box takes equal space */
+            display: flex; /* Use flexbox for internal layout */
+            align-items: center; /* Center align the content vertically */
+            justify-content: center; /* Center align the content horizontally */
+            text-align: center;
+            padding: 15px;
+            border: 0.6px solid #ccc;
+        }
+
+        .box-image {
+            flex: 5; /* Each box takes equal space */
+            display: flex; /* Use flexbox for internal layout */
+            align-items: center; /* Center align the content vertically */
+            justify-content: center; /* Center align the content horizontally */
+            text-align: center;
+            padding-top: 2px;
+            border: 0.6px solid #ccc;
+        }
+
+        .box a {
+            color: #6E6E6E;
+            font-size: 13px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%; /* Adjust width to 100% to ensure content is centered */
+            height: 100%; /* Adjust height to 100% to ensure content is centered */
+        }
+
+        .box:hover {
+            background-color: white;
+            color: white;
+        }
+    </style>
 </head>
 <body>
     <div th:include="/index/header :: header"></div>
     <div th:include="/index/footer :: footer"></div>
-<!--    여기는 인덱스 페이지-->
 </body>
 </html>
