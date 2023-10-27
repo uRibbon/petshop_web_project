@@ -75,7 +75,7 @@ public class JwtAuthenticationSuccessHandler extends SimpleUrlAuthenticationSucc
         response.addCookie(jwtCookie);
 
         // 직접 /index로 리다이렉션
-        response.sendRedirect("/index");
+        response.sendRedirect("/");
 
         /*try {
             super.onAuthenticationSuccess(request, response, authentication);
