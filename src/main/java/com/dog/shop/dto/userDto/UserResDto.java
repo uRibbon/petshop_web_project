@@ -26,6 +26,6 @@ public class UserResDto {
     private LocalDate birthDate;
     private LocalDateTime createdDate;
 
-    @Enumerated(EnumType.STRING)
+
     private Role role;
 }

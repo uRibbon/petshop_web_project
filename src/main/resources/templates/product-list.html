@@ -21,7 +21,10 @@
         <td th:text="${product.productName}"></td>
         <td th:text="${product.salesStatus}"></td>
         <td th:text="${product.stock}"></td>
-        <td><a th:href="@{/CartItem/signup/{id}(id=${product.id})}">장바구니 담기설정</a></td>
+        <td><a th:href="@{/cartItem/signup/{id}(id=${product.id})}">장바구니 담기설정</a></td>
+    </tr>
+    <tr>
+        <td><a th:href="@{/cartItem/getCartItem}">내 장바구니 가기</a></td>
     </tr>
 </table>
 </body>

@@ -1,5 +1,7 @@
 package com.dog.shop.domain;
 
+import com.dog.shop.domain.cart.Cart;
+import com.dog.shop.domain.time.BaseTimeEntity;
 import com.dog.shop.myenum.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -19,7 +21,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table
-public class User extends BaseTimeEntity{ // 사용자 가입일에 대한 내용은 BaseTimeEntity에서 자동으로 생성해줌
+public class User extends BaseTimeEntity { // 사용자 가입일에 대한 내용은 BaseTimeEntity에서 자동으로 생성해줌
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonProperty("userId")
@@ -55,5 +57,7 @@ public class User extends BaseTimeEntity{ // 사용자 가입일에 대한 내�
     @OneToMany(mappedBy = "user")
     private List<Review> reviews = new ArrayList<>();
 
+    @OneToOne
+    private Cart cart;
 
 }

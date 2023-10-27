@@ -1,6 +1,6 @@
 package com.dog.shop.domain.inquiry;
 
-import com.dog.shop.domain.Product;
+import com.dog.shop.domain.product.Product;
 import com.dog.shop.domain.User;
 import com.dog.shop.myenum.InquiryStatus;
 import jakarta.persistence.*;

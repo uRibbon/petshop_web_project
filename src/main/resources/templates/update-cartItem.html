@@ -10,7 +10,7 @@
     </style>
 </head>
 <body>
-<form id="yourFormId" action="#" th:action="@{/CartItem/update/{id}(id=${cartItem.id})}" th:object="${cartItem}" method="post" onsubmit="return false;">
+<form id="yourFormId" action="#" th:action="@{/cartItem/update/{id}(id=${cartItem.id})}" th:object="${cartItem}" method="post" onsubmit="return false;">
     <label for="quantity">Quantity</label>
     <input type="number" th:field="*{quantity}" id="quantity" oninput="calculateSubtotal()">
     <span th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}"></span>  <br/>

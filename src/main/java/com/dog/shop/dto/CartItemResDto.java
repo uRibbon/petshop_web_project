@@ -1,7 +1,8 @@
 package com.dog.shop.dto;
 
-import com.dog.shop.domain.Cart;
-import com.dog.shop.domain.Product;
+
+import com.dog.shop.domain.cart.Cart;
+import com.dog.shop.domain.product.Product;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

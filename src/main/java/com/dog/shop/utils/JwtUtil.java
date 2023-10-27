@@ -69,7 +69,7 @@ public class JwtUtil {
                 .compact(); // JWT 문자열을 반환
     }
 
-    public String createRefreshToken(Long memberId, Role role) {
+    /*public String createRefreshToken(Long memberId, Role role) {
         Date now = new Date();
         return Jwts.builder()
                 .setId(Long.toString(memberId))
@@ -81,7 +81,7 @@ public class JwtUtil {
                 .claim("role", role)
                 .signWith(key)
                 .compact();
-    }
+    }*/
 
     public Long getExpirations(String token) {
         // accessToken 남은 유효시간
@@ -111,6 +111,17 @@ public class JwtUtil {
                 .parseClaimsJws(token)
                 .getBody();
     }
+
+    public String getEmailFromToken(String token) {
+        try {
+            Claims claims = decode(token); // 이미 만들어진 decode 함수를 사용
+            return claims.get("email", String.class);
+        } catch (Exception e) {
+            // 토큰이 유효하지 않은 경우나 이메일 정보가 없는 경우 예외 처리
+            throw new CommonException(ErrorCode.INVALID_TOKEN, HttpStatus.BAD_REQUEST);
+        }
+    }
+
 
     public static Long getMemberId() {
 

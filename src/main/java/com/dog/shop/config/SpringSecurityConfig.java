@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -22,6 +23,8 @@ public class SpringSecurityConfig {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final JwtUtil jwtUtil;
 
+
+
     @Autowired
     public SpringSecurityConfig(CustomAuthenticationEntryPoint customAuthenticationEntryPoint,
                                 JwtAuthenticationFilter jwtAuthenticationFilter,
@@ -30,6 +33,8 @@ public class SpringSecurityConfig {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
         this.jwtUtil = jwtUtil;
     }
+
+
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -53,7 +58,12 @@ public class SpringSecurityConfig {
                         .successHandler(new JwtAuthenticationSuccessHandler(jwtUtil))  // 로그인 성공 핸들러 설정
                         .permitAll()
                 )
-                .logout(Customizer.withDefaults());    // 로그아웃은 기본설정으로 (/logout으로 인증해제)
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessHandler(new CustomLogoutSuccessHandler())
+                        //.invalidateHttpSession(true) // HTTP 세션을 무효화
+                        .deleteCookies("JSESSIONID") // JSESSIONID 쿠키를 삭제
+                );
 
         return http.build();
     }
