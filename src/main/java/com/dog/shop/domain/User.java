@@ -1,5 +1,6 @@
 package com.dog.shop.domain;
 
+import com.dog.shop.domain.cart.Cart;
 import com.dog.shop.domain.time.BaseTimeEntity;
 import com.dog.shop.myenum.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -56,5 +57,7 @@ public class User extends BaseTimeEntity { // 사용자 가입일에 대한 내�
     @OneToMany(mappedBy = "user")
     private List<Review> reviews = new ArrayList<>();
 
+    @OneToOne
+    private Cart cart;
 
 }
