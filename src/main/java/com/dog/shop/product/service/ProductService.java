@@ -70,13 +70,17 @@ public class ProductService {
     // 이미지를 저장하고 URL을 반환하는 메서드
     public String saveImage(MultipartFile file) {
         // 이미지를 저장할 디렉토리 경로 설정 (로컬경로)
-        String uploadDir = "C:/Users/heosu/Documents/GitHub/petshop_web_project/src/main/resources/static/images";
+        // 처음 로컬경로
+         String uploadDir = "C:/Users/heosu/Documents/GitHub/petshop_web_project/src/main/resources/static/images/";
+//        String uploadDir = "49.50.165.98/main/";
 
-        // 파일 이름 생성 (여기에서는 현재 시간을 이용) 시간마다 다르게하여 중복제거를 위해서
-        String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+        // 파일 이름 생성 (현준님요청으로 url path하고 image의 fileName만 나오게)
+        String fileName = uploadDir + file.getOriginalFilename();
 
         // 파일 저장 경로 설정
-        String filePath = uploadDir + File.separator + fileName;
+        String filePath = fileName;
+
+        // 밑에서 경로를 짜르고 파일이름만 가져가기전에 우리가사용할 url path + fileName 변수에담기
 
         // 이미지 저장
         try {

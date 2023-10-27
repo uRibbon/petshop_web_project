@@ -28,6 +28,7 @@ public class Product {
     private String subImage; // 상품의 서브 이미지
     private String description; // 상품에 대한 상세 설명
     private int stock; // 상품의 현재 재고
+    private String MainImageUrl;
     @Enumerated(EnumType.STRING)
     private SalesStatus salesStatus; // 판매 상태
 

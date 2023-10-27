@@ -19,5 +19,6 @@ public class ProductReqDTO {
     private String salesStatus;
     private int stock;
     private MultipartFile mainImage;
+    private String mainImageUrl;
 
 }

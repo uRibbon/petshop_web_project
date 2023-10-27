@@ -43,8 +43,8 @@ jwt:
   token-validity: 3600000  # 1시간 (밀리초 단위)
 
 file:
-  path: /src/main/resources/static/images
-#  /var/upload/
+  path: /var/upload/
+#  /src/main/resources/static/images
 endpoint:
   path: /payment/api
 

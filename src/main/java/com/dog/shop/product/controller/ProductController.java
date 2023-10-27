@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+
 @Controller
 @RequestMapping("/products")
 @RequiredArgsConstructor
@@ -40,8 +43,8 @@ public class ProductController {
         // 이미지를 저장하고 URL을 반환하는 메서드를 productService에서 구현합니다.
         String imageUrl = productService.saveImage(file);
 
-        // productReqDTO에 이미지 URL을 설정
-//        product.setMainImage(imageUrl);
+        // productReqDTO에 이미지 커스텀마이징한 imageUrl 정보 삽입
+        product.setMainImageUrl(imageUrl);
 
         productService.saveProduct(product);
         return "redirect:/products/list";
