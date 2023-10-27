@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Poducts List</title>
+    <title>Products detail</title>
 </head>
 <body>
 <table>
@@ -14,18 +14,15 @@
         <th>sales_status</th>
         <th>stock</th>
     </tr>
-    <tr th:each="product, productStat : ${products}">
-        <td th:text="${productStat.count}"></td>
+    <tr>
+        <td th:text="${product.id}"></td>
         <td th:text="${product.description}" ></td>
         <td th:text="${product.price}"></td>
-        <td><a th:href="@{/products/{id}(id=${product.id})}" th:text="${product.productName}"></a></td>
+        <td th:text="${product.productName}"></td>
         <td th:text="${product.salesStatus}"></td>
         <td th:text="${product.stock}"></td>
-        <td><a th:href="@{/products/edit/{id}(id=${product.id})}">update</a></td>
-        <td><a th:href="@{/products/delete/{id}(id=${product.id})}">delete</a></td>
+        <td><a th:href="@{/CartItem/signup/{id}(id=${product.id})}">장바구니 담기설정</a></td>
     </tr>
 </table>
-<p><a href="/products/signup">Create</a></p>
 </body>
 </html>
-

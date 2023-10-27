@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>거리 계산</title>
+</head>
+<body>
+
+<form action="/api/calculate-distance" method="post">
+    <label for="address">주소:</label>
+    <input type="text" id="address" name="address">
+    <button type="submit">검색</button>
+</form>
+
+<div th:if="${distance != null}">
+
+    <p th:text="${distance}"></p>
+</div>
+
+</body>
+</html>
