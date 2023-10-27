@@ -44,6 +44,13 @@ public class ProductController {
         return "redirect:/products/list";
     }
 
+    @GetMapping("/{id}")
+    public String productDetail(@PathVariable("id") Long id, Model model) {
+        ProductResDTO productResDTO = productService.getProductById(id);
+        model.addAttribute("product", productResDTO);
+        return "product-detail-list";
+    }
+
     @GetMapping("/edit/{id}")
     public String showUpdateForm(@PathVariable Long id, Model model){
         ProductResDTO productResDTO = productService.getProductById(id);
