@@ -1,7 +1,25 @@
 <div th:fragment="header">
     <div class="navbar">
         <div class="box">
-            <a href="#"><img src="/img/icon/menu_bar.png" alt="메뉴"></a>
+            <input type="checkbox" id="menuicon">
+            <label for="menuicon">
+                <span></span>
+                <span></span>
+                <span></span>
+            </label>
+            <div class="sidebar">
+                <ul>
+                    <li><a href="#" style="color: black; font-size: 15px">로그인</a></li>
+                    <li><a href="#" style="color: black; font-size: 15px">1:1 문의</a></li>
+                    <li><a href="#" style="color: black; font-size: 15px">후기</a></li>
+                    <li></li>
+                    <li><a href="#" style="color: black; font-size: 15px">상품 전체 보기</a></li>
+                    <li><a href="#" style="color: black; font-size: 15px">퍼피 웨어</a></li>
+                    <li><a href="#" style="color: black; font-size: 15px">하네스 / 칼라</a></li>
+                    <li><a href="#" style="color: black; font-size: 15px">악세사리</a></li>
+
+                </ul>
+            </div>
         </div>
         <div class="box">
             <a href="#"><img src="/img/icon/search.png" alt="검색"></a>
@@ -19,4 +37,3 @@
 </div>
 </body>
 </html>
-
