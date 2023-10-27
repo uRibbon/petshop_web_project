@@ -6,7 +6,7 @@
     </script>
 </head>
 <body>
-<div th:include="/index/header :: header"></div>
+<div th:insert="~{/index/header :: header}"></div>
 <!-- image slide -->
 <div class="section">
     <input type="radio" name="slide" id="slide01" checked>
@@ -41,6 +41,6 @@
         </ul>
     </div>
 </div>
-<div th:include="/index/footer :: footer"></div>
+<div th:insert="~{/index/footer :: footer}"></div>
 </body>
 </html>
