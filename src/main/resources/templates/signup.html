@@ -10,7 +10,7 @@
 <div class="container" id="container">
 <div class="sign-up-container">
     <h1>SignUp</h1>
-    <form th:action="@{/auth/signup}" method="post">
+    <form th:action="@{/auth/signup}" method="post" onsubmit="showAlert()">
         <div class="txt_field">
             <input type="text" id="email" name="email" required />
             <span></span>
@@ -81,15 +81,11 @@
         }).open();
     }
 
-    document.querySelector('form').addEventListener('submit', function(event) {
-        event.preventDefault(); // 폼 제출 기본 동작 막기
+    function showAlert() {
+        alert('회원가입 완료!');
+    }
+</script>
 
-        // AJAX 또는 fetch를 사용하여 서버에 회원가입 데이터를 보내고 응답을 처리합니다.
-        // 이 부분은 서버와의 통신 로직으로 구성해야 합니다.
-
-        // 회원가입이 성공했다고 가정하고, index 페이지로 리다이렉션
-        window.location.href = "/index"; // 인덱스 페이지로 리다이렉션
-    });
 </script>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 </html>
