@@ -3,11 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title>SignUp</title>
-<link rel="icon" href="data:;base64,iVBORw0KGgo=">
+    <link th:href="@{/css/signup.css}" rel="stylesheet">
+<!--<link rel="icon" href="data:;base64,iVBORw0KGgo=">-->
 </head>
 <body>
-<div class="signUp-container">
-    <h2>SignUp</h2>
+<div class="container" id="container">
+<div class="sign-up-container">
+    <h1>SignUp</h1>
     <form th:action="@{/auth/signup}" method="post">
         <div class="form-group">
             <label for="email">Email:</label>
@@ -37,6 +39,7 @@
             <button type="submit">SignUp</button>
         </div>
     </form>
+</div>
 </div>
 </body>
 <script>
