@@ -5,7 +5,7 @@
 <title>Title</title>
 </head>
 <body>
-<table>
+<table border="1">
     <tr>
         <th>Seq</th>
         <th>quantity</th>
@@ -24,11 +24,12 @@
         <td th:text="${cartItem.unitPrice}"></td>
         <td th:text="${cartItem.cart}"></td>
         <td th:text="${cartItem.product}"></td>
-        <td><a th:href="@{/CartItem/edit/{id}(id=${cartItem.id})}">수정</a></td>
-        <td><a th:href="@{/CartItem/delete/{id}(id=${cartItem.id})}">삭제</a></td>
+        <td><a th:href="@{/cartItem/edit/{id}(id=${cartItem.id})}">수정</a></td>
+        <td><a th:href="@{/cartItem/delete/{id}(id=${cartItem.id})}">삭제</a></td>
 
     </tr>
 </table>
+<a th:href="@{/preparePayment}" class="btn">주문하기</a>
 </body>
 </html>
 
