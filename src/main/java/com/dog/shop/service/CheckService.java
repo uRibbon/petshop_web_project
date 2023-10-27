@@ -12,9 +12,9 @@ public class CheckService {
     @Autowired
     private UserRepository userRepository;
 
-    public void agreeUser(UserReqDto userReqDto) {
+    /*public void agreeUser(UserReqDto userReqDto) {
         User user = new User();
         user.setAgree(userReqDto.getAgree());
         userRepository.save(user);
-    }
+    }*/
 }

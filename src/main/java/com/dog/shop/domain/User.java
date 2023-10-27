@@ -43,8 +43,12 @@ public class User extends BaseTimeEntity { // 사용자 가입일에 대한 내�
 
     private LocalDate birthDate; // 생년월일
 
-    private char agree; // 약관동의(Y)
-    private char agreeSelect; // 약관동의(Y/N)
+    // private Character agree; // 약관동의(Y) -> 래퍼 클래스로 변경
+    // private Character agreeSelect; // 약관동의(Y/N)
+
+    private String chkTerms;
+    private String chkPrivacy;
+    private String chkMarketing;
 
     //private char gender; // 성별
 
@@ -60,7 +64,7 @@ public class User extends BaseTimeEntity { // 사용자 가입일에 대한 내�
     @OneToMany(mappedBy = "user")
     private List<Review> reviews = new ArrayList<>();
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     private Cart cart;
 
 }
