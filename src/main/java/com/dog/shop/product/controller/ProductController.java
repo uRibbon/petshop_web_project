@@ -11,10 +11,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -35,10 +33,15 @@ public class ProductController {
     }
 
     @PostMapping("/create")
-    public String createProduct(@Valid ProductReqDTO product, BindingResult result, Model model) {
+    public String createProduct(@Valid ProductReqDTO product,@RequestParam("mainImage") MultipartFile file , BindingResult result) {
         if (result.hasErrors()) {
             return "create-product";
         }
+        // 이미지를 저장하고 URL을 반환하는 메서드를 productService에서 구현합니다.
+        String imageUrl = productService.saveImage(file);
+
+        // productReqDTO에 이미지 URL을 설정
+//        product.setMainImage(imageUrl);
 
         productService.saveProduct(product);
         return "redirect:/products/list";

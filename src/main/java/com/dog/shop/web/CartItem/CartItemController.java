@@ -1,7 +1,5 @@
 package com.dog.shop.web.CartItem;
 
-import com.dog.shop.domain.Cart;
-import com.dog.shop.domain.CartItem;
 import com.dog.shop.dto.*;
 import com.dog.shop.product.dto.ProductResDTO;
 import com.dog.shop.product.service.CartService;
@@ -9,17 +7,15 @@ import com.dog.shop.product.service.ProductService;
 import com.dog.shop.service.CartItemService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.Banner;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-
 import java.util.List;
 
 @Controller
-@RequestMapping("/CartItem")
+@RequestMapping("/cartItems")
 @RequiredArgsConstructor
 public class CartItemController {
 
@@ -31,7 +27,7 @@ public class CartItemController {
     @GetMapping("/getList")
     public ModelAndView getList() {
         List<CartItemResDto> cartItems = cartItemService.getCartItems();
-        return new ModelAndView("CartItem", "cartItems", cartItems);
+        return new ModelAndView("cartItem", "cartItems", cartItems);
     }
     // 상품의 정보를 가져오면서 장바구니 등록설정창 들어가기
     @GetMapping("/signup/{id}") 
@@ -60,7 +56,7 @@ public class CartItemController {
         // 여기에서 서비스 클래스를 호출하여 데이터를 저장
         cartItemService.saveCartItem(cartItemReqDto,productResDTO,cartResDto);
 
-        return "redirect:/CartItem/getList";
+        return "redirect:/cartItem/getList";
     }
 
 // 장바구니 수정폼가기
@@ -82,14 +78,14 @@ public class CartItemController {
         }
 //        cartItemService.updateCustomerForm(cartItem);
         cartItemService.updateCartItem(id,cartItem);
-        return "redirect:/CartItem/getList";
+        return "redirect:/cartItem/getList";
     }
 
     // 장바구니 삭제
     @GetMapping("/delete/{id}")
     public String deleteCartItem(@PathVariable("id") long id) {
         cartItemService.deleteCartItem(id);
-        return "redirect:/CartItem/getList";
+        return "redirect:/cartItem/getList";
     }
 
 
