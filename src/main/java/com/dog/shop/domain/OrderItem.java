@@ -21,6 +21,7 @@ public class OrderItem {
 
     private int quantity; // 주문된 제품의 수량
     private int unitPrice; // 제품 단위의 가격
+
     @Column(name = "sub_total")
     private int subTotal; // (unitPrice * quantity)로 계산된 합계 금액
 

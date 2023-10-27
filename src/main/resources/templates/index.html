@@ -1,22 +1,247 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <style>
+        /* CSS for navigation bar */
+        .navbar {
+            display: flex; /* Use flexbox for horizontal layout */
+            width: 100%; /* Set width to 100% */
+            background-color: white;
+        }
+
+        .box {
+            flex: 1; /* Each box takes equal space */
+            display: flex; /* Use flexbox for internal layout */
+            align-items: center; /* Center align the content vertically */
+            justify-content: center; /* Center align the content horizontally */
+            text-align: center;
+            padding: 15px;
+            border: 0.6px solid #ccc;
+        }
+
+        .box-image {
+            flex: 5; /* Each box takes equal space */
+            display: flex; /* Use flexbox for internal layout */
+            align-items: center; /* Center align the content vertically */
+            justify-content: center; /* Center align the content horizontally */
+            text-align: center;
+            padding-top: 2px;
+            border: 0.6px solid #ccc;
+        }
+
+        .box a {
+            color: #6E6E6E;
+            font-size: 13px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%; /* Adjust width to 100% to ensure content is centered */
+            height: 100%; /* Adjust height to 100% to ensure content is centered */
+        }
+
+        .box:hover {
+            background-color: white;
+            color: white;
+        }
+
+        /* CSS for image slider */
+
+        .section {
+            margin-top: 20px;
+        }
+        .section input[id*="slide"] {
+            display:none;
+        }
+
+        .section .slidewrap {
+            max-width:1200px;
+            margin:0 auto;
+            overflow: hidden;
+        }
+
+        .section .slidelist {
+            white-space:nowrap;
+            font-size: 0;
+        }
+
+        .section .slidelist > li {
+            display: inline-block;
+            vertical-align: middle;
+            width: 100%;
+            transition: all .5s;
+        }
+
+        .section .slidelist > li > a {
+            display: block;
+            position: relative;
+        }
+
+        .section .slidelist > li > a img {
+            width: 100%;
+            object-fit: cover;
+        }
+
+        .section .slidelist label {
+            position: absolute;
+            z-index: 10;
+            top:50%;
+            transform: translateY(-50%);
+            padding: 50px;
+            cursor: pointer;
+        }
+
+        .section .slidelist .left {
+            left: 30px;
+            background: url('/img/icon/left.png') center center / 100% no-repeat;
+        }
+
+        .section .slidelist .right {
+            right: 30px;
+            background: url('/img/icon/right.png') center center / 100% no-repeat;
+        }
+
+        .section [id="slide01"]:checked ~ .slidewrap .slidelist > li {transform:translateX(0%);}
+        .section [id="slide02"]:checked ~ .slidewrap .slidelist > li {transform:translateX(-104%);}
+        .section [id="slide03"]:checked ~ .slidewrap .slidelist > li {transform:translateX(-204%);}
+
+        /* menu icon */
+        input[id="menuicon"] {
+            display: none;
+        }
+
+        input[id="menuicon"] + label {
+            display: block;
+            width: 13px;
+            height: 13px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        input[id="menuicon"] + label span {
+            display: block;
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            border-radius: 30px;
+            background: #848484;
+            transition: all .35s;
+        }
+
+        input[id="menuicon"] + label span:nth-child(1) {
+            top:0;
+        }
+
+        input[id="menuicon"] + label span:nth-child(2) {
+            top:50%;
+            transform: translateY(-50%);
+        }
+
+        input[id="menuicon"] + label span:nth-child(3) {
+            bottom: 0;
+        }
+
+        input[id="menuicon"]:checked + label span:nth-child(1) {
+            top:50%;
+            transform: translateY(-50%) rotate(45deg);
+        }
+
+        input[id="menuicon"]:checked + label span:nth-child(2) {
+            opacity: 0;
+        }
+
+        input[id="menuicon"]:checked + label span:nth-child(3) {
+            bottom:50%;
+            transform: translateY(50%) rotate(-45deg);
+        }
+
+        /* menu sidebar */
+
+        div[class="sidebar"] {
+            width:230px;
+            height:42%;
+            background: rgba(246, 245, 245, 0.52);
+            position: fixed;
+            top:65px; /* side bar 세로 설정 */
+            left: -300px;
+            z-index:1;
+            transition: all .35s;
+        }
+
+        input[id="menuicon"]:checked + label + div {
+            left:0;
+        }
+
+        .sidebar ul {
+            display: flex; /* Flexbox 사용 */
+            flex-direction: column; /* 세로 방향으로 배치 */
+            align-items: center; /* 가운데 정렬 */
+            padding: 0; /* 리스트의 패딩 제거 */
+            width: 100%; /* sidebar의 너비를 100%로 설정 */
+        }
+
+        .sidebar li {
+            list-style-type: none; /* 머리 기호를 없앰 */
+            width: 100%; /* sidebar의 너비를 100%로 설정 */
+            text-align: center; /* 텍스트를 가운데 정렬 */
+            position: relative; /* 상대 위치 설정 */
+            display: flex; /* Flexbox 사용 */
+            justify-content: center; /* 가로 방향으로 가운데 정렬 */
+            align-items: center; /* 세로 방향으로 가운데 정렬 */
+            height: 50px; /* 원하는 높이로 설정 */
+            color: black;
+        }
+
+        .sidebar li:not(:last-child)::after {
+            content: "";
+            display: block;
+            width: 100%; /* 선의 길이를 100%로 설정 */
+            height: 1px; /* 선의 두께 */
+            background-color: black; /* 선의 색상 */
+            position: absolute;
+            bottom: 0;
+            left: 0;
+        }
+    </style>
+    <script>
+    </script>
 </head>
 <body>
-<h1>여기는 인덱스 페이지</h1>
+<div th:include="/index/header :: header"></div>
+<!-- image slide -->
+<div class="section">
+    <input type="radio" name="slide" id="slide01" checked>
+    <input type="radio" name="slide" id="slide02">
+    <input type="radio" name="slide" id="slide03">
 
-<a th:href="@{/auth/signup}">회원가입</a>
-<br/>
-<!-- 로그인 되지 않았을 때 표시 -->
-<a th:if="${userId == null}" th:href="@{/login}">로그인 페이지로 이동</a>
+    <div class="slidewrap">
+        <ul class="slidelist">
+            <li>
+                <a>
+                    <label for="slide03" class="left"></label>
+                    <img src="/img/icon/product_img/product_1.png">
+                    <label for="slide02" class="right"></label>
+                </a>
+            </li>
+            <li>
+                <a>
+                    <label for="slide01" class="left"></label>
+                    <img src="/img/icon/product_img/product_2.png">
+                    <label for="slide03" class="right"></label>
+                </a>
+            </li>
+            <li>
+                <a>
+                    <label for="slide02" class="left"></label>
+                    <img src="/img/icon/product_img/product_3.png">
+                    <label for="slide01" class="right"></label>
+                </a>
+            </li>
 
-<!-- 로그인 되었을 때 표시 -->
-<a th:if="${userId != null}" th:href="@{/logout}">로그아웃</a>
-<br/>
 
-<a th:href="@{/products/list}">상품</a>
-
+        </ul>
+    </div>
+</div>
+<div th:include="/index/footer :: footer"></div>
 </body>
 </html>
