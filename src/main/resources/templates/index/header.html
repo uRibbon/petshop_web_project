@@ -9,7 +9,10 @@
             </label>
             <div class="sidebar">
                 <ul>
-                    <li><a href="/login" style="color: black; font-size: 15px">로그인</a></li>
+                    <li>
+                        <a th:if="${userId == null}" th:href="@{/login}" style="color: black; font-size: 15px">로그인</a>
+                        <a th:if="${userId != null}" th:href="@{/logout}" style="color: black; font-size: 15px">로그아웃</a>
+                    </li>
                     <li><a href="/auth/signup" style="color: black; font-size: 15px">회원가입</a></li>
                     <li><a href="#" style="color: black; font-size: 15px">1:1 문의</a></li>
                     <li><a href="#" style="color: black; font-size: 15px">후기</a></li>
@@ -32,7 +35,7 @@
             <a href="#"><img src="/img/icon/user.png" alt="회원정보"></a>
         </div>
         <div class="box">
-            <a href="/CartItem/getList"><img src="/img/icon/cart.png" alt="장바구니"></a>
+            <a href="/cartItem/getList"><img src="/img/icon/cart.png" alt="장바구니"></a>
         </div>
     </div>
 </div>
