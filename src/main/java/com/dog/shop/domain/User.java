@@ -41,7 +41,8 @@ public class User extends BaseTimeEntity{ // 사용자 가입일에 대한 내�
 
     private LocalDate birthDate; // 생년월일
 
-    private char agree; // 약관동의(Y/N)
+    private char agree; // 약관동의(Y)
+    private char agreeSelect; // 약관동의(Y/N)
 
     //private char gender; // 성별
 

@@ -37,6 +37,7 @@
     <br>
     <button id="btnConfirm">회원 가입</button>
     <button id="btnCancel">가입 취소</button>
+    <input type="hidden" name="agreeSelect" value="N">
 </div>
 
 <div id="modal" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); border:1px solid #000; padding:20px; background:#fff;">
@@ -51,7 +52,7 @@
             $('input[type="checkbox"]').prop('checked', isChecked);
         });
 
-        $('#chkTerms, #chkPrivacy, #chkMarketing').on('change', function() {
+        $('#chkTerms, #chkPrivacy').on('change', function() {
             if (!$('#chkTerms').prop('checked') || !$('#chkPrivacy').prop('checked') || !$('#chkMarketing').prop('checked')) {
                 $('#chkMain').prop('checked', false);
             } else {
@@ -59,24 +60,28 @@
             }
         });
 
+        $('#chkMarketing').on('change', function() {
+            if($(this).prop('checked')) {
+                $('input[name="agreeSelect"]').val('Y');
+            } else {
+                $('input[name="agreeSelect"]').val('N');
+            }
+        });
+
         $('#btnConfirm').on('click', function() {
             if(!$('#chkTerms').prop('checked') || !$('#chkPrivacy').prop('checked')) {
                 $('#modal').show();
             } else {
+                localStorage.setItem('agreeSelect', $('input[name="agreeSelect"]').val());
                 alert('가입 완료');
+                window.location.href = '/check/signup';
             }
         });
 
         $('#btnClose').on('click', function() {
             $('#modal').hide();
         });
-        $('#btnConfirm').on('click', function() {
-            if(!$('#chkTerms').prop('checked') || !$('#chkPrivacy').prop('checked')) {
-                $('#modal').show();
-            } else {
-                window.location.href = '/check/signup';
-            }
-        });
+
         $('#btnCancel').on('click', function() {
             window.location.href = '/index';
         });

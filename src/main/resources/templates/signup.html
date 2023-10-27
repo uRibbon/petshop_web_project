@@ -31,6 +31,7 @@
         </div>
         <div class="form-group">
             <input type="hidden" Value='Y' name="agree" />
+            <input type="hidden" name="agreeSelect" value="">
         </div>
         <div class="form-group">
             <label for="birthDate">BirthDate:</label>
@@ -43,6 +44,12 @@
 </div>
 </body>
 <script>
+    $(document).ready(function(){
+        let agreeValue = localStorage.getItem('agreeSelect');
+        if(agreeValue) {
+            $('input[name="agreeSelect"]').val(agreeValue);
+        }
+    });
     function findAddr() {
         new daum.Postcode({
             oncomplete: function(data) {
