@@ -23,5 +23,7 @@ public class UserReqDto {
     private String detailAddress;
     private String phoneNumber;
     private LocalDate birthDate;
+    private char agree;
+    private char agreeSelect;
     // private Role role;
 }

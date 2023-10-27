@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>이용약관 동의</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<style>
+    body { font-family: Arial, sans-serif; }
+    textarea { width: 300px; height: 100px; margin-bottom: 10px; }
+    #modal { z-index: 1000; width: 200px; text-align: center; }
+</style>
+
+<body>
+
+<div>
+    <h2>전체 동의</h2>
+    <input type="checkbox" id="chkMain"> 이용약관 및 개인정보수집 및 이용, 쇼핑정보 수신(선택)에 모두 동의합니다. <br>
+
+    <h3>[필수] 이용약관 동의</h3>
+    <textarea readonly>이용약관 동의에따른
+제x조(목적)...</textarea><br>
+    이용약관에 동의하십니까? <input type="checkbox" id="chkTerms"><br>
+
+    <h3>[필수] 개인정보 수집 및 이용 동의</h3>
+    <textarea readonly>개인정보 수집 및 이용 동의에따른
+제x조(목적)...</textarea><br>
+    개인정보 수집 및 이용에 동의하십니까? <input type="checkbox" id="chkPrivacy"><br>
+
+    <h3>[선택] 쇼핑정보 수신 동의</h3>
+    <textarea readonly>수신 동의 적립금과 할인쿠폰 및 혜택
+단, 주문/거래 정보</textarea><br>
+    SMS 수신을 동의하십니까? <input type="checkbox" id="chkMarketing"><br>
+    <br>
+    <button id="btnConfirm">회원 가입</button>
+    <button id="btnCancel">가입 취소</button>
+    <input type="hidden" name="agreeSelect" value="N">
+</div>
+
+<div id="modal" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); border:1px solid #000; padding:20px; background:#fff;">
+    필수 항목에 동의해주세요.
+    <button id="btnClose">닫기</button>
+</div>
+
+<script>
+    $(document).ready(function(){
+        $('#chkMain').on('change', function() {
+            let isChecked = $(this).prop('checked');
+            $('input[type="checkbox"]').prop('checked', isChecked);
+        });
+
+        $('#chkTerms, #chkPrivacy').on('change', function() {
+            if (!$('#chkTerms').prop('checked') || !$('#chkPrivacy').prop('checked') || !$('#chkMarketing').prop('checked')) {
+                $('#chkMain').prop('checked', false);
+            } else {
+                $('#chkMain').prop('checked', true);
+            }
+        });
+
+        $('#chkMarketing').on('change', function() {
+            if($(this).prop('checked')) {
+                $('input[name="agreeSelect"]').val('Y');
+            } else {
+                $('input[name="agreeSelect"]').val('N');
+            }
+        });
+
+        $('#btnConfirm').on('click', function() {
+            if(!$('#chkTerms').prop('checked') || !$('#chkPrivacy').prop('checked')) {
+                $('#modal').show();
+            } else {
+                localStorage.setItem('agreeSelect', $('input[name="agreeSelect"]').val());
+                alert('가입 완료');
+                window.location.href = '/check/signup';
+            }
+        });
+
+        $('#btnClose').on('click', function() {
+            $('#modal').hide();
+        });
+
+        $('#btnCancel').on('click', function() {
+            window.location.href = '/index';
+        });
+    });
+</script>
+
+</body>
+</html>
