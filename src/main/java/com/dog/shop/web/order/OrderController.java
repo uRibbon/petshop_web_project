@@ -51,15 +51,15 @@ public class OrderController {
     @PostMapping("/preparePayment")
     public String preparePayment(@RequestParam List<Long> selectedItems, Model model, HttpServletRequest request, RedirectAttributes redirectAttributes) {
         // ... 기존 코드 ...
-        String token = getJwtTokenFromCookies(request);
+        String token = getJwtTokenFromCookies(request); // 쿠키에서 jwtToken 가져오기
         List<CartItem> cartItemList = null;
         User user = null;
 
         if (token != null) {
-            String email = jwtUtil.getEmailFromToken(token);
+            String email = jwtUtil.getEmailFromToken(token); // 토큰에서 이메일 가져오기
             if (email != null) {
                 // TODO 에러처리 필요
-                user = userRepository.findByEmail(email).orElseThrow();
+                user = userRepository.findByEmail(email).orElseThrow(); // 이메일을 통해 userId 가져오기
                 // 이후 로직 처리...
                 Long userId = user.getId();
 
