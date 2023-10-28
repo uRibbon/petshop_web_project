@@ -1,20 +1,46 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <link th:href="@{/css/main.css}" rel="stylesheet">
+    <script>
+    </script>
 </head>
 <body>
-<h1>여기는 인덱스 페이지</h1>
+<div th:insert="~{/index/header :: header}"></div>
+<!-- image slide -->
+<div class="section">
+    <input type="radio" name="slide" id="slide01" checked>
+    <input type="radio" name="slide" id="slide02">
+    <input type="radio" name="slide" id="slide03">
 
-<!-- 로그인 되지 않았을 때 표시 -->
-<a th:if="${userId == null}" th:href="@{/login}">로그인 페이지로 이동</a>
+    <div class="slidewrap">
+        <ul class="slidelist">
+            <li>
+                <a>
+                    <label for="slide03" class="left"></label>
+                    <img src="/img/icon/product_img/product_1.png">
+                    <label for="slide02" class="right"></label>
+                </a>
+            </li>
+            <li>
+                <a>
+                    <label for="slide01" class="left"></label>
+                    <img src="/img/icon/product_img/product_2.png">
+                    <label for="slide03" class="right"></label>
+                </a>
+            </li>
+            <li>
+                <a>
+                    <label for="slide02" class="left"></label>
+                    <img src="/img/icon/product_img/product_3.png">
+                    <label for="slide01" class="right"></label>
+                </a>
+            </li>
 
-<!-- 로그인 되었을 때 표시 -->
-<a th:if="${userId != null}" th:href="@{/logout}">로그아웃</a>
-<br/>
 
-<a th:href="@{/products/list}">상품</a>
-
+        </ul>
+    </div>
+</div>
+<div th:insert="~{/index/footer :: footer}"></div>
 </body>
 </html>

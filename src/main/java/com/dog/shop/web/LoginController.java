@@ -24,7 +24,7 @@ public class LoginController {
         return "login";
     }
 
-    @GetMapping("/index")
+    @GetMapping("/")
     public String showIndex(HttpServletRequest request, Model model) {
         // 1. JWT-TOKEN 쿠키를 가져옵니다.
         String jwtToken = getJwtFromCookie(request);

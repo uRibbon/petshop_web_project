@@ -1,11 +1,17 @@
 package com.dog.shop.web;
 
 
+import com.dog.shop.domain.Order;
+import com.dog.shop.domain.Payment;
+import com.dog.shop.myenum.payment.PaymentStatus;
+import com.dog.shop.repository.order.OrderRepository;
+import com.dog.shop.repository.payment.PaymentRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.commons.codec.binary.Hex;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,24 +33,33 @@ import java.util.Iterator;
 @Controller
 public class PaymentController {
 
+    @Autowired
+    private OrderRepository orderRepository;
+
+    @Autowired
+    private PaymentRepository paymentRepository;
+
     private static final String merchantKey = "EYzu8jGGMfqaDEp76gSckuvnaHHu+bC4opsSN6lHv3b2lurNYkVXrZ7Z1AoqQnXI3eLuaUFyoRNC6FkrzVjceg==";
     private static final String merchantID = "nicepay00m";
-    private static final String goodsName = "나이스페이";
-    private static final String price = "1004";
+    //private static final String goodsName = "나이스페이";
+    //private static final String price = "1004";
     private static final String buyerName = "나이스";
     private static final String buyerTel = "01000000000";
     private static final String buyerEmail = "happy@day.co.kr";
-    private static final String moid = "mnoid1234567890";
+    // private static final String moid = "mnoid1234567890";
     private static final String returnURL = "http://localhost:8080/nicepay3.0_utf-8/payResult_utf.jsp";
 
     @GetMapping("/payment")
     public String payment(Model model) {
         model.addAttribute("merchantID", merchantID);
-        model.addAttribute("goodsName", goodsName);
-        model.addAttribute("price", price);
+        //model.addAttribute("goodsName", goodsName);
+        //model.addAttribute("price", price);
+        // Model에서 price 값을 가져옴
+        Integer price = (Integer) model.getAttribute("price");
         model.addAttribute("buyerName", buyerName);
         model.addAttribute("buyerTel", buyerTel);
         model.addAttribute("buyerEmail", buyerEmail);
+        Object moid = (Object) model.getAttribute("moid");
         model.addAttribute("moid", moid);
         model.addAttribute("returnURL", returnURL);
         model.addAttribute("ediDate", getyyyyMMddHHmmss());
@@ -69,11 +84,11 @@ public class PaymentController {
         }
     }
 
-    @ResponseBody
+    // @ResponseBody
     @PostMapping("/payment/check")
     // public ResponseEntity<?> payment(HttpServletRequest request, Model model)
     // throws Exception {
-    public ResponseEntity<?> payment(HttpServletRequest request, HttpServletResponse response, Model model)
+    public String payment(HttpServletRequest request, HttpServletResponse response, Model model)
             throws Exception {
         request.setCharacterEncoding("utf-8");
         /*
@@ -196,7 +211,28 @@ public class PaymentController {
                  */
                 if (PayMethod != null) {
                     if (PayMethod.equals("CARD")) {
-                        if (ResultCode.equals("3001")) paySuccess = true; // 신용카드(정상 결과코드:3001)
+                        if (ResultCode.equals("3001")) {
+                            // 신용카드만 할 예정임 여기가 성공부분
+                            
+                            paySuccess = true; // 신용카드(정상 결과코드:3001)
+                            Payment payment = new Payment();
+                            payment.setPaymentMethod("CARD"); // CARD 고정
+
+                            payment.setPaymentStatus(PaymentStatus.SUCCESS); // 결제성공
+                            payment.setTid(TID);
+                            int amtInt = Integer.parseInt(Amt);
+                            payment.setAmt(amtInt);
+                            long moidLong = Long.parseLong(moid);
+                            // TODO 에러처리 필요
+                            Order order = orderRepository.findById(moidLong).orElseThrow();
+                            order.setStatus("completed"); // 결제 완료된거니 변경
+                            payment.setOrder(order);
+
+                            paymentRepository.save(payment);
+                            return "paymentSuccess";  // 결제 성공 시, paymentSuccess.html 페이지로 리디렉션
+                        }
+
+
                     } else if (PayMethod.equals("BANK")) {
                         if (ResultCode.equals("4000")) paySuccess = true; // 계좌이체(정상 결과코드:4000)
                     } else if (PayMethod.equals("CELLPHONE")) {
