@@ -10,7 +10,7 @@
     </style>
 </head>
 <body>
-<form id="yourFormId" action="#" th:action="@{/CartItem/addcartItem}" th:object="${multiFormDto}" method="post" onsubmit="return false;">
+<form id="yourFormId" action="#" th:action="@{/cartItem/addcartItem}" th:object="${multiFormDto}" method="post" onsubmit="return false;">
 
     <label for="cartItemReqDto.quantity">quantity</label>
     <input type="number" th:field="*{cartItemReqDto.quantity}" id="cartItemReqDto.quantity" oninput="calculateSubtotal()">

@@ -1,5 +1,7 @@
-package com.dog.shop.domain;
+package com.dog.shop.domain.product;
 
+import com.dog.shop.domain.OrderItem;
+import com.dog.shop.domain.cart.CartItem;
 import com.dog.shop.myenum.SalesStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

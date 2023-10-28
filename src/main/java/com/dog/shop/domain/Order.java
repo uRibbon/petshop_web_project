@@ -1,5 +1,6 @@
 package com.dog.shop.domain;
 
+import com.dog.shop.domain.time.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -112,6 +112,17 @@ public class JwtUtil {
                 .getBody();
     }
 
+    public String getEmailFromToken(String token) {
+        try {
+            Claims claims = decode(token); // 이미 만들어진 decode 함수를 사용
+            return claims.get("email", String.class);
+        } catch (Exception e) {
+            // 토큰이 유효하지 않은 경우나 이메일 정보가 없는 경우 예외 처리
+            throw new CommonException(ErrorCode.INVALID_TOKEN, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
     public static Long getMemberId() {
 
         try {
