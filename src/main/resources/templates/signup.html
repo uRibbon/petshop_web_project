@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <title>SignUp</title>
     <link th:href="@{/css/signup.css}" rel="stylesheet">
-<!--<link rel="icon" href="data:;base64,iVBORw0KGgo=">-->
 </head>
 <body>
 <div class="container" id="container">
@@ -28,6 +27,7 @@
         </div>
         <div class="txt_field">
             <input type="search" id="address" name="address" required onclick="findAddr()"/>
+            <span></span>
             <label>Address</label>
         </div>
         <div class="txt_field">
@@ -43,9 +43,8 @@
             <label for="birthDate">BirthDate:</label>
             <input type="date" value="2023-11-03" min="1940-01-01" max="2023-12-31" id="birthDate" name="birthDate" />
             <span></span>
-            <label>BirthDate</label>
         </div>
-        <div class="form-group">
+        <div class="form-group" style="margin-top: 20px;">
             <button type="submit">SignUp</button>
         </div>
     </form>
@@ -87,7 +86,7 @@
                 document.getElementById('address').value = data.zonecode;
                 document.getElementById("address").value = addr;
                 document.getElementById("detailAddress").focus();
-                
+
             }
         }).open();
     }
