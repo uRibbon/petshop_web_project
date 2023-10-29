@@ -3,6 +3,7 @@ package com.dog.shop.dto.userDto;
 import com.dog.shop.myenum.Role;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.validation.constraints.Email;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -15,6 +16,7 @@ import java.time.LocalDate;
 @ToString
 public class UserReqDto {
     //입력화면
+    @Email
     private String email;
     private String password;
     private String name;

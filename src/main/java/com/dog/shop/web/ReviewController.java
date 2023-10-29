@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -49,4 +50,10 @@ public class ReviewController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+    // 제품별 리뷰 가져오기
+    @GetMapping("/myReview/{productId}")
+    public ResponseEntity<List<ReviewResDto>> productReview(@PathVariable Long productId, Model model) {
+        List<ReviewResDto> reviewResDtoList = reviewService.showReviewByProductId(productId, model);
+        return new ResponseEntity<>(reviewResDtoList, HttpStatus.OK);
+    }
 }
