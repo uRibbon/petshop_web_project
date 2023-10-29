@@ -14,13 +14,11 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.Banner;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-
 import java.util.List;
 
 @Controller
@@ -38,7 +36,7 @@ public class CartItemController {
     @GetMapping("/getList")
     public ModelAndView getList() {
         List<CartItemResDto> cartItems = cartItemService.getCartItems();
-        return new ModelAndView("CartItem", "cartItems", cartItems);
+        return new ModelAndView("cartItem", "cartItems", cartItems);
     }
 
     @GetMapping("/getCartItem")
@@ -57,7 +55,7 @@ public class CartItemController {
             }
         }
         // TODO 장바구니가 null일 경우도 고려해야함
-        return new ModelAndView("CartItem", "cartItems", cartItems);
+        return new ModelAndView("cartItem", "cartItems", cartItems);
     }
 
     private String getJwtTokenFromCookies(HttpServletRequest request) {
