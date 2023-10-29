@@ -1,5 +1,6 @@
 package com.dog.shop.domain;
 
+import com.dog.shop.domain.time.BaseTimeEntity;
 import com.dog.shop.myenum.ReviewStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -13,7 +14,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table
-public class Review extends BaseTimeEntity{
+public class Review extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
