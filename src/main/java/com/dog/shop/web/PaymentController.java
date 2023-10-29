@@ -55,7 +55,7 @@ public class PaymentController {
         //model.addAttribute("goodsName", goodsName);
         //model.addAttribute("price", price);
         // Model에서 price 값을 가져옴
-        Integer price = (Integer) model.getAttribute("price");
+        Integer price = (Integer) model.getAttribute("price"); // 배달비 + 주문금액
         model.addAttribute("buyerName", buyerName);
         model.addAttribute("buyerTel", buyerTel);
         model.addAttribute("buyerEmail", buyerEmail);

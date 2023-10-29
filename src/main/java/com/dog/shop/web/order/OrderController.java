@@ -75,7 +75,7 @@ public class OrderController {
             if (cartItemList.size() > 1) {
                 goodsName += " 외 " + (cartItemList.size() - 1) + "개";
             }
-            int price = cartItemList.stream().mapToInt(CartItem::getSubTotal).sum();
+            int price = cartItemList.stream().mapToInt(CartItem::getSubTotal).sum(); // + 배달비
 
             // 1. 복사 (Copy)
             Order order = new Order();
