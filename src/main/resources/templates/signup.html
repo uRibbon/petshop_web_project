@@ -3,61 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <title>SignUp</title>
-    <link th:href="@{/css/signup.css}" rel="stylesheet">
 </head>
+<link rel="icon" href="data:;base64,iVBORw0KGgo=">
 <body>
-<div class="container" id="container">
-<div class="sign-up-container">
-    <h1>SignUp</h1>
-    <form th:action="@{/auth/signup}" method="post" onsubmit="showAlert()">
-        <div class="txt_field">
+<div class="signUp-container">
+    <h2>SignUp</h2>
+    <form th:action="@{/auth/signup}" method="post">
+        <div class="form-group">
+            <label for="email">Email:</label>
             <input type="text" id="email" name="email" required />
-            <span></span>
-            <label>Email</label>
-        </div>
-        <div class="txt_field">
-            <input type="password" id="password" name="password" required />
-            <span></span>
-            <label>Password</label>
-        </div>
-        <div class="txt_field">
-            <input type="text" id="name" name="name" required />
-            <span></span>
-            <label>Name</label>
-        </div>
-        <div class="txt_field">
-            <input type="search" id="address" name="address" required onclick="findAddr()"/>
-            <span></span>
-            <label>Address</label>
-        </div>
-        <div class="txt_field">
-            <input type="text" id="detailAddress" name="detailAddress" required />
-            <span></span>
-            <label>Detail Address</label>
+            <button type="button" onclick="checkEmail()">이메일 중복 확인</button>
+            <div id="emailResult"></div>
         </div>
         <div class="form-group">
-            <input type="hidden" Value='Y' name="agree" />
-            <input type="hidden" name="agreeSelect" value="">
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required />
+        </div>
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required />
+        </div>
+        <div class="form-group">
+            <label for="address">주소:</label>
+            <input type="text" id="address" name="address" required onclick="findAddr()"/>
+        </div>
+        <div class="form-group">
+            <label for="detailAddress">상세주소:</label>
+            <input type="text" id="detailAddress" name="detailAddress" required />
         </div>
         <div class="form-group">
             <label for="birthDate">BirthDate:</label>
-            <input type="date" value="2023-11-03" min="1940-01-01" max="2023-12-31" id="birthDate" name="birthDate" />
-            <span></span>
+            <input type="date" name="trip-start" value="2023-11-03" min="1940-01-01" max="2023-12-31" id="birthDate" name="birthDate" />
         </div>
-        <div class="form-group" style="margin-top: 20px;">
+        <div class="form-group">
             <button type="submit">SignUp</button>
         </div>
     </form>
 </div>
-</div>
 </body>
 <script>
-    $(document).ready(function(){
-        let agreeValue = localStorage.getItem('agreeSelect');
-        if(agreeValue) {
-            $('input[name="agreeSelect"]').val(agreeValue);
-        }
-    });
     function findAddr() {
         new daum.Postcode({
             oncomplete: function(data) {
@@ -86,15 +70,34 @@
                 document.getElementById('address').value = data.zonecode;
                 document.getElementById("address").value = addr;
                 document.getElementById("detailAddress").focus();
-
+                
             }
         }).open();
     }
 
-    function showAlert() {
-        alert('회원가입 완료!');
+
+    function checkEmail() {
+        var email = document.getElementById('email').value;
+
+        // 서버에 이메일 중복 확인 요청을 보냅니다.
+        fetch(`/check?email=${email}`, {
+            method: 'GET',
+        })
+            .then(response => response.json()) // JSON 형태로 응답을 받습니다.
+            .then(data => {
+                var emailResultElement = document.getElementById('emailResult');
+                if (data) {
+                    // 이메일이 중복될 경우
+                    emailResultElement.textContent = '중복된 이메일입니다. 다른 이메일을 사용해주세요.';
+                } else {
+                    // 이메일이 중복되지 않을 경우
+                    emailResultElement.textContent = '사용 가능한 이메일입니다.';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
     }
-</script>
 
 </script>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>

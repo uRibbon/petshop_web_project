@@ -66,7 +66,7 @@ public class AuthController {
     }
 
     @PostMapping("/delete")
-    public ResponseEntity<Boolean> userDelete(@RequestBody UserReqDto userReqDto) {
+    public ResponseEntity<Boolean> userDelete( UserReqDto userReqDto) {
         String email = userReqDto.getEmail();
         boolean result = authService.userDelete(email);
         if (result) {
@@ -77,12 +77,12 @@ public class AuthController {
     }
 
     @PostMapping("/update/{email}")
-    public Boolean updateUser(@PathVariable String email, @RequestBody UserReqDto userReqDto) {
+    public Boolean updateUser(@PathVariable String email, UserReqDto userReqDto) {
         return authService.updateUserInfo(email, userReqDto);
     }
 
     @PostMapping("/resetPwd/{email}")
-    public String resetPwd(@PathVariable String email, @RequestBody UserReqDto userReqDto, Model model) {
+    public String resetPwd(@PathVariable String email, UserReqDto userReqDto, Model model) {
         boolean result = authService.resetPwd(email, userReqDto);
 
         // 모델에 결과값을 담아서 템플릿에 전달
