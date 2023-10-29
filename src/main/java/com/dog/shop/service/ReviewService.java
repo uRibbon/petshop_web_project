@@ -1,7 +1,6 @@
 package com.dog.shop.service;
 
 import com.dog.shop.domain.OrderItem;
-import com.dog.shop.domain.Product;
 import com.dog.shop.domain.Review;
 import com.dog.shop.domain.User;
 import com.dog.shop.dto.reviewDto.ReviewReqDto;
@@ -17,7 +16,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,13 +81,12 @@ public class ReviewService {
     }
 
     // 제품별 리뷰 가져오기
-    public List<ReviewResDto> showReviewByProductId(Long productId, Model model) {
-        List<Product> productList = productRepository.findProductById(productId);
+    public List<ReviewResDto> showReviewByProductId(Long productId) {
+        List<Review> productList = reviewRepository.findProductById(productId);
         List<Review> reviewList = reviewRepository.findProductById(productId);
         List<ReviewResDto> reviewResDtoList = reviewList.stream()
                 .map(review -> modelMapper.map(review, ReviewResDto.class))
                 .collect(Collectors.toList());
-        model.addAttribute("productList", productList);
 
         return reviewResDtoList;
     }
