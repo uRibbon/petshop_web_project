@@ -30,8 +30,18 @@
             <td><a th:href="@{/cartItem/delete/{id}(id=${cartItem.id})}">삭제</a></td>
         </tr>
     </table>
-    <div th:text="'Price: ' + ${priceSession}"></div>
+
     <input type="submit" value="주문하기"/>
 </form>
+<div th:text="'Price: ' + ${priceSession}"></div>
+
+<form action="/api/calculate-distance" method="post">
+    <label for="address">주소:</label>
+    <input type="text" id="address" name="address">
+    <button type="submit">검색</button>
+</form>
+<div th:if="${distance != null}">
+    <p th:text="${distance}"></p>
+</div>
 </body>
 </html>

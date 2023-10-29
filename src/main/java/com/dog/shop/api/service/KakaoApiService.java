@@ -6,6 +6,7 @@ import org.json.JSONObject;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Collections;
 
@@ -16,7 +17,7 @@ public class KakaoApiService {
     private final String ORIGIN_X = "126.830205192607";
     private final String ORIGIN_Y = "37.5747859514344";
 
-    public String calculateDistance(String address) {
+    public String calculateDistance(String address, RedirectAttributes redirectAttributes) {
         RestTemplate restTemplate = new RestTemplate();
 
         HttpHeaders headers = new HttpHeaders();
@@ -59,19 +60,17 @@ public class KakaoApiService {
             int distance = summary.getInt("distance");
 
             int fare;
-            if (distance <= 1000) {
-                fare = 1000;
-            } else if (distance <= 5000) {
-                fare = 2000;
-            } else if (distance <= 10000) {
-                fare = 3000;
+            if (distance <= 6500) {
+                fare = 2500;
             } else {
-                return "무료";
+                fare = 5000;
             }
+
+            redirectAttributes.addFlashAttribute("fare", fare);
 
             return "Distance: " + distance + "m " + "｜" + " fare: " + fare + "원";
         } catch (JSONException e) {
-            return "목적지가 너무 멀리있습니다.(범위 초과)";
+            return "Distance: 10000초과 | fare: 5000원";
         }
 
         //return responseDirection.getBody();

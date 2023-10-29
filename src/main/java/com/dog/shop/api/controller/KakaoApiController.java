@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/api")
@@ -24,9 +25,13 @@ public class KakaoApiController {
     }
 
     @PostMapping("/calculate-distance")
-    public String calculateDistance(@RequestParam String address, Model model) {
-        String result = kakaoApiService.calculateDistance(address);
+    public String calculateDistance(@RequestParam String address, Model model, RedirectAttributes redirectAttributes) {
+        String result = kakaoApiService.calculateDistance(address, redirectAttributes);
         model.addAttribute("distance", result);
-        return "direction-api";
+
+        String fare = kakaoApiService.calculateDistance(address, redirectAttributes);
+        model.addAttribute("fare", fare);
+
+        return "cartItem";
     }
 }
