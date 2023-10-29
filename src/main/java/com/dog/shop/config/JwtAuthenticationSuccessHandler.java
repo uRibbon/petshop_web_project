@@ -26,34 +26,6 @@ public class JwtAuthenticationSuccessHandler extends SimpleUrlAuthenticationSucc
 
     private final JwtUtil jwtUtil;
 
-/*    @Override
-    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        String id = userDetails.getUsername(); // 일반적으로 UserDetails의 username은 이메일로 사용됩니다.
-
-        GrantedAuthority authority = userDetails.getAuthorities().iterator().next();
-        Role role = Role.valueOf(authority.getAuthority()); // String 형식의 권한 이름을 Role enum으로 변환
-
-        // JWT 토큰 생성
-        String token = jwtUtil.createAccessToken(id, role);
-
-
-        // 토큰을 HTTP-only 쿠키로 설정
-        Cookie jwtCookie = new Cookie("JWT-TOKEN", token);
-        jwtCookie.setHttpOnly(true);
-        response.addCookie(jwtCookie);
-
-        // 기본 로그인 성공 핸들러 로직 실행
-        try {
-            super.onAuthenticationSuccess(request, response, authentication);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }*/
-
-
-
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
 
@@ -65,7 +37,7 @@ public class JwtAuthenticationSuccessHandler extends SimpleUrlAuthenticationSucc
 
         // JWT 토큰 생성
         String token = jwtUtil.createAccessToken(email, role);
-        System.out.println("token ========== "+token);
+        System.out.println("token ========== " + token);
         // 토큰을 HTTP-only 쿠키로 설정
         Cookie jwtCookie = new Cookie("JWT-TOKEN", token);
         jwtCookie.setHttpOnly(true);
@@ -76,11 +48,5 @@ public class JwtAuthenticationSuccessHandler extends SimpleUrlAuthenticationSucc
 
         // 직접 /index로 리다이렉션
         response.sendRedirect("/");
-
-        /*try {
-            super.onAuthenticationSuccess(request, response, authentication);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }*/
     }
 }

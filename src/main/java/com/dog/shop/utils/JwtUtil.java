@@ -10,6 +10,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -95,7 +96,7 @@ public class JwtUtil {
         Long now = new Date().getTime();
         return (expiration.getTime() - now);
     }
-
+    //@Cacheable(value = "userAuthentication", key = "#id") // TODO 사용자 정보 변경 시 캐시 무효화 필수
     public Authentication getAuthentication(String id) {
         UserDetails userDetails = customUserDetailService.loadUserByUsername(id);
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
