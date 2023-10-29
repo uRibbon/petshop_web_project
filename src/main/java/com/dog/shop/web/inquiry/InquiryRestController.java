@@ -14,7 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/inquiry")
 @RequiredArgsConstructor
-public class InquiryController {
+public class InquiryRestController {
 
     private final InquiryService inquiryService;
 
@@ -26,8 +26,9 @@ public class InquiryController {
     public ResponseEntity<InquiryResDTO> registerInquiry(@RequestBody InquiryReqDTO inquiryReqDTO) {
         // userId 값을 2L로 고정
         Long userId = 2L;
+        Long productId = 2L;
 
-        InquiryResDTO result = inquiryService.regInquiry(userId, inquiryReqDTO);
+        InquiryResDTO result = inquiryService.regInquiry(userId, productId, inquiryReqDTO);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 

@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <meta charset="UTF-8">
 <body>
-<form action="#" th:action="@{/products/create}" th:object="${productReqDTO}"method="post">
+<form action="#" th:action="@{/products/create}" th:object="${productReqDTO}" method="post" enctype="multipart/form-data">
     <label for="description">Description</label>
     <input type="text" th:field="*{description}" id="description">
     <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span>
@@ -23,6 +23,12 @@
     <input type="text" th:field="*{stock}" id="stock">
     <span th:if="${#fields.hasErrors('stock')}" th:errors="*{stock}"></span>
     <br/>
+    <!-- 이미지 업로드 필드 -->
+    <label for="mainImage">Image</label>
+    <input type="file" th:field="*{mainImage}" id="mainImage" name="mainImage">
+    <span th:if="${#fields.hasErrors('mainImage')}" th:errors="*{mainImage}"></span>
+    <br/>
+
     <input type="submit" value="Create">
 </form>
 </body>

@@ -4,6 +4,7 @@ import com.dog.shop.dto.userDto.UserReqDto;
 import com.dog.shop.dto.userDto.UserResDto;
 import com.dog.shop.exception.MemberNotFoundException;
 import com.dog.shop.service.AuthService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -23,6 +24,7 @@ public class AuthController {
 
     @GetMapping("/signup")
     public String signup() {
+
         return "signup";
     }
 
@@ -35,7 +37,17 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public String saveUser( UserReqDto userReqDto) {
+    public String saveUser(UserReqDto userReqDto, HttpSession session) {
+
+        String chkTerms = (String) session.getAttribute("chkTerms");
+        String chkPrivacy = (String) session.getAttribute("chkPrivacy");
+        //char chkMarketing = (char) session.getAttribute("chkMarketing");
+        Object chkTermsObj = session.getAttribute("chkMarketing");
+        String chkMarketing = (chkTermsObj != null) ? (String) chkTermsObj : "N"; // 'N'은 기본값으로 사용됩니다.
+        userReqDto.setChkTerms(chkTerms);
+        userReqDto.setChkPrivacy(chkPrivacy);
+        userReqDto.setChkMarketing(chkMarketing);
+
         try {
             authService.signUser(userReqDto);
             System.out.println("컨트롤러 " + userReqDto.getEmail());

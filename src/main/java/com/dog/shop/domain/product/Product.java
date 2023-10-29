@@ -1,5 +1,7 @@
-package com.dog.shop.domain;
+package com.dog.shop.domain.product;
 
+import com.dog.shop.domain.OrderItem;
+import com.dog.shop.domain.cart.CartItem;
 import com.dog.shop.myenum.SalesStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -11,10 +13,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Getter @Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Table
+@Setter
 public class Product {
 
     @Id
@@ -27,7 +30,7 @@ public class Product {
     private String subImage; // 상품의 서브 이미지
     private String description; // 상품에 대한 상세 설명
     private int stock; // 상품의 현재 재고
-
+    private String MainImageUrl;
     @Enumerated(EnumType.STRING)
     private SalesStatus salesStatus; // 판매 상태
 
@@ -40,6 +43,10 @@ public class Product {
     @OneToMany(mappedBy = "product")
     private List<CartItem> cartItems = new ArrayList<>();
 
+    @Override
+    public String toString() {
+        return "" + id;
+    }
     @OneToMany(mappedBy = "product")
     private List<OrderItem> orderItems = new ArrayList<>();
 

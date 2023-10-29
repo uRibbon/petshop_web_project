@@ -25,7 +25,8 @@ public class UserResDto {
     private String phoneNumber;
     private LocalDate birthDate;
     private LocalDateTime createdDate;
+    // private char agree;
+    // private char agreeSelect;
 
-    @Enumerated(EnumType.STRING)
     private Role role;
 }

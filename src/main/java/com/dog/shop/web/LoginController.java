@@ -1,5 +1,6 @@
 package com.dog.shop.web;
 
+import com.dog.shop.service.AuthService;
 import com.dog.shop.utils.JwtUtil;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.Cookie;
@@ -15,22 +16,26 @@ public class LoginController {
     @Autowired
     private JwtUtil jwtUtil;
 
+    @Autowired
+    private AuthService authService;
+
     @GetMapping("/login")
     public String login() {
         return "login";
     }
 
-    @GetMapping("/index")
+    @GetMapping("/")
     public String showIndex(HttpServletRequest request, Model model) {
         // 1. JWT-TOKEN 쿠키를 가져옵니다.
-         String jwtToken = getJwtFromCookie(request);
+        String jwtToken = getJwtFromCookie(request);
 
         if (jwtToken != null) {
             // 2. JWT 토큰에서 필요한 정보를 추출합니다.
             String userEmail = getEmailFromToken(jwtToken); // 이메일 추출 메서드는 직접 구현해야 합니다.
-            String userId = getIdFromToken(jwtToken);
+            // String userId = getIdFromToken(jwtToken);
+            Long userId = authService.findUserIdByEmail(userEmail);
             // 3. 모델에 정보를 추가합니다.
-            model.addAttribute("userEmail", userEmail);
+            model.addAttribute("userId", userId);
         }
 
         return "index"; // 타임리프 템플릿 이름

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Products detail</title>
+</head>
+<body>
+<table>
+    <tr>
+        <th>Seq</th>
+        <th>description</th>
+        <th>price</th>
+        <th>product_name</th>
+        <th>sales_status</th>
+        <th>stock</th>
+    </tr>
+    <tr>
+        <td th:text="${product.id}"></td>
+        <td th:text="${product.description}" ></td>
+        <td th:text="${product.price}"></td>
+        <td th:text="${product.productName}"></td>
+        <td th:text="${product.salesStatus}"></td>
+        <td th:text="${product.stock}"></td>
+        <td><a th:href="@{/CartItem/signup/{id}(id=${product.id})}">장바구니 담기설정</a></td>
+    </tr>
+</table>
+</body>
+</html>

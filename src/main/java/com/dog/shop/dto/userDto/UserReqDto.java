@@ -18,13 +18,18 @@ public class UserReqDto {
     //입력화면
     @Email
     private String email;
+
     private String password;
     private String name;
     private String address;
     private String detailAddress;
     private String phoneNumber;
     private LocalDate birthDate;
+    private String chkTerms;
+    private String chkPrivacy;
+    private String chkMarketing;
 
-    @Enumerated(EnumType.STRING)
-    private Role role;
+    // private char agree;
+    // private char agreeSelect;
+    // private Role role;
 }

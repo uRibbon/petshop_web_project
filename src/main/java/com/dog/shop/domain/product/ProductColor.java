@@ -1,5 +1,6 @@
-package com.dog.shop.domain;
+package com.dog.shop.domain.product;
 
+import com.dog.shop.domain.Color;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,18 +11,17 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table
-public class ProductSize {
+public class ProductColor {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = "join_id") // @JoinColumn(name= 컬럼명)
     private Product product;
 
     @ManyToOne
-    @JoinColumn(name = "size_id")
-    private Size size;
-
+    @JoinColumn(name = "color_id")
+    private Color color;
 }
