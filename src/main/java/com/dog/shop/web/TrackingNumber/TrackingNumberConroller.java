@@ -6,13 +6,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-@RequestMapping("/Order")
+@RequestMapping("/order")
 public class TrackingNumberConroller {
 
     @GetMapping("/info")
     public String info(){
         return "info";
     }
-
-
 }

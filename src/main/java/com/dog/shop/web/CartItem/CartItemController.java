@@ -55,7 +55,7 @@ public class CartItemController {
             }
         }
         // TODO 장바구니가 null일 경우도 고려해야함
-        return new ModelAndView("CartItem", "cartItems", cartItems);
+        return new ModelAndView("cartItem", "cartItems", cartItems);
     }
 
     private String getJwtTokenFromCookies(HttpServletRequest request) {
