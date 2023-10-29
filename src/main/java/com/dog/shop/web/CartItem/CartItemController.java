@@ -34,8 +34,12 @@ public class CartItemController {
     private final UserRepository userRepository;
     
     @GetMapping("/getList")
-    public ModelAndView getList() {
+    public ModelAndView getList(HttpServletRequest request, Model model) {
         List<CartItemResDto> cartItems = cartItemService.getCartItems();
+
+        Integer price = (Integer) request.getSession().getAttribute("price");
+        model.addAttribute("priceSession", price);
+
         return new ModelAndView("cartItem", "cartItems", cartItems);
     }
 

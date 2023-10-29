@@ -98,7 +98,7 @@ public class OrderController {
             // 즉, cartItemList에 포함되지 않은 다른 CartItem 객체들은 그대로 데이터베이스에 남아 있게 됩니다.
             cartItemRepository.deleteAll(cartItemList);
 
-
+            request.getSession().setAttribute("price", price);
 
             redirectAttributes.addFlashAttribute("goodsName", goodsName);
             redirectAttributes.addFlashAttribute("price", price);
