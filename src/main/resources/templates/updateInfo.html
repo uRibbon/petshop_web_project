@@ -7,7 +7,7 @@
 <body>
 <div class="login-container">
     <h2>Modifying</h2>
-    <form th:action="@{/auth/update/{email}(email=${user.email})}" method="post">
+    <form th:action="@{/auth/update/{userId}(userId=${user.id})}" method="post">
         <div class="form-group">
             <label for="email">Email:</label>
             <input type="text" id="email" name="email" th:value="${user.email}" required />
@@ -15,7 +15,7 @@
         <!-- 패스워드는 표시되면 안되므로 기본 값을 설정하지 않습니다. -->
         <div class="form-group">
             <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required />
+            <input type="password" id="password" name="password" />
         </div>
         <div class="form-group">
             <label for="name">Name:</label>

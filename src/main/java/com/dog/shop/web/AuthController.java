@@ -2,6 +2,7 @@ package com.dog.shop.web;
 
 import com.dog.shop.dto.userDto.UserReqDto;
 import com.dog.shop.dto.userDto.UserResDto;
+import com.dog.shop.dto.userDto.UserUpdateReqDto;
 import com.dog.shop.exception.MemberNotFoundException;
 import com.dog.shop.service.AuthService;
 import jakarta.servlet.http.HttpSession;
@@ -76,9 +77,11 @@ public class AuthController {
         }
     }
 
+    // 회원정보 수정
     @PostMapping("/update/{userId}")
-    public Boolean updateUser(@PathVariable Long userId, UserReqDto userReqDto) {
-        return authService.updateUserInfo(userId, userReqDto);
+    public String updateUser(@PathVariable Long userId, UserUpdateReqDto userUpdateReqDto) {
+        authService.updateUserInfo(userId, userUpdateReqDto);
+        return "redirect:/";
     }
 
     @PostMapping("/resetPwd/{email}")

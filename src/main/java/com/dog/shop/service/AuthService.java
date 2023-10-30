@@ -3,6 +3,7 @@ package com.dog.shop.service;
 import com.dog.shop.domain.User;
 import com.dog.shop.dto.userDto.UserReqDto;
 import com.dog.shop.dto.userDto.UserResDto;
+import com.dog.shop.dto.userDto.UserUpdateReqDto;
 import com.dog.shop.exception.MemberNotFoundException;
 import com.dog.shop.myenum.Role;
 import com.dog.shop.repository.UserRepository;
@@ -79,7 +80,7 @@ public class AuthService {
     }
 
     // 회원정보 업데이트
-    public boolean updateUserInfo(Long userId, UserReqDto userReqDto) {
+    public boolean updateUserInfo(Long userId, UserUpdateReqDto userUpdateReqDto) {
 //        User user = userRepository.findByEmail(email)
 //                .orElseThrow(() -> new MemberNotFoundException("user not found"));
         User user = userRepository.findById(userId)
@@ -92,7 +93,7 @@ public class AuthService {
 */
         ModelMapper modelMapper = new ModelMapper();
         modelMapper.getConfiguration().setSkipNullEnabled(true);
-        modelMapper.map(userReqDto, user);
+        modelMapper.map(userUpdateReqDto, user);
         userRepository.save(user);
         return true;
     }
