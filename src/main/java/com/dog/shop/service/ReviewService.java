@@ -8,9 +8,9 @@ import com.dog.shop.dto.reviewDto.ReviewResDto;
 import com.dog.shop.exception.MemberNotFoundException;
 import com.dog.shop.myenum.ReviewStatus;
 import com.dog.shop.product.repository.ProductRepository;
-import com.dog.shop.repository.OrderRepository;
 import com.dog.shop.repository.ReviewRepository;
 import com.dog.shop.repository.UserRepository;
+import com.dog.shop.repository.order.OrderItemRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,14 +29,14 @@ public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final ProductRepository productRepository;
     private final UserRepository userRepository;
-    private final OrderRepository orderRepository;
+    private final OrderItemRepository orderItemRepository;
     private final ModelMapper modelMapper;
 
     // 리뷰 작성하기
     public boolean writeReview(Long orderItemId, Long userId, ReviewReqDto reviewReqDto) {
         User userEntity = userRepository.findById(userId)
                 .orElseThrow(() -> new MemberNotFoundException("user not found"));
-        OrderItem itemEntity = orderRepository.findById(orderItemId)
+        OrderItem itemEntity = orderItemRepository.findById(orderItemId)
                 .orElseThrow(() -> new MemberNotFoundException("orderItem not found"));
 
         Review review = new Review();
