@@ -2,6 +2,6 @@ package com.dog.shop.config;
 
 public class Test {
 
-    Test
+    주석테스트
 
 }
