@@ -64,19 +64,7 @@ public class ProductController {
         return "update-product";
     }
 
-    @PostMapping("/update/{id}")
-    public String updateProduct(@PathVariable("id") long id, @Valid ProductReqForm product,
-                             BindingResult result, Model model) {
-        if (result.hasErrors()) {
-            model.addAttribute("product", product);
 
-            return "update-product";
-        }
-
-        productService.updateProduct(product);
-
-        return "redirect:/products/list";
-    }
 
     @GetMapping("/delete/{id}")
     public String deleteProduct(@PathVariable("id") long id) {

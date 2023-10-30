@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <meta charset="UTF-8">
     <title>SignUp</title>
 </head>
@@ -82,29 +83,35 @@
 
     function checkEmail() {
         var email = document.getElementById('email').value;
-
+        console.log(email);
         if (email == "") {
             alert("이메일을 입력해주세요.");
             $('#email');
             return false;
         }
         // 서버에 이메일 중복 확인 요청을 보냅니다.
-        fetch(`/check?email=${email}`, {
-            method: 'GET',
-        })
-            .then(data => {
-                var emailResultElement = document.getElementById('emailResult');
-                if (data) {
-                    // 이메일이 중복될 경우
-                    emailResultElement.textContent = '중복된 이메일입니다. 다른 이메일을 사용해주세요.';
-                } else {
-                    // 이메일이 중복되지 않을 경우
-                    emailResultElement.textContent = '사용 가능한 이메일입니다.';
+        $.ajax({
+            type: "get",
+            url : "/auth/check",
+            data: {"email": email},
+
+            success: function (result) {
+                if (result.result == "0") {
+                    if (confirm("이 아이디는 사용 가능합니다. \n 사용하시겠습니까?")) {
+                        usernameOverlapCheck = 1;
+                        $("#email").attr("readonly", true);
+                        $("#emailOverlay").attr("disabled", true);
+                        $("#emailOverlay").css("display", "none");
+                        $("#resetUseremail").attr("disabled", false);
+                        $("#resetUseremail").css("display", "inline-block");
+                    }
+                    return false;
+                }else if (result.result == "1") {
+                    alert("이미 사용중인 아이디입니다.");
+                    $("#email").focus();
                 }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
+            }
+        });
     }
 
 </script>
