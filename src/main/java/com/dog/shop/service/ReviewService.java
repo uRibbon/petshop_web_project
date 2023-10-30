@@ -35,18 +35,21 @@ public class ReviewService {
     // 리뷰 작성하기
     public boolean writeReview(Long orderItemId, Long userId, ReviewReqDto reviewReqDto) {
         User userEntity = userRepository.findById(userId)
-                .orElseThrow(() -> new MemberNotFoundException("user not found"));
-        OrderItem itemEntity = orderItemRepository.findById(orderItemId)
-                .orElseThrow(() -> new MemberNotFoundException("orderItem not found"));
+                .orElseThrow(() -> new MemberNotFoundException("User not found with ID: " + userId));
 
+        OrderItem orderItem = orderItemRepository.findById(orderItemId)
+                .orElseThrow(() -> new MemberNotFoundException("OrderItem not found with ID: " + orderItemId));
+
+
+        System.out.println("user" + userId);
+        System.out.println("orderItemId" + orderItemId);
         Review review = new Review();
         review.setTitle(reviewReqDto.getTitle());
         review.setContent(reviewReqDto.getContent());
         review.setReviewStatus(ReviewStatus.답변대기);
         review.setUser(userEntity);
-        if (reviewReqDto.getTitle() != null) {
-            review.setTitle(reviewReqDto.getTitle());
-        }
+        review.setOrderItem(orderItem);
+        System.out.println("review : " + review);
         reviewRepository.save(review);
         return true;
     }

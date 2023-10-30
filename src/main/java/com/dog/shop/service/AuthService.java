@@ -79,14 +79,20 @@ public class AuthService {
     }
 
     // 회원정보 업데이트
-    public boolean updateUserInfo(String email, UserReqDto userReqDto) {
-        User user = userRepository.findByEmail(email)
+    public boolean updateUserInfo(Long userId, UserReqDto userReqDto) {
+//        User user = userRepository.findByEmail(email)
+//                .orElseThrow(() -> new MemberNotFoundException("user not found"));
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new MemberNotFoundException("user not found"));
-        user.setName(userReqDto.getName());
+        /*user.setName(userReqDto.getName());
         user.setPassword(userReqDto.getPassword());
         user.setAddress(userReqDto.getAddress());
         user.setPhoneNumber(userReqDto.getPhoneNumber());
         user.setBirthDate(userReqDto.getBirthDate());
+*/
+        ModelMapper modelMapper = new ModelMapper();
+        modelMapper.getConfiguration().setSkipNullEnabled(true);
+        modelMapper.map(userReqDto, user);
         userRepository.save(user);
         return true;
     }

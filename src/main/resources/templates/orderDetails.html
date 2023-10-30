@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h3>Order Items</h3>
+<table border="1">
+    <thead>
+    <tr>
+        <th>Product Name</th>
+        <th>Quantity</th>
+        <th>Unit Price</th>
+        <th>Sub Total</th>
+        <th>Review</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="item : ${orderItems}">
+        <td th:text="${item.product.productName}"></td>  <!-- 제품 이름 -->
+        <td th:text="${item.quantity}"></td>
+        <td th:text="${item.unitPrice}"></td>
+        <td th:text="${item.subTotal}"></td>
+        <td>
+            <!-- 리뷰 작성 링크 -->
+            <div th:if="${item.review == null}">
+                <a th:href="@{/review/writeReview/{orderItemId}(orderItemId=${item.id})}" target="_blank">Write a Review</a>
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

@@ -2,7 +2,6 @@ package com.dog.shop.web;
 
 import com.dog.shop.dto.reviewDto.ReviewReqDto;
 import com.dog.shop.dto.reviewDto.ReviewResDto;
-import com.dog.shop.product.service.ProductService;
 import com.dog.shop.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,14 +17,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ReviewController {
     private final ReviewService reviewService;
-    private final ProductService productService;
 
     // 리뷰 쓰기
-    @PostMapping("/writeReview/{productId}")
-    public ResponseEntity<Boolean> writeReview(@PathVariable Long productId, ReviewReqDto reviewReqDto) {
+    @PostMapping("/writeReview/{orderItemId}")
+    public ResponseEntity<Boolean> writeReview(@PathVariable Long orderItemId, ReviewReqDto reviewReqDto) {
         Long userId = 2L;
-        Long productId1 = productId;
-        boolean result = reviewService.writeReview(userId,productId1 ,reviewReqDto);
+        boolean result = reviewService.writeReview(orderItemId, userId, reviewReqDto);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
