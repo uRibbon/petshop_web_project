@@ -76,9 +76,9 @@ public class AuthController {
         }
     }
 
-    @PostMapping("/update/{email}")
-    public Boolean updateUser(@PathVariable String email, UserReqDto userReqDto) {
-        return authService.updateUserInfo(email, userReqDto);
+    @PostMapping("/update/{userId}")
+    public Boolean updateUser(@PathVariable Long userId, UserReqDto userReqDto) {
+        return authService.updateUserInfo(userId, userReqDto);
     }
 
     @PostMapping("/resetPwd/{email}")

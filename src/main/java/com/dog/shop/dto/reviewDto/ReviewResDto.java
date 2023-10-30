@@ -15,9 +15,6 @@ public class ReviewResDto {
     private Long id;
     private String title;
     private String content;
-
-    @Enumerated(EnumType.STRING)
     private ReviewStatus reviewStatus;
-
-    private String email;
+    // private String email;
 }

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Write a Review</title>
+</head>
+<body>
+<h3>Write a Review</h3>
+<form th:action="@{/review/writeReview/{orderItemId}(orderItemId=${orderItemId})}" method="post">
+    <input type="hidden" th:value="${userId}" name="userId"/>
+    <input type="hidden" th:value="${orderItemId}" name="orderItemId"/>
+
+    <label for="title">Review Title:</label>
+    <input type="text" id="title" name="title" placeholder="Enter review title">
+
+    <label for="content">Review Content:</label>
+    <textarea id="content" name="content" placeholder="Write a review..."></textarea>
+
+    <button type="submit">Submit</button>
+</form>
+</body>
+</html>
