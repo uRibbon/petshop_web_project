@@ -1,9 +1,7 @@
 package com.dog.shop.dto.userDto;
 
-import com.dog.shop.myenum.Role;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -16,7 +14,8 @@ import java.time.LocalDate;
 @ToString
 public class UserReqDto {
     //입력화면
-    @Email
+    @NotBlank(message="이메일을 입력해주세요.")
+    @Email(message = "올바른 이메일 주소를 입력해주세요.")
     private String email;
 
     private String password;
@@ -28,8 +27,4 @@ public class UserReqDto {
     private String chkTerms;
     private String chkPrivacy;
     private String chkMarketing;
-
-    // private char agree;
-    // private char agreeSelect;
-    // private Role role;
 }

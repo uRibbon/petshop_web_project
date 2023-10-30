@@ -47,9 +47,9 @@ public class ReviewController {
     }
 
     // 제품별 리뷰 가져오기
-    @GetMapping("/myReview/{productId}")
-    public ResponseEntity<List<ReviewResDto>> productReview(@PathVariable Long productId) {
-        List<ReviewResDto> reviewResDtoList = reviewService.showReviewByProductId(productId);
+    @GetMapping("/productReview/{orderItemId}")
+    public ResponseEntity<List<ReviewResDto>> productReview(@PathVariable Long orderItemId) {
+        List<ReviewResDto> reviewResDtoList = reviewService.showReviewByProductId(orderItemId);
         return new ResponseEntity<>(reviewResDtoList, HttpStatus.OK);
     }
 }
