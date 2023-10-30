@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -81,9 +82,9 @@ public class ReviewService {
     }
 
     // 제품별 리뷰 가져오기
-    public List<ReviewResDto> showReviewByProductId(Long productId) {
-        List<Review> productList = reviewRepository.findProductById(productId);
-        List<Review> reviewList = reviewRepository.findProductById(productId);
+    public List<ReviewResDto> showReviewByProductId(Long orderItemId) {
+        Optional<OrderItem> productList = orderItemRepository.findById(orderItemId);
+        Optional<OrderItem> reviewList = orderItemRepository.findById(orderItemId);
         List<ReviewResDto> reviewResDtoList = reviewList.stream()
                 .map(review -> modelMapper.map(review, ReviewResDto.class))
                 .collect(Collectors.toList());
