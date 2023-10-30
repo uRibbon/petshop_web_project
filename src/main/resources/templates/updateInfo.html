@@ -1,37 +1,37 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>UpdateInfo</title>
 </head>
-<link rel="icon" href="data:;base64,iVBORw0KGgo=">
 <body>
 <div class="login-container">
     <h2>Modifying</h2>
     <form th:action="@{/auth/update/{email}(email=${user.email})}" method="post">
         <div class="form-group">
             <label for="email">Email:</label>
-            <input type="text" id="email" name="email" required />
+            <input type="text" id="email" name="email" th:value="${user.email}" required />
         </div>
+        <!-- 패스워드는 표시되면 안되므로 기본 값을 설정하지 않습니다. -->
         <div class="form-group">
             <label for="password">Password:</label>
             <input type="password" id="password" name="password" required />
         </div>
         <div class="form-group">
             <label for="name">Name:</label>
-            <input type="text" id="name" name="name" required />
+            <input type="text" id="name" name="name" th:value="${user.name}" required />
         </div>
         <div class="form-group">
             <label for="address">주소:</label>
-            <input type="text" id="address" name="address" required onclick="findAddr()"/>
+            <input type="text" id="address" name="address" th:value="${user.address}" required onclick="findAddr()"/>
         </div>
         <div class="form-group">
             <label for="detailAddress">상세주소:</label>
-            <input type="text" id="detailAddress" name="detailAddress" required />
+            <input type="text" id="detailAddress" name="detailAddress" th:value="${user.detailAddress}" required />
         </div>
         <div class="form-group">
             <label for="birthDate">BirthDate:</label>
-            <input type="date" value="2023-11-03" min="1940-01-01" max="2023-12-31" id="birthDate" name="birthDate" required />
+            <input type="date" id="birthDate" name="birthDate" th:value="${user.birthDate}" required />
         </div>
         <div class="form-group">
             <button type="submit">회원정보 수정</button>

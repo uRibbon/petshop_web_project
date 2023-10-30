@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    주문 조회 페이지
+
+    <table border="1">
+        <thead>
+        <tr>
+            <th>Order ID</th>
+            <th>Status</th>
+            <th>Total Price</th>
+            <th>Tracking Number</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="order : ${orderList}">
+            <td><a th:href="@{/order/{id}(id=${order.id})}" th:text="${order.id}"></a></td>
+            <td th:text="${order.status}"></td>
+            <td th:text="${order.totalPrice}"></td>
+            <td th:text="${order.trackingNumber}"></td>
+        </tr>
+        </tbody>
+    </table>
+</body>
+</html>

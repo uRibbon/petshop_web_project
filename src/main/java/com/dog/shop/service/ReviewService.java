@@ -8,9 +8,9 @@ import com.dog.shop.dto.reviewDto.ReviewResDto;
 import com.dog.shop.exception.MemberNotFoundException;
 import com.dog.shop.myenum.ReviewStatus;
 import com.dog.shop.product.repository.ProductRepository;
-import com.dog.shop.repository.OrderRepository;
 import com.dog.shop.repository.ReviewRepository;
 import com.dog.shop.repository.UserRepository;
+import com.dog.shop.repository.order.OrderItemRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,24 +29,28 @@ public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final ProductRepository productRepository;
     private final UserRepository userRepository;
-    private final OrderRepository orderRepository;
+    private final OrderItemRepository orderRepository;
     private final ModelMapper modelMapper;
 
     // 리뷰 작성하기
-    public boolean writeReview(Long orderItemId, Long userId, ReviewReqDto reviewReqDto) {
+    public boolean writeReview(Long userId, Long orderItemId,  ReviewReqDto reviewReqDto) {
         User userEntity = userRepository.findById(userId)
                 .orElseThrow(() -> new MemberNotFoundException("user not found"));
+
         OrderItem itemEntity = orderRepository.findById(orderItemId)
                 .orElseThrow(() -> new MemberNotFoundException("orderItem not found"));
+
 
         Review review = new Review();
         review.setTitle(reviewReqDto.getTitle());
         review.setContent(reviewReqDto.getContent());
         review.setReviewStatus(ReviewStatus.답변대기);
         review.setUser(userEntity);
-        if (reviewReqDto.getTitle() != null) {
+        review.setOrderItem(itemEntity);
+
+        /*if (reviewReqDto.getTitle() != null) {
             review.setTitle(reviewReqDto.getTitle());
-        }
+        }*/
         reviewRepository.save(review);
         return true;
     }
@@ -75,8 +79,10 @@ public class ReviewService {
         List<Review> reviewList = reviewRepository.findUserByUserId(userId);
         List<ReviewResDto> reviewResDtoList = new ArrayList<>();
 
-        ReviewResDto reviewResDto = modelMapper.map(reviewList, ReviewResDto.class);
-        reviewResDtoList.add(reviewResDto);
+        for (Review review : reviewList) {
+            ReviewResDto reviewResDto = modelMapper.map(review, ReviewResDto.class);
+            reviewResDtoList.add(reviewResDto);
+        }
         return reviewResDtoList;
     }
 

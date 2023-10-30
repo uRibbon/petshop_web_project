@@ -3,9 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+
+        function validateForm() {
+        var checkboxes = document.getElementsByName('selectedItems');
+        var isChecked = false;
+        for (var i = 0; i < checkboxes.length; i++) {
+            if (checkboxes[i].checked) {
+                isChecked = true;
+                break;
+            }
+        }
+        if (!isChecked) {
+            alert('상품을 선택해주세요.');
+            return false;
+        }
+        return true;
+    }
+
+        function updateTotalAmount() {
+    var checkboxes = document.getElementsByName('selectedItems');
+    var totalAmount = 0;
+    for (var i = 0; i < checkboxes.length; i++) {
+        if (checkboxes[i].checked) {
+            var subTotalValue = checkboxes[i].closest('tr').querySelector('[data-subtotal]').getAttribute('data-subtotal');
+            console.log(subTotalValue);  // 값을 콘솔에 출력하여 확인
+            var subTotal = parseFloat(subTotalValue);
+            if (!isNaN(subTotal)) {
+                totalAmount += subTotal;
+            }
+        }
+    }
+    document.getElementById('totalAmount').innerText = '총 금액: ' + totalAmount + '원';
+}
+
+
+    </script>
 </head>
 <body>
-<form th:action="@{/preparePayment}" method="post">
+<form th:action="@{/preparePayment}" method="post" onsubmit="return validateForm();">
     <table border="1">
         <tr>
             <th>Select</th>
@@ -19,10 +58,11 @@
             <th>Delete</th>
         </tr>
         <tr th:each="cartItem, cartItemStat : ${cartItems}">
-            <td><input type="checkbox" th:value="${cartItem.id}" name="selectedItems"/></td>
+            <td><input type="checkbox" th:value="${cartItem.id}" name="selectedItems" onclick="updateTotalAmount();"/>
+            </td>
             <td th:text="${cartItemStat.count}"></td>
             <td th:text="${cartItem.quantity}"></td>
-            <td th:text="${cartItem.subTotal}"></td>
+            <td th:attr="data-subtotal=${cartItem.subTotal}" th:text="${cartItem.subTotal}"></td>
             <td th:text="${cartItem.unitPrice}"></td>
             <td th:text="${cartItem.cart}"></td>
             <td th:text="${cartItem.product}"></td>
@@ -32,5 +72,7 @@
     </table>
     <input type="submit" value="주문하기"/>
 </form>
+<div id="totalAmount">총 금액: 0원</div>
+<button onclick="goBack()">뒤로 가기</button>
 </body>
 </html>

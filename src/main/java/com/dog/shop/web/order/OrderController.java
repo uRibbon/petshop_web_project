@@ -18,11 +18,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 public class OrderController {
@@ -47,6 +49,42 @@ public class OrderController {
 
     @Autowired
     private OrderItemRepository orderItemRepository;
+
+
+
+    @GetMapping("/order/check")
+    public String orderCheckPage(Model model, HttpServletRequest request) { // 주문 조회 페이지
+        String token = getJwtTokenFromCookies(request); // 쿠키에서 jwtToken 가져오기
+        List<Order> orderList = null;
+        User user = null;
+        if (token != null) {
+            String email = jwtUtil.getEmailFromToken(token); // 토큰에서 이메일 가져오기
+            if (email != null) {
+                // TODO 에러처리 필요
+                user = userRepository.findByEmail(email).orElseThrow(); // 이메일을 통해 userId 가져오기
+                // 이후 로직 처리...
+                Long userId = user.getId();
+                orderList = orderRepository.findByUserId(userId)
+                        .stream()
+                        .filter(order -> "completed".equals(order.getStatus()))
+                        .collect(Collectors.toList());
+            }
+        }
+
+        model.addAttribute("orderList", orderList);
+        return "orderCheck";
+    }
+
+    @GetMapping("/order/{orderId}")
+    public String orderDetails(@PathVariable Long orderId, Model model) {
+        // TODO 에러처리 필요
+        Order order = orderRepository.findById(orderId).orElseThrow();
+        List<OrderItem> orderItems = order.getOrderItems();
+        model.addAttribute("order", order);
+        model.addAttribute("orderItems", orderItems);
+        return "orderDetails";
+    }
+
 
     @PostMapping("/preparePayment")
     public String preparePayment(@RequestParam List<Long> selectedItems, Model model, HttpServletRequest request, RedirectAttributes redirectAttributes) {
