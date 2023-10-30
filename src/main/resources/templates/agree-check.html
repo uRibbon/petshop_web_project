@@ -75,7 +75,7 @@
 
         <br>
             <button type="submit" id="btnConfirm">회원 가입</button>
-            <button type="button" id="btnCancel"><a href="/">가입 취소</a></button>
+    <button type="button" id="btnCancel">가입 취소</button>
     </form>
 
         <div id="modal">
@@ -112,6 +112,10 @@
             $('#btnCancel').on('click', function () {
                 window.location.href = '/index';
             });
+
+            $('#btnCancel').on('click', function () {
+    window.location.href = '/';
+});
         });
     </script>
 
