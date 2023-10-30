@@ -29,7 +29,10 @@ public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final ProductRepository productRepository;
     private final UserRepository userRepository;
-    private final OrderItemRepository orderRepository;
+
+
+    private final OrderItemRepository orderItemRepository;
+
     private final ModelMapper modelMapper;
 
     // 리뷰 작성하기
@@ -37,7 +40,7 @@ public class ReviewService {
         User userEntity = userRepository.findById(userId)
                 .orElseThrow(() -> new MemberNotFoundException("user not found"));
 
-        OrderItem itemEntity = orderRepository.findById(orderItemId)
+        OrderItem itemEntity = orderItemRepository.findById(orderItemId)
                 .orElseThrow(() -> new MemberNotFoundException("orderItem not found"));
 
 
