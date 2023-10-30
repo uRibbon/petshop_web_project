@@ -18,4 +18,3 @@ public class ProductResDTO {
     private int stock;
 
 }
-
