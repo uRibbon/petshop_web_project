@@ -3,6 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $("#searchButton").click(function(){
+                $.ajax({
+                    url: '/api/calculate-distance',
+                    type: 'POST',
+                    data: {
+                        address: $("#address").val()
+                    },
+                    success: function(response) {
+                        // 결과를 페이지에 동적으로 추가하는 코드를 여기에 작성합니다.
+                        // 예: distance를 표시하는 div에 값을 설정
+                        $("#distanceDiv").text(response.distance);
+                    }
+                });
+            });
+        });
+    </script>
 </head>
 <body>
 <form th:action="@{/preparePayment}" method="post">
@@ -33,13 +52,13 @@
 
     <input type="submit" value="주문하기"/>
 </form>
-<div th:text="'Price: ' + ${priceSession}"></div>
-
-<form action="/api/calculate-distance" method="post">
+<div th:text="'Price: ' + ${price}"></div>
+<form id="addressForm">
     <label for="address">주소:</label>
     <input type="text" id="address" name="address">
-    <button type="submit">검색</button>
+    <button type="button" id="searchButton">검색</button>
 </form>
+<div id="distanceDiv"></div>
 <div th:if="${distance != null}">
     <p th:text="${distance}"></p>
 </div>

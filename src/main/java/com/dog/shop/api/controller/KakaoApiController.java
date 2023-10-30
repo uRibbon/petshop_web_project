@@ -1,6 +1,8 @@
 package com.dog.shop.api.controller;
 
 import com.dog.shop.api.service.KakaoApiService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,6 +10,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/api")
@@ -25,13 +30,12 @@ public class KakaoApiController {
     }
 
     @PostMapping("/calculate-distance")
-    public String calculateDistance(@RequestParam String address, Model model, RedirectAttributes redirectAttributes) {
+    public ResponseEntity<Map<String, String>> calculateDistance(@RequestParam String address, RedirectAttributes redirectAttributes) {
+
         String result = kakaoApiService.calculateDistance(address, redirectAttributes);
-        model.addAttribute("distance", result);
+        Map<String, String> responseMap = new HashMap<>();
+        responseMap.put("distance", result);
 
-        String fare = kakaoApiService.calculateDistance(address, redirectAttributes);
-        model.addAttribute("fare", fare);
-
-        return "cartItem";
+        return new ResponseEntity<>(responseMap, HttpStatus.OK);
     }
 }
