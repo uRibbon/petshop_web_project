@@ -27,8 +27,8 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
 
     // 이메일 중복 체크
-    public boolean userCheck(String email) {
-        boolean isEmail = userRepository.existsUserByEmail(email);
+    public User userCheck(String email) {
+        User isEmail = userRepository.existsUserByEmail(email);
         return isEmail;
     }
 

@@ -3,23 +3,20 @@ package com.dog.shop.product.service;
 import com.dog.shop.domain.product.Product;
 import com.dog.shop.errorcode.ErrorCode;
 import com.dog.shop.exception.CommonException;
-import com.dog.shop.myenum.SalesStatus;
 import com.dog.shop.product.dto.ProductReqDTO;
-import com.dog.shop.product.dto.ProductReqForm;
 import com.dog.shop.product.dto.ProductResDTO;
 import com.dog.shop.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.modelmapper.ModelMapper;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Paths;
 import java.util.UUID;
 
 @Service
@@ -47,20 +44,7 @@ public class ProductService {
         ProductResDTO productResDTO = modelMapper.map(productEntity,ProductResDTO.class);
         return productResDTO;
     }
-    @Transactional
-    public void updateProduct(ProductReqForm productReqForm) {
-        Product existProduct = productRepository.findById(productReqForm.getId())
-                .orElseThrow(() ->
-                        new CommonException(ErrorCode.NON_LOGIN, HttpStatus.NOT_FOUND));
-        existProduct.setDescription(productReqForm.getDescription());
-        existProduct.setPrice(productReqForm.getPrice());
-        existProduct.setProductName(productReqForm.getProductName());
 
-        SalesStatus salesStatus = SalesStatus.valueOf(productReqForm.getSalesStatus().toUpperCase());
-        existProduct.setSalesStatus(salesStatus);
-
-        existProduct.setStock(productReqForm.getStock());
-    }
 
     public void deleteProduct(Long id) {
         Product product = productRepository.findById(id)

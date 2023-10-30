@@ -30,11 +30,11 @@ public class AuthController {
     }
 
     @GetMapping("/check")
-    public ResponseEntity<Boolean> memCheck(@RequestParam String email) {
+    public String memCheck(@RequestParam String email) {
         System.out.println("이메일 확인 : " + email);
-        boolean result = authService.userCheck(email);
+        String  result = String.valueOf(authService.userCheck(email));
         System.out.println(result);
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return result;
     }
 
     @PostMapping("/signup")
