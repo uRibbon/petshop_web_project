@@ -1,13 +1,16 @@
 package com.dog.shop.web.inquiry;
 
+import com.dog.shop.domain.product.Product;
 import com.dog.shop.dto.inquiryDto.InquiryReqDTO;
 import com.dog.shop.dto.inquiryDto.InquiryResDTO;
+import com.dog.shop.product.repository.ProductRepository;
 import com.dog.shop.service.inquiry.InquiryService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,10 +23,37 @@ public class InquiryRestController {
     private final InquiryService inquiryService;
 
     private final ModelMapper modelMapper;
+    private final ProductRepository productRepository;
 
+
+    // 상품 문의하기 페이지
+    @GetMapping("/register/{id}") // productId를 가져오면 됨
+    public String registerInquiryPage(@PathVariable Long id, Model model) {
+        // 상품 ID를 사용하여 데이터베이스에서 해당 상품 정보를 가져옵니다.
+        Product product = productRepository.findById(id).orElseThrow(); // TODO 에러처리 필요
+        model.addAttribute("product", product);
+        // 문의 DTO 객체를 초기화하고 모델에 추가합니다.
+        InquiryReqDTO inquiryDTO = new InquiryReqDTO();
+        model.addAttribute("inquiryForm", inquiryDTO);
+        return "inquiryRegister"; // 상품 문의 페이지로 리디렉션
+    }
 
     // 등록
-    @ResponseBody
+    @PostMapping("/submit/inquiry")
+    public String registerInquiry(@ModelAttribute InquiryReqDTO inquiryReqDTO, Model model) {
+        // userId 값을 2L로 고정
+        Long userId = 2L;
+        Long productId = 2L;
+
+        InquiryResDTO result = inquiryService.regInquiry(userId, productId, inquiryReqDTO);
+
+        // 결과를 모델에 추가하고 뷰를 반환할 수 있습니다.
+        model.addAttribute("result", result);
+
+        // 예: 'inquiryResult'라는 이름의 뷰로 이동합니다.
+        return "redirect:/";
+    }
+    /*ResponseBody
     @PostMapping
     public ResponseEntity<InquiryResDTO> registerInquiry(@RequestBody InquiryReqDTO inquiryReqDTO) {
         // userId 값을 2L로 고정
@@ -32,13 +62,14 @@ public class InquiryRestController {
 
         InquiryResDTO result = inquiryService.regInquiry(userId, productId, inquiryReqDTO);
         return new ResponseEntity<>(result, HttpStatus.OK);
-    }
+    }*/
 
     // 전체 조회
     @GetMapping
-    @ResponseBody
-    public List<InquiryResDTO> getInquiryies() {
-        return inquiryService.getInquiries();
+    public String getInquiryies(Model model) {
+        List<InquiryResDTO> inquiries = inquiryService.getInquiries();
+        model.addAttribute("inquiries", inquiries);
+        return "inquiryCheck";
     }
 
     // id로 개별 조회

@@ -32,8 +32,10 @@ public class ProductService {
     }
 
     public ProductResDTO saveProduct(ProductReqDTO productReqDTO) {
+        System.out.println(productReqDTO);
         Product product = modelMapper.map(productReqDTO,Product.class);
         Product savedProduct = productRepository.save(product);
+        System.out.println("savedProduct = " + savedProduct.toString());
         return modelMapper.map(savedProduct,ProductResDTO.class);
     }
 
@@ -112,7 +114,7 @@ public class ProductService {
         }
 
         // 이미지에 접근할 수 있는 경로 또는 URL 반환 (필요에 따라 수정)
-        return "http://yourserver.com/main/" + uniqueFileName;
+        return "http://49.50.165.98/main/" + uniqueFileName;
     }
 
 

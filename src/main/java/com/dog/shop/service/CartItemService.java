@@ -11,6 +11,7 @@ import com.dog.shop.dto.CartResDto;
 import com.dog.shop.errorcode.ErrorCode;
 import com.dog.shop.exception.CommonException;
 import com.dog.shop.product.dto.ProductResDTO;
+import com.dog.shop.product.repository.ProductRepository;
 import com.dog.shop.repository.CartItemRepository;
 import com.dog.shop.repository.CartRepository;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +33,7 @@ public class CartItemService {
         private final CartItemRepository cartItemRepository;
         private final ModelMapper modelMapper;
         private final CartRepository cartRepository;
+        private final ProductRepository productRepository;
 
         @Transactional(readOnly = true)
         public List<CartItemResDto> getCartItems() {
@@ -58,6 +60,25 @@ public class CartItemService {
 
 
         public void saveCartItem(CartItemReqDto cartItemReqDto, ProductResDTO productResDTO, CartResDto cartResDto) {
+                // 데이터베이스에서 실제 Product 엔티티 조회
+                Product product = productRepository.findById(productResDTO.getId())
+                        .orElseThrow(() -> new RuntimeException("Product not found"));
+
+                // Cart 조회 (존재하지 않으면 새로 생성)
+                Cart cart = cartRepository.findById(cartResDto.getId()).orElseGet(Cart::new);
+
+                // CartItem 엔티티에 데이터 설정
+                CartItem cartItem = new CartItem();
+                cartItem.setQuantity(cartItemReqDto.getQuantity());
+                cartItem.setSubTotal(cartItemReqDto.getSubTotal());
+                cartItem.setUnitPrice(productResDTO.getPrice());
+                cartItem.setCart(cart);
+                cartItem.setProduct(product); // 조회된 Product 엔티티 설정
+
+                // CartItem 엔티티 저장
+                cartItemRepository.save(cartItem);
+        }
+        /*public void saveCartItem(CartItemReqDto cartItemReqDto, ProductResDTO productResDTO, CartResDto cartResDto) {
                 // ProductResDTO를 Product 엔티티로 변환
                 Product product = new Product();
                 product.setId(productResDTO.getId());
@@ -79,7 +100,7 @@ public class CartItemService {
 
                 cartItemRepository.save(cartItem);
 
-        }
+        }*/
 
         @Transactional(readOnly = true)
         public CartItemResDto getCartItemById(Long id) {

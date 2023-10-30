@@ -5,6 +5,7 @@
     <title>Products detail</title>
 </head>
 <body>
+
 <table>
     <tr>
         <th>Seq</th>
@@ -13,6 +14,7 @@
         <th>product_name</th>
         <th>sales_status</th>
         <th>stock</th>
+        <th>상품 문의하기</th>
     </tr>
     <tr>
         <td th:text="${product.id}"></td>
@@ -22,6 +24,7 @@
         <td th:text="${product.salesStatus}"></td>
         <td th:text="${product.stock}"></td>
         <td><a th:href="@{/cartItem/signup/{id}(id=${product.id})}">장바구니 담기설정</a></td>
+        <td><a th:href="@{/api/inquiry/register/{id}(id=${product.id})}">상품 문의하기</a></td>
     </tr>
 </table>
 </body>

@@ -53,7 +53,7 @@
             <th>sub_total</th>
             <th>unit_price</th>
             <th>cart_id</th>
-            <th>product_id</th>
+            <!--<th>product_id</th>-->
             <th>Update</th>
             <th>Delete</th>
         </tr>
@@ -65,7 +65,7 @@
             <td th:attr="data-subtotal=${cartItem.subTotal}" th:text="${cartItem.subTotal}"></td>
             <td th:text="${cartItem.unitPrice}"></td>
             <td th:text="${cartItem.cart}"></td>
-            <td th:text="${cartItem.product}"></td>
+            <!--<td th:text="${cartItem.product}"></td>-->
             <td><a th:href="@{/cartItem/edit/{id}(id=${cartItem.id})}">수정</a></td>
             <td><a th:href="@{/cartItem/delete/{id}(id=${cartItem.id})}">삭제</a></td>
         </tr>

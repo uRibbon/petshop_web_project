@@ -4,10 +4,7 @@ import com.dog.shop.domain.OrderItem;
 import com.dog.shop.domain.cart.CartItem;
 import com.dog.shop.myenum.SalesStatus;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @Table
 @Setter
+@ToString
 public class Product {
 
     @Id
@@ -43,10 +41,10 @@ public class Product {
     @OneToMany(mappedBy = "product")
     private List<CartItem> cartItems = new ArrayList<>();
 
-    @Override
+    /*@Override
     public String toString() {
         return "" + id;
-    }
+    }*/
     @OneToMany(mappedBy = "product")
     private List<OrderItem> orderItems = new ArrayList<>();
 

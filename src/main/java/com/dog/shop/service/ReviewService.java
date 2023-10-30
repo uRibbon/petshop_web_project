@@ -79,8 +79,11 @@ public class ReviewService {
         List<Review> reviewList = reviewRepository.findUserByUserId(userId);
         List<ReviewResDto> reviewResDtoList = new ArrayList<>();
 
-        ReviewResDto reviewResDto = modelMapper.map(reviewList, ReviewResDto.class);
-        reviewResDtoList.add(reviewResDto);
+        for (Review review : reviewList) {
+            ReviewResDto reviewResDto = modelMapper.map(review, ReviewResDto.class);
+            reviewResDtoList.add(reviewResDto);
+        }
+
         return reviewResDtoList;
     }
 
