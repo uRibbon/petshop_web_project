@@ -1,5 +1,6 @@
 package com.dog.shop.domain.inquiry;
 
+import com.dog.shop.domain.Reply;
 import com.dog.shop.domain.product.Product;
 import com.dog.shop.domain.User;
 import com.dog.shop.myenum.InquiryStatus;
@@ -37,4 +38,7 @@ public class Inquiry {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    @OneToOne(mappedBy = "inquiry")
+    private Reply reply;
 }

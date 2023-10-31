@@ -92,5 +92,9 @@ public class ReviewController {
         return "reviewCheck";
     }
 
-
+    // 리뷰 가져오기
+    @GetMapping("/reviewList")
+    public List<ReviewResDto> getReview() {
+        return reviewService.showAllReview();
+    }
 }
