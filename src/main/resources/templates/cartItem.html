@@ -53,6 +53,14 @@
         button:hover {
             background-color: #45a049;
         }
+        .footer {
+            background-color: #f1f1f1;
+            padding: 10px;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
     </style>
     <script>
         function goBack() {
@@ -100,6 +108,7 @@
     </script>
 </head>
 <body>
+<div th:insert="~{/index/header :: header}"></div>
 <div class="container">
     <form th:action="@{/preparePayment}" method="post" onsubmit="return validateForm();">
         <table>
@@ -130,6 +139,9 @@
     </form>
     <div id="totalAmount">총 금액: 0원</div>
     <button onclick="goBack()">뒤로 가기</button>
+</div>
+<div class="footer">
+    <div th:insert="~{/index/footer :: footer}"></div>
 </div>
 </body>
 </html>
