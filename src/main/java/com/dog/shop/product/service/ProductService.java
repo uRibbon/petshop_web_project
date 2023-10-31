@@ -8,6 +8,7 @@ import com.dog.shop.product.dto.ProductResDTO;
 import com.dog.shop.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -103,9 +104,11 @@ public class ProductService {
 
         // 유니크한 파일 이름 생성 (필요에 따라 로직을 수정할 수 있음)
         String originalFileName = file.getOriginalFilename();
-        // String fileExtension =
-        // originalFileName.substring(originalFileName.lastIndexOf("."));
-        // String uniqueFileName = UUID.randomUUID().toString() + fileExtension;
+
+         String fileExtension =
+         originalFileName.substring(originalFileName.lastIndexOf("."));
+
+         String uniqueFileName = UUID.randomUUID().toString() + fileExtension;
 
         // 전체 파일 경로 생성
         String filePath = uploadDir + originalFileName;
@@ -118,7 +121,7 @@ public class ProductService {
 
         // 이미지 저장
         try {
-            file.transferTo(new File(filePath));
+            file.transferTo(new File(filePath)); // 여기가저장부분
         } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException("이미지 저장에 실패했습니다.");
