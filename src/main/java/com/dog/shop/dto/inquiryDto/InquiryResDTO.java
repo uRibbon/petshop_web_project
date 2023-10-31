@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 @ToString
 @Builder
 public class InquiryResDTO {
+    private Long id;
 
     private String email;
 

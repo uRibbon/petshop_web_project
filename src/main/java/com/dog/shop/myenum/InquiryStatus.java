@@ -11,4 +11,13 @@ public enum InquiryStatus {
 
     private final String key;
     private final String value;
+
+    public static InquiryStatus fromValue(String value) {
+        for (InquiryStatus status : InquiryStatus.values()) {
+            if (status.getValue().equals(value)) {
+                return status;
+            }
+        }
+        throw new IllegalArgumentException("Invalid InquiryStatus value: " + value);
+    }
 }
