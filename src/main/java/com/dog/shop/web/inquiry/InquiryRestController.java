@@ -42,8 +42,8 @@ public class InquiryRestController {
     @PostMapping("/submit/inquiry")
     public String registerInquiry(@ModelAttribute InquiryReqDTO inquiryReqDTO, Model model) {
         // userId 값을 2L로 고정
-        Long userId = 2L;
-        Long productId = 2L;
+        Long userId = 10L;
+        Long productId = 30L;
 
         InquiryResDTO result = inquiryService.regInquiry(userId, productId, inquiryReqDTO);
 
