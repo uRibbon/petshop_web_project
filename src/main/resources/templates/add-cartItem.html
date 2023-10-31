@@ -9,26 +9,35 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
+            background-color: #f1f1f1;
         }
         .container {
             max-width: 600px;
             margin: 0 auto;
             padding: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            margin-top: 50px;
         }
-        form {
-            margin-top: 20px;
-        }
-        label, input {
-            margin-bottom: 10px;
-            display: block;
+        input[type="number"], input[type="text"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            box-sizing: border-box;
         }
         button {
-            margin-top: 10px;
             background-color: #4CAF50;
             color: white;
-            padding: 10px 20px;
+            padding: 14px 20px;
             border: none;
+            border-radius: 5px;
             cursor: pointer;
+            font-size: 16px;
+            margin-right: 10px;
         }
         button:hover {
             background-color: #45a049;
@@ -59,11 +68,11 @@
         <label for="productResDTO.price">개당 가격</label>
         <input type="text" th:field="*{productResDTO.price}" id="productResDTO.price" readonly>
         <br/>
-        <!--cart_id는 이용자들이 볼 필요가 없어서 hidden 처리후 br 제거해서 줄 병합-->
-        <label for="cartResDto.id"><!--cart_id--></label>
+
+        <label for="cartResDto.id"></label>
         <input type="hidden" th:field="*{cartResDto.id}" id="cartResDto.id">
-        <!--proudct_id 도 이용자들이 볼 필요가 없어서 hidden 처리후 br 제거해서 줄 병합-->
-        <label for="productResDTO.id"><!--product_id--></label>
+
+        <label for="productResDTO.id"></label>
         <input type="hidden" th:field="*{productResDTO.id}" id="productResDTO.id">
 
         <button id="submitButton">장바구니 담기</button>
@@ -100,19 +109,16 @@
         var quantity = document.getElementById("cartItemReqDto.quantity").value;
         var unitPrice = document.getElementById("productResDTO.price").value;
 
-        // quantity와 unitPrice가 숫자인지 확인
         if (!isNaN(quantity) && !isNaN(unitPrice)) {
             var subtotal = quantity * unitPrice;
             document.getElementById("cartItemReqDto.subTotal").value = subtotal;
         } else {
-            // 에러 처리: 유효한 숫자가 아닌 경우 메시지 표시 또는 다른 처리 수행
             alert("유효한 숫자가 아닙니다.");
         }
     }
     /*]]>*/
 
     document.getElementById("submitButton").onclick = function() {
-        // 폼을 제출
         document.getElementById("yourFormId").submit();
     };
 </script>
