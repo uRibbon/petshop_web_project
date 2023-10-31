@@ -56,9 +56,31 @@ public class CartItemController {
         List<CartItemResDto> cartItems = null;
 
         cartItems = cartItemService.getUserCartItems(userId);
+
+        String address = userOpt.get().getAddress();
+
+        int fee = kakaoApiService.calculateDistance(address);
+
+        ModelAndView mav = new ModelAndView("cartItem");
+        mav.addObject("cartItems", cartItems);
+        mav.addObject("fee", fee);
+
+        return mav;
+    }
+    /*@GetMapping("/getCartItem")
+    public ModelAndView getCartItem(HttpServletRequest request) {
+        String token = jwtHelper.extractTokenFromCookies(request);
+        Optional<User> userOpt = jwtHelper.extractUserFromToken(token);
+        Long userId = userOpt.get().getId();
+        List<CartItemResDto> cartItems = cartItemService.getUserCartItems(userId);
+
+        String address = userOpt.get().getAddress();
+
+        int fee = kakaoApiService.calculateDistance(address);
+
         // TODO 장바구니가 null일 경우도 고려해야함
         return new ModelAndView("cartItem", "cartItems", cartItems);
-    }
+    }*/
 
     @PostMapping("/addcartItem")
     public String addCartItem(@ModelAttribute("multiFormDto") MultiFormDto multiFormDto){

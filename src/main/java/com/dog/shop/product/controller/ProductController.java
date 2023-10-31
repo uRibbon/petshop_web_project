@@ -12,6 +12,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -42,8 +43,9 @@ public class ProductController {
         return "create-product";
     }
 
+    @ResponseBody
     @PostMapping("/create")
-    public String createProduct(
+    public ResponseEntity<String> createProduct (
             @RequestParam("product") String productJson,
             @RequestParam(name = "mainImage", required = false) MultipartFile file) throws JsonProcessingException {
 
@@ -58,7 +60,7 @@ public class ProductController {
         }
 
         productService.saveProduct(productReqDTO);
-        return "redirect:/products/list";
+        return ResponseEntity.ok("이미지 저장 성공");
     }
 
     @GetMapping("/{id}")

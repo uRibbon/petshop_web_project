@@ -87,7 +87,7 @@ public class OrderController {
 
 
     @PostMapping("/preparePayment")
-    public String preparePayment(@RequestParam List<Long> selectedItems, Model model, HttpServletRequest request, RedirectAttributes redirectAttributes) {
+    public String preparePayment(@RequestParam List<Long> selectedItems, @RequestParam int deliveryFee, Model model, HttpServletRequest request, RedirectAttributes redirectAttributes) {
         // ... 기존 코드 ...
         String token = getJwtTokenFromCookies(request); // 쿠키에서 jwtToken 가져오기
         List<CartItem> cartItemList = null;
@@ -113,7 +113,8 @@ public class OrderController {
             if (cartItemList.size() > 1) {
                 goodsName += " 외 " + (cartItemList.size() - 1) + "개";
             }
-            int price = cartItemList.stream().mapToInt(CartItem::getSubTotal).sum(); // + 배달비
+            // int price = cartItemList.stream().mapToInt(CartItem::getSubTotal).sum(); // + 배달비
+            int price = cartItemList.stream().mapToInt(CartItem::getSubTotal).sum() + deliveryFee; // + 배달비
 
             // 1. 복사 (Copy)
             Order order = new Order();
