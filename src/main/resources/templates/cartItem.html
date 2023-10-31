@@ -113,12 +113,12 @@
     <form th:action="@{/preparePayment}" method="post" onsubmit="return validateForm();">
         <table>
             <tr>
-                <th class="checkbox-column">Select</th>
+                <th class="checkbox-column">택</th>
                 <th>Seq</th>
-                <th>Quantity</th>
-                <th>Subtotal</th>
-                <th>Unit Price</th>
-                <th>Cart ID</th>
+                <th>수량</th>
+                <th>합계금액</th>
+                <th>개당가격</th>
+<!--                <th>Cart ID</th>-->
                 <th class="update-delete-columns">Update</th>
                 <th class="update-delete-columns">Delete</th>
             </tr>
@@ -128,7 +128,7 @@
                 <td th:text="${cartItem.quantity}"></td>
                 <td th:attr="data-subtotal=${cartItem.subTotal}" th:text="${cartItem.subTotal}"></td>
                 <td th:text="${cartItem.unitPrice}"></td>
-                <td th:text="${cartItem.cart}"></td>
+<!--                <td th:text="${cartItem.cart}"></td>-->
                 <td class="update-delete-columns"><a th:href="@{/cartItem/edit/{id}(id=${cartItem.id})}">수정</a></td>
                 <td class="update-delete-columns"><a th:href="@{/cartItem/delete/{id}(id=${cartItem.id})}">삭제</a></td>
             </tr>
