@@ -1,47 +1,80 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<meta charset="UTF-8">
 <head>
+    <meta charset="UTF-8">
+    <link th:href="@{/css/main.css}" rel="stylesheet">
+    <title>장바구니</title>
     <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        form {
+            margin-top: 20px;
+        }
+        label, input {
+            margin-bottom: 10px;
+            display: block;
+        }
         button {
-            display: inline-block;
-            margin-top: 10px; /* 버튼 상단 여백을 조절할 수 있습니다. */
+            margin-top: 10px;
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .footer {
+            background-color: #f1f1f1;
+            padding: 10px;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
         }
     </style>
 </head>
 <body>
-<form id="yourFormId" action="#" th:action="@{/cartItem/addcartItem}" th:object="${multiFormDto}" method="post" onsubmit="return false;">
+<div th:insert="~{/index/header :: header}"></div>
+<div class="container">
+    <form id="yourFormId" action="#" th:action="@{/cartItem/addcartItem}" th:object="${multiFormDto}" method="post" onsubmit="return false;">
+        <label for="cartItemReqDto.quantity">Quantity</label>
+        <input type="number" th:field="*{cartItemReqDto.quantity}" id="cartItemReqDto.quantity" oninput="calculateSubtotal()">
+        <span th:if="${#fields.hasErrors('cartItemReqDto.quantity')}" th:errors="*{cartItemReqDto.quantity}"></span>
+        <br/>
 
-    <label for="cartItemReqDto.quantity">quantity</label>
-    <input type="number" th:field="*{cartItemReqDto.quantity}" id="cartItemReqDto.quantity" oninput="calculateSubtotal()">
-    <span th:if="${#fields.hasErrors('cartItemReqDto.quantity')}" th:errors="*{cartItemReqDto.quantity}"></span>
-    <br/>
+        <label for="cartItemReqDto.subTotal">Subtotal</label>
+        <input type="text" th:field="*{cartItemReqDto.subTotal}" id="cartItemReqDto.subTotal" readonly>
+        <br/>
 
-    <label for="cartItemReqDto.subTotal">subTotal</label>
-    <input type="text" th:field="*{cartItemReqDto.subTotal}" id="cartItemReqDto.subTotal">
-    <span th:if="${#fields.hasErrors('cartItemReqDto.subTotal')}" th:errors="*{cartItemReqDto.subTotal}"></span>
-    <br/>
+        <label for="productResDTO.price">Unit Price</label>
+        <input type="text" th:field="*{productResDTO.price}" id="productResDTO.price" readonly>
+        <br/>
 
-    <label for="productResDTO.price">unitPrice</label>
-    <input type="text" th:field="*{productResDTO.price}" id="productResDTO.price">
-    <span th:if="${#fields.hasErrors('productResDTO.price')}" th:errors="*{productResDTO.price}"></span>
-    <br/>
+        <label for="cartResDto.id"><!--cart_id--></label>
+        <input type="hidden" th:field="*{cartResDto.id}" id="cartResDto.id">
 
-    <label for="cartResDto.id">cart_id</label>
-    <input type="text" th:field="*{cartResDto.id}" id="cartResDto.id">
-    <span th:if="${#fields.hasErrors('cartResDto.id')}" th:errors="*{cartResDto.id}"></span>
-    <br/>
+        <label for="productResDTO.id"><!--product_id--></label>
+        <input type="hidden" th:field="*{productResDTO.id}" id="productResDTO.id">
 
-    <label for="productResDTO.id">product_id</label>
-    <input type="hidden" th:field="*{productResDTO.id}" id="productResDTO.id">
-    <span th:if="${#fields.hasErrors('productResDTO.id')}" th:errors="*{productResDTO.id}"></span>
-    <br/>
+        <button id="submitButton">장바구니 담기</button>
+        <button type="button" onclick="increaseQuantity()">수량 추가</button>
+        <button type="button" onclick="decreaseQuantity()">수량 제거</button>
+    </form>
+</div>
 
-    <button id="submitButton">장바구니 담기</button>  <!--submit을 제어하기위해 submit을 없애고 전부 버튼태그로 지정-->
-
-    <button onclick="increaseQuantity()">수량추가</button>
-    <button onclick="decreaseQuantity()">수량제거</button>
-</form>
+<div class="footer">
+    <div th:insert="~{/index/footer :: footer}"></div>
+</div>
 
 <script th:inline="javascript">
     /*<![CDATA[*/
@@ -59,7 +92,7 @@
             document.getElementById("cartItemReqDto.quantity").value = quantity;
             calculateSubtotal();
         } else {
-            alert("더이상 수량을 제거할수 없습니다.");
+            alert("더 이상 수량을 제거할 수 없습니다.");
         }
     }
 
@@ -83,6 +116,5 @@
         document.getElementById("yourFormId").submit();
     };
 </script>
-
 </body>
 </html>
