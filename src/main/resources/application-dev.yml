@@ -36,6 +36,10 @@ spring:
     #org.hibernate.type.descriptor.sql: trace
     #org.springframework.security: DEBUG
     #org.springframework: DEBUG
+  devtools:
+    remote:
+      restart:
+        enabled: true
 jwt:
   header: Authorization
   secret: and0LXRlc3QtYWxqamFiYWVnaS1qd3QtdGVzdC1hbGpqYWJhZWdpLWp3dC10ZXN0LWFsamphYmFlZ2ktand0LXRlc3QtYWxqamFiYWVnaS1qd3QtdGVzdC1hbGpqYWJhZWdpLWp3dC10ZXN0LWFsamphYmFlZ2ktand0LXRlc3QtYWxqamFiYWVnaS1qd3QtdGVzdC1hbGpqYWJhZWdp
@@ -48,4 +52,3 @@ file:
 #  /src/main/resources/static/images ( 로컬경로)
 endpoint:
   path: /payment/api
-

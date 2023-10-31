@@ -9,36 +9,48 @@
         }
 
         function validateForm() {
-        var checkboxes = document.getElementsByName('selectedItems');
-        var isChecked = false;
-        for (var i = 0; i < checkboxes.length; i++) {
-            if (checkboxes[i].checked) {
-                isChecked = true;
-                break;
+            var checkboxes = document.getElementsByName('selectedItems');
+            var isChecked = false;
+            for (var i = 0; i < checkboxes.length; i++) {
+                if (checkboxes[i].checked) {
+                    isChecked = true;
+                    break;
+                }
             }
+            if (!isChecked) {
+                alert('상품을 선택해주세요.');
+                return false;
+            }
+            return true;
         }
-        if (!isChecked) {
-            alert('상품을 선택해주세요.');
-            return false;
-        }
-        return true;
-    }
 
-        function updateTotalAmount() {
-    var checkboxes = document.getElementsByName('selectedItems');
-    var totalAmount = 0;
-    for (var i = 0; i < checkboxes.length; i++) {
-        if (checkboxes[i].checked) {
-            var subTotalValue = checkboxes[i].closest('tr').querySelector('[data-subtotal]').getAttribute('data-subtotal');
-            console.log(subTotalValue);  // 값을 콘솔에 출력하여 확인
-            var subTotal = parseFloat(subTotalValue);
-            if (!isNaN(subTotal)) {
-                totalAmount += subTotal;
+
+
+
+            // 여기에 JavaScript 코드를 넣습니다.
+            function updateTotalAmount() {
+                var checkboxes = document.getElementsByName('selectedItems');
+                var totalAmount = 0;
+
+                // 여기서 fee 값을 HTML 요소에서 가져옵니다.
+                var feeText = document.getElementById('fee').innerText;
+                var feeValue = feeText.match(/\d+/);  // 숫자 부분만 추출
+                var fee = parseFloat(feeValue);
+                for (var i = 0; i < checkboxes.length; i++) {
+                    if (checkboxes[i].checked) {
+                        var subTotalValue = checkboxes[i].closest('tr').querySelector('[data-subtotal]').getAttribute('data-subtotal');
+                        var subTotal = parseFloat(subTotalValue);
+                        if (!isNaN(subTotal)) {
+                            totalAmount += subTotal;
+                        }
+                    }
+                }
+
+                totalAmount += fee; // 총 금액에 배송비를 추가합니다.
+
+                document.getElementById('totalAmount').innerText = '총 금액 (배송비 포함): ' + totalAmount + '원';
             }
-        }
-    }
-    document.getElementById('totalAmount').innerText = '총 금액: ' + totalAmount + '원';
-}
+
 
 
     </script>
@@ -70,6 +82,8 @@
             <td><a th:href="@{/cartItem/delete/{id}(id=${cartItem.id})}">삭제</a></td>
         </tr>
     </table>
+    <div id="fee">배송비: <span th:text="${fee}"></span>원</div>
+    <input type="hidden" id="hiddenFee" name="deliveryFee" th:value="${fee}" />
     <input type="submit" value="주문하기"/>
 </form>
 <div id="totalAmount">총 금액: 0원</div>
