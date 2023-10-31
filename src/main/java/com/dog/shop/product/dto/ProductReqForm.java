@@ -15,5 +15,5 @@ public class ProductReqForm {
     private String productName;
     private String salesStatus;
     private int stock;
-
+    private String MainImageUrl;
 }
