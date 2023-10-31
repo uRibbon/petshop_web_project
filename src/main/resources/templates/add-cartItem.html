@@ -9,12 +9,17 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
+            background-color: #f1f1f1;
         }
 
         .container {
             max-width: 600px;
             margin: 0 auto;
             padding: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            margin-top: 50px;
         }
 
         form {
@@ -71,7 +76,7 @@
 
         input[type="text"],
         input[type="number"] {
-            width: 100%;
+            width: 94%;
             padding: 10px;
             border: 1px solid #ddd; /* Set border color to gray */
             border-radius: 5px;
@@ -140,19 +145,16 @@
         var quantity = document.getElementById("cartItemReqDto.quantity").value;
         var unitPrice = document.getElementById("productResDTO.price").value;
 
-        // quantity와 unitPrice가 숫자인지 확인
         if (!isNaN(quantity) && !isNaN(unitPrice)) {
             var subtotal = quantity * unitPrice;
             document.getElementById("cartItemReqDto.subTotal").value = subtotal;
         } else {
-            // 에러 처리: 유효한 숫자가 아닌 경우 메시지 표시 또는 다른 처리 수행
             alert("유효한 숫자가 아닙니다.");
         }
     }
     /*]]>*/
 
     document.getElementById("submitButton").onclick = function() {
-        // 폼을 제출
         document.getElementById("yourFormId").submit();
     };
 </script>

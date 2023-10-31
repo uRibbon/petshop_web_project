@@ -1,5 +1,6 @@
 package com.dog.shop.web.CartItem;
 
+import com.dog.shop.api.service.KakaoApiService;
 import com.dog.shop.domain.User;
 import com.dog.shop.domain.cart.Cart;
 import com.dog.shop.dto.*;
@@ -40,6 +41,7 @@ public class CartItemController {
     private final UserRepository userRepository;
     private final JwtHelper jwtHelper;
     private final CartRepository cartRepository;
+    private final KakaoApiService kakaoApiService;
 
     @GetMapping("/getList")
     public ModelAndView getList() {
