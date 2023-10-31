@@ -47,22 +47,22 @@
 <div th:insert="~{/index/header :: header}"></div>
 <div class="container">
     <form id="yourFormId" action="#" th:action="@{/cartItem/addcartItem}" th:object="${multiFormDto}" method="post" onsubmit="return false;">
-        <label for="cartItemReqDto.quantity">Quantity</label>
+        <label for="cartItemReqDto.quantity">수량</label>
         <input type="number" th:field="*{cartItemReqDto.quantity}" id="cartItemReqDto.quantity" oninput="calculateSubtotal()">
         <span th:if="${#fields.hasErrors('cartItemReqDto.quantity')}" th:errors="*{cartItemReqDto.quantity}"></span>
         <br/>
 
-        <label for="cartItemReqDto.subTotal">Subtotal</label>
+        <label for="cartItemReqDto.subTotal">합계 금액</label>
         <input type="text" th:field="*{cartItemReqDto.subTotal}" id="cartItemReqDto.subTotal" readonly>
         <br/>
 
-        <label for="productResDTO.price">Unit Price</label>
+        <label for="productResDTO.price">개당 가격</label>
         <input type="text" th:field="*{productResDTO.price}" id="productResDTO.price" readonly>
         <br/>
-
+        <!--cart_id는 이용자들이 볼 필요가 없어서 hidden 처리후 br 제거해서 줄 병합-->
         <label for="cartResDto.id"><!--cart_id--></label>
         <input type="hidden" th:field="*{cartResDto.id}" id="cartResDto.id">
-
+        <!--proudct_id 도 이용자들이 볼 필요가 없어서 hidden 처리후 br 제거해서 줄 병합-->
         <label for="productResDTO.id"><!--product_id--></label>
         <input type="hidden" th:field="*{productResDTO.id}" id="productResDTO.id">
 

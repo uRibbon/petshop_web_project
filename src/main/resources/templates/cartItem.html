@@ -2,77 +2,134 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <link th:href="@{/css/main.css}" rel="stylesheet">
+    <title>장바구니</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .checkbox-column {
+            width: 5%;
+        }
+        .update-delete-columns {
+            width: 10%;
+        }
+        #fee {
+            margin-bottom: 10px;
+        }
+        #totalAmount {
+            font-weight: bold;
+            font-size: 18px;
+            margin-top: 20px;
+        }
+        button {
+            margin-top: 20px;
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
     <script>
         function goBack() {
             window.history.back();
         }
 
         function validateForm() {
-        var checkboxes = document.getElementsByName('selectedItems');
-        var isChecked = false;
-        for (var i = 0; i < checkboxes.length; i++) {
-            if (checkboxes[i].checked) {
-                isChecked = true;
-                break;
+            var checkboxes = document.getElementsByName('selectedItems');
+            var isChecked = false;
+            for (var i = 0; i < checkboxes.length; i++) {
+                if (checkboxes[i].checked) {
+                    isChecked = true;
+                    break;
+                }
             }
+            if (!isChecked) {
+                alert('상품을 선택해주세요.');
+                return false;
+            }
+            return true;
         }
-        if (!isChecked) {
-            alert('상품을 선택해주세요.');
-            return false;
-        }
-        return true;
-    }
 
         function updateTotalAmount() {
-    var checkboxes = document.getElementsByName('selectedItems');
-    var totalAmount = 0;
-    for (var i = 0; i < checkboxes.length; i++) {
-        if (checkboxes[i].checked) {
-            var subTotalValue = checkboxes[i].closest('tr').querySelector('[data-subtotal]').getAttribute('data-subtotal');
-            console.log(subTotalValue);  // 값을 콘솔에 출력하여 확인
-            var subTotal = parseFloat(subTotalValue);
-            if (!isNaN(subTotal)) {
-                totalAmount += subTotal;
+            var checkboxes = document.getElementsByName('selectedItems');
+            var totalAmount = 0;
+
+            // 여기서 fee 값을 HTML 요소에서 가져옵니다.
+            var feeText = document.getElementById('fee').innerText;
+            var feeValue = feeText.match(/\d+/);  // 숫자 부분만 추출
+            var fee = parseFloat(feeValue);
+            for (var i = 0; i < checkboxes.length; i++) {
+                if (checkboxes[i].checked) {
+                    var subTotalValue = checkboxes[i].closest('tr').querySelector('[data-subtotal]').getAttribute('data-subtotal');
+                    var subTotal = parseFloat(subTotalValue);
+                    if (!isNaN(subTotal)) {
+                        totalAmount += subTotal;
+                    }
+                }
             }
+
+            totalAmount += fee; // 총 금액에 배송비를 추가합니다.
+
+            document.getElementById('totalAmount').innerText = '총 금액 (배송비 포함): ' + totalAmount + '원';
         }
-    }
-    document.getElementById('totalAmount').innerText = '총 금액: ' + totalAmount + '원';
-}
-
-
     </script>
 </head>
 <body>
-<form th:action="@{/preparePayment}" method="post" onsubmit="return validateForm();">
-    <table border="1">
-        <tr>
-            <th>Select</th>
-            <th>Seq</th>
-            <th>quantity</th>
-            <th>sub_total</th>
-            <th>unit_price</th>
-            <th>cart_id</th>
-            <!--<th>product_id</th>-->
-            <th>Update</th>
-            <th>Delete</th>
-        </tr>
-        <tr th:each="cartItem, cartItemStat : ${cartItems}">
-            <td><input type="checkbox" th:value="${cartItem.id}" name="selectedItems" onclick="updateTotalAmount();"/>
-            </td>
-            <td th:text="${cartItemStat.count}"></td>
-            <td th:text="${cartItem.quantity}"></td>
-            <td th:attr="data-subtotal=${cartItem.subTotal}" th:text="${cartItem.subTotal}"></td>
-            <td th:text="${cartItem.unitPrice}"></td>
-            <td th:text="${cartItem.cart}"></td>
-            <!--<td th:text="${cartItem.product}"></td>-->
-            <td><a th:href="@{/cartItem/edit/{id}(id=${cartItem.id})}">수정</a></td>
-            <td><a th:href="@{/cartItem/delete/{id}(id=${cartItem.id})}">삭제</a></td>
-        </tr>
-    </table>
-    <input type="submit" value="주문하기"/>
-</form>
-<div id="totalAmount">총 금액: 0원</div>
-<button onclick="goBack()">뒤로 가기</button>
+<div class="container">
+    <form th:action="@{/preparePayment}" method="post" onsubmit="return validateForm();">
+        <table>
+            <tr>
+                <th class="checkbox-column">Select</th>
+                <th>Seq</th>
+                <th>Quantity</th>
+                <th>Subtotal</th>
+                <th>Unit Price</th>
+                <th>Cart ID</th>
+                <th class="update-delete-columns">Update</th>
+                <th class="update-delete-columns">Delete</th>
+            </tr>
+            <tr th:each="cartItem, cartItemStat : ${cartItems}">
+                <td class="checkbox-column"><input type="checkbox" th:value="${cartItem.id}" name="selectedItems" onclick="updateTotalAmount();"/></td>
+                <td th:text="${cartItemStat.count}"></td>
+                <td th:text="${cartItem.quantity}"></td>
+                <td th:attr="data-subtotal=${cartItem.subTotal}" th:text="${cartItem.subTotal}"></td>
+                <td th:text="${cartItem.unitPrice}"></td>
+                <td th:text="${cartItem.cart}"></td>
+                <td class="update-delete-columns"><a th:href="@{/cartItem/edit/{id}(id=${cartItem.id})}">수정</a></td>
+                <td class="update-delete-columns"><a th:href="@{/cartItem/delete/{id}(id=${cartItem.id})}">삭제</a></td>
+            </tr>
+        </table>
+        <div id="fee">배송비: <span th:text="${fee}"></span>원</div>
+        <input type="hidden" id="hiddenFee" name="deliveryFee" th:value="${fee}" />
+        <input type="submit" value="주문하기"/>
+    </form>
+    <div id="totalAmount">총 금액: 0원</div>
+    <button onclick="goBack()">뒤로 가기</button>
+</div>
 </body>
 </html>
