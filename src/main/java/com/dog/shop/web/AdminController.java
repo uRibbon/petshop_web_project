@@ -1,9 +1,11 @@
 package com.dog.shop.web;
 
 
+import com.dog.shop.dto.inquiryDto.InquiryResDTO;
 import com.dog.shop.product.dto.ProductReqDTO;
 import com.dog.shop.product.dto.ProductReqForm;
 import com.dog.shop.service.AdminService;
+import com.dog.shop.service.inquiry.InquiryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,12 +15,15 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @Controller
 @Slf4j
 @RequestMapping("/admin")
 @RequiredArgsConstructor
 public class AdminController {
     private final AdminService adminService;
+    private final InquiryService inquiryService;
 
     // 상품등록
     @PostMapping("/create")
@@ -52,9 +57,17 @@ public class AdminController {
     }
 
     // 상품 삭제
+    @ResponseBody
     @GetMapping("/delete/{id}")
     public String deleteProduct(@PathVariable("id") long id) {
         adminService.deleteProduct(id);
         return "redirect:/products/list";
+    }
+
+    // QnA 전체리스트 가져오기
+    @ResponseBody
+    @GetMapping("/allQna")
+    public List<InquiryResDTO> getInquiries() {
+        return adminService.getInquiries();
     }
 }

@@ -1,6 +1,8 @@
 package com.dog.shop.service;
 
+import com.dog.shop.domain.inquiry.Inquiry;
 import com.dog.shop.domain.product.Product;
+import com.dog.shop.dto.inquiryDto.InquiryResDTO;
 import com.dog.shop.errorcode.ErrorCode;
 import com.dog.shop.exception.CommonException;
 import com.dog.shop.myenum.SalesStatus;
@@ -8,17 +10,21 @@ import com.dog.shop.product.dto.ProductReqDTO;
 import com.dog.shop.product.dto.ProductReqForm;
 import com.dog.shop.product.dto.ProductResDTO;
 import com.dog.shop.product.repository.ProductRepository;
-import jakarta.transaction.Transactional;
+import com.dog.shop.repository.inquiry.InquiryRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 @Transactional
@@ -27,6 +33,7 @@ import java.util.UUID;
 public class AdminService {
 
     private final ProductRepository productRepository;
+    private final InquiryRepository inquiryRepository;
     private final ModelMapper modelMapper;
 
     // 상품등록
@@ -88,5 +95,17 @@ public class AdminService {
                 .orElseThrow(() ->
                         new CommonException(ErrorCode.NON_LOGIN,HttpStatus.NOT_FOUND));
         productRepository.delete(product);
+    }
+
+    // QnA 전체리스트 가져오기
+    @Transactional(readOnly = true)
+    public List<InquiryResDTO> getInquiries() {
+        List<Inquiry> inquiryList = inquiryRepository.findAll();
+
+        List<InquiryResDTO> inquiryResDTOList = inquiryList.stream()
+                .map(inquiry -> modelMapper.map(inquiry, InquiryResDTO.class))
+                .collect(toList());
+
+        return inquiryResDTOList;
     }
 }

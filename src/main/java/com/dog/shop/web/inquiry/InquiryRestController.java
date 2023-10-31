@@ -7,7 +7,6 @@ import com.dog.shop.product.repository.ProductRepository;
 import com.dog.shop.service.inquiry.InquiryService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,6 +26,7 @@ public class InquiryRestController {
 
 
     // 상품 문의하기 페이지
+    @ResponseBody
     @GetMapping("/register/{id}") // productId를 가져오면 됨
     public String registerInquiryPage(@PathVariable Long id, Model model) {
         // 상품 ID를 사용하여 데이터베이스에서 해당 상품 정보를 가져옵니다.
@@ -39,6 +39,7 @@ public class InquiryRestController {
     }
 
     // 등록
+    @ResponseBody
     @PostMapping("/submit/inquiry")
     public String registerInquiry(@ModelAttribute InquiryReqDTO inquiryReqDTO, Model model) {
         // userId 값을 2L로 고정
