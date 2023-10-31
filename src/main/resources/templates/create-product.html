@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <meta charset="UTF-8">
+<link th:href="@{/css/main.css}" rel="stylesheet">
 <body>
+<div th:insert="~{/index/header :: header}"></div>
 <form action="#" th:action="@{/products/create}" th:object="${productReqDTO}" method="post" enctype="multipart/form-data">
     <label for="description">Description</label>
     <input type="text" th:field="*{description}" id="description">
@@ -31,5 +33,6 @@
 
     <input type="submit" value="Create">
 </form>
+<div th:insert="~{/index/footer :: footer}"></div>
 </body>
 </html>

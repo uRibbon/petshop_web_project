@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <meta charset="UTF-8">
 <head>
+    <link th:href="@{/css/main.css}" rel="stylesheet">
     <style>
         button {
             display: inline-block;
@@ -10,6 +11,7 @@
     </style>
 </head>
 <body>
+<div th:insert="~{/index/header :: header}"></div>
 <form id="yourFormId" action="#" th:action="@{/cartItem/addcartItem}" th:object="${multiFormDto}" method="post" onsubmit="return false;">
 
     <label for="cartItemReqDto.quantity">quantity</label>
@@ -83,6 +85,6 @@
         document.getElementById("yourFormId").submit();
     };
 </script>
-
+<div th:insert="~{/index/footer :: footer}"></div>
 </body>
 </html>

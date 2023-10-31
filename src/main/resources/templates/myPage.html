@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link th:href="@{/css/main.css}" rel="stylesheet">
     <title>마이페이지</title>
     <style>
         body {
@@ -38,7 +39,9 @@
         }
     </script>
 </head>
+
 <body>
+<div th:insert="~{/index/header :: header}"></div>
 <div class="header">
     <h1>사용자 이름</h1>
 </div>
@@ -49,5 +52,6 @@
     <div class="category-item"><a href="/api/inquiry">문의조회</a></div>
 </div>
 <button onclick="goBack()">뒤로가기</button>
+<div th:insert="~{/index/footer :: footer}"></div>
 </body>
 </html>
