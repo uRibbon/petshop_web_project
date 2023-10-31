@@ -5,7 +5,18 @@
     <title>Poducts List</title>
 </head>
 <body>
+<table border="1">
+    <tr>
+        <th>Seq</th>
+        <th>Keyword</th>
+    </tr>
+    <tr th:each="keyword, userState : ${keywords}">
+        <td th:text="${userState.count}"></td>
+        <td th:text="${keyword.productName}" ></td>
+    </tr>
+</table>
 <table>
+
     <tr>
         <th>Seq</th>
         <th>description</th>

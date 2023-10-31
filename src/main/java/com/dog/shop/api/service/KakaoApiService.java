@@ -16,7 +16,7 @@ public class KakaoApiService {
     private final String ORIGIN_X = "126.830205192607";
     private final String ORIGIN_Y = "37.5747859514344";
 
-    public String calculateDistance(String address) {
+    public int calculateDistance(String address) {
         RestTemplate restTemplate = new RestTemplate();
 
         HttpHeaders headers = new HttpHeaders();
@@ -58,20 +58,25 @@ public class KakaoApiService {
             JSONObject summary = routes.getJSONObject(0).getJSONObject("summary");
             int distance = summary.getInt("distance");
 
-            int fare;
+            int fare = 0;
             if (distance <= 1000) {
                 fare = 1000;
             } else if (distance <= 5000) {
                 fare = 2000;
             } else if (distance <= 10000) {
                 fare = 3000;
-            } else {
-                return "무료";
             }
+            /*else {
+                return fare;
+            }*/
 
-            return "Distance: " + distance + "m " + "｜" + " fare: " + fare + "원";
+            // return "Distance: " + distance + "m " + "｜" + " fare: " + fare + "원";
+            return fare;
         } catch (JSONException e) {
-            return "목적지가 너무 멀리있습니다.(범위 초과)";
+            //return "목적지가 너무 멀리있습니다.(범위 초과)";
+            int fare = 0;
+            fare = 4000;
+            return fare;
         }
 
         //return responseDirection.getBody();

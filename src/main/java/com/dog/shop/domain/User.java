@@ -58,10 +58,10 @@ public class User extends BaseTimeEntity { // 사용자 가입일에 대한 내�
 
     private String oAuthProvider; // NAVER, KAKAO 존재
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Order> orders = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Review> reviews = new ArrayList<>();
 
     @OneToOne(fetch = FetchType.LAZY)

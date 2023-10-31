@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>My Reviews</title>
+</head>
+<body>
+<h3>My Reviews</h3>
+<table border="1">
+    <thead>
+    <tr>
+        <th>productName</th>
+        <th>title</th>
+        <th>content</th>
+        <th>inquiryStatus</th>
+
+        <!--<th>Email</th>-->
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="inquiry : ${inquiries}">
+        <!--<td th:text="${inquiry.id}"></td>-->
+        <td th:text="${inquiry.productName}"></td>
+        <td th:text="${inquiry.title}"></td>
+        <td th:text="${inquiry.content}"></td>
+        <td th:text="${inquiry.inquiryStatus}"></td>
+        <!--<td th:text="${review.email}"></td>-->
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

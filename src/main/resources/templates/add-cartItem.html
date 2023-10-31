@@ -33,7 +33,7 @@
     <br/>
 
     <label for="productResDTO.id">product_id</label>
-    <input type="text" th:field="*{productResDTO.id}" id="productResDTO.id">
+    <input type="hidden" th:field="*{productResDTO.id}" id="productResDTO.id">
     <span th:if="${#fields.hasErrors('productResDTO.id')}" th:errors="*{productResDTO.id}"></span>
     <br/>
 

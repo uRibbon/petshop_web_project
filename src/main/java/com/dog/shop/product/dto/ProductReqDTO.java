@@ -12,13 +12,13 @@ import org.springframework.web.multipart.MultipartFile;
 @Setter
 public class ProductReqDTO {
 
-    private Long id;
+//    private Long id;
     private String description;
     private int price;
     private String productName;
     private String salesStatus;
     private int stock;
-    private MultipartFile mainImage;
+    private String mainImage;
     private String mainImageUrl;
 
 }

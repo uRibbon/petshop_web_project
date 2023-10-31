@@ -1,5 +1,12 @@
 package com.dog.shop.service;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Service;
+
 import com.dog.shop.domain.OrderItem;
 import com.dog.shop.domain.Review;
 import com.dog.shop.domain.User;
@@ -11,16 +18,10 @@ import com.dog.shop.product.repository.ProductRepository;
 import com.dog.shop.repository.ReviewRepository;
 import com.dog.shop.repository.UserRepository;
 import com.dog.shop.repository.order.OrderItemRepository;
+
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.modelmapper.ModelMapper;
-import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -30,33 +31,37 @@ public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final ProductRepository productRepository;
     private final UserRepository userRepository;
+
     private final OrderItemRepository orderItemRepository;
+
     private final ModelMapper modelMapper;
 
     // 리뷰 작성하기
-    public boolean writeReview(Long orderItemId, Long userId, ReviewReqDto reviewReqDto) {
+    public boolean writeReview(Long userId, Long orderItemId, ReviewReqDto reviewReqDto) {
         User userEntity = userRepository.findById(userId)
-                .orElseThrow(() -> new MemberNotFoundException("User not found with ID: " + userId));
+                .orElseThrow(() -> new MemberNotFoundException("user not found"));
 
-        OrderItem orderItem = orderItemRepository.findById(orderItemId)
-                .orElseThrow(() -> new MemberNotFoundException("OrderItem not found with ID: " + orderItemId));
+        OrderItem itemEntity = orderItemRepository.findById(orderItemId)
+                .orElseThrow(() -> new MemberNotFoundException("orderItem not found"));
 
-
-        System.out.println("user" + userId);
-        System.out.println("orderItemId" + orderItemId);
         Review review = new Review();
         review.setTitle(reviewReqDto.getTitle());
         review.setContent(reviewReqDto.getContent());
         review.setReviewStatus(ReviewStatus.답변대기);
         review.setUser(userEntity);
-        review.setOrderItem(orderItem);
-        System.out.println("review : " + review);
+        review.setOrderItem(itemEntity);
+
+        /*
+         * if (reviewReqDto.getTitle() != null) {
+         * review.setTitle(reviewReqDto.getTitle());
+         * }
+         */
         reviewRepository.save(review);
         return true;
     }
 
     // 리뷰삭제
-    public boolean deleteReview (Long reviewId) {
+    public boolean deleteReview(Long reviewId) {
         reviewRepository.deleteById(reviewId);
         return true;
     }
@@ -79,15 +84,17 @@ public class ReviewService {
         List<Review> reviewList = reviewRepository.findUserByUserId(userId);
         List<ReviewResDto> reviewResDtoList = new ArrayList<>();
 
-        ReviewResDto reviewResDto = modelMapper.map(reviewList, ReviewResDto.class);
-        reviewResDtoList.add(reviewResDto);
+        for (Review review : reviewList) {
+            ReviewResDto reviewResDto = modelMapper.map(review, ReviewResDto.class);
+            reviewResDtoList.add(reviewResDto);
+        }
         return reviewResDtoList;
     }
 
     // 제품별 리뷰 가져오기
-    public List<ReviewResDto> showReviewByProductId(Long orderItemId) {
-        Optional<OrderItem> productList = orderItemRepository.findById(orderItemId);
-        Optional<OrderItem> reviewList = orderItemRepository.findById(orderItemId);
+    public List<ReviewResDto> showReviewByProductId(Long productId) {
+        List<Review> productList = reviewRepository.findProductById(productId);
+        List<Review> reviewList = reviewRepository.findProductById(productId);
         List<ReviewResDto> reviewResDtoList = reviewList.stream()
                 .map(review -> modelMapper.map(review, ReviewResDto.class))
                 .collect(Collectors.toList());

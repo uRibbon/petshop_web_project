@@ -3,6 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <script type="text/javascript">
+        function goBack() {
+            window.history.back();
+        }
+
+        $(document).on('click', '.trackBtn', function() {
+            var invoice = $(this).data('invoice');  // 운송장 번호 가져오기
+
+            $.ajax({
+                type: "POST",
+                url: "http://info.sweettracker.co.kr/tracking/5",
+                data: {
+                    t_key: "R5R7h5Iw6IoSyY0X3TN5Ug",
+                    t_code: "04",
+                    t_invoice: invoice
+                },
+                success: function(response) {
+                    // 여기에 배송 정보를 웹 페이지에 표시하는 코드를 추가합니다.
+                    // 예: alert(response);
+                },
+                error: function(error) {
+                    console.log("Error:", error);
+                }
+            });
+        });
+    </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
     주문 조회 페이지
@@ -14,6 +41,7 @@
             <th>Status</th>
             <th>Total Price</th>
             <th>Tracking Number</th>
+            <th>택배조회</th>
         </tr>
         </thead>
         <tbody>
@@ -22,8 +50,10 @@
             <td th:text="${order.status}"></td>
             <td th:text="${order.totalPrice}"></td>
             <td th:text="${order.trackingNumber}"></td>
+            <td><button class="trackBtn" data-invoice="${order.trackingNumber}">택배조회</button></td>
         </tr>
         </tbody>
     </table>
+    <button onclick="goBack()">뒤로가기</button>
 </body>
 </html>

@@ -1,8 +1,10 @@
 package com.dog.shop.web.CartItem;
 
 
+import com.dog.shop.api.service.KakaoApiService;
 import com.dog.shop.domain.User;
 import com.dog.shop.dto.*;
+import com.dog.shop.help.JwtHelper;
 import com.dog.shop.product.dto.ProductResDTO;
 import com.dog.shop.product.service.CartService;
 import com.dog.shop.product.service.ProductService;
@@ -20,6 +22,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/cartItem") // C -> c로 변경
@@ -32,30 +35,60 @@ public class CartItemController {
     private final CartService cartService;
     private final JwtUtil jwtUtil;
     private final UserRepository userRepository;
-    
+    private final JwtHelper jwtHelper;
+    private final KakaoApiService kakaoApiService;
+
     @GetMapping("/getList")
     public ModelAndView getList() {
         List<CartItemResDto> cartItems = cartItemService.getCartItems();
         return new ModelAndView("cartItem", "cartItems", cartItems);
     }
 
+    // 나만의 장바구니
     @GetMapping("/getCartItem")
     public ModelAndView getCartItem(HttpServletRequest request) {
-        String token = getJwtTokenFromCookies(request);
+        String token = jwtHelper.extractTokenFromCookies(request);
+        Optional<User> userOpt = jwtHelper.extractUserFromToken(token);
+        Long userId = userOpt.get().getId();
         List<CartItemResDto> cartItems = null;
-        if (token != null) {
-            String email = jwtUtil.getEmailFromToken(token);
-            if (email != null) {
-                // TODO 에러처리 필요
-                User user = userRepository.findByEmail(email).orElseThrow();
-                // 이후 로직 처리...
-                Long userId = user.getId();
-                cartItems = cartItemService.getUserCartItems(userId);
 
-            }
-        }
+        cartItems = cartItemService.getUserCartItems(userId);
+
+        String address = userOpt.get().getAddress();
+
+        int fee = kakaoApiService.calculateDistance(address);
+
+        ModelAndView mav = new ModelAndView("cartItem");
+        mav.addObject("cartItems", cartItems);
+        mav.addObject("fee", fee);
+
+        return mav;
+    }
+    /*@GetMapping("/getCartItem")
+    public ModelAndView getCartItem(HttpServletRequest request) {
+        String token = jwtHelper.extractTokenFromCookies(request);
+        Optional<User> userOpt = jwtHelper.extractUserFromToken(token);
+        Long userId = userOpt.get().getId();
+        List<CartItemResDto> cartItems = cartItemService.getUserCartItems(userId);
+
+        String address = userOpt.get().getAddress();
+
+        int fee = kakaoApiService.calculateDistance(address);
+
         // TODO 장바구니가 null일 경우도 고려해야함
         return new ModelAndView("cartItem", "cartItems", cartItems);
+    }*/
+
+    @PostMapping("/addcartItem")
+    public String addCartItem(@ModelAttribute("multiFormDto") MultiFormDto multiFormDto){
+        CartItemReqDto cartItemReqDto = multiFormDto.getCartItemReqDto();
+        ProductResDTO productResDTO = multiFormDto.getProductResDTO();
+        CartResDto cartResDto = multiFormDto.getCartResDto();
+
+        // 여기에서 서비스 클래스를 호출하여 데이터를 저장
+        cartItemService.saveCartItem(cartItemReqDto,productResDTO,cartResDto);
+
+        return "redirect:/cartItem/getCartItem"; // C -> c로 변경
     }
 
     private String getJwtTokenFromCookies(HttpServletRequest request) {
@@ -89,17 +122,7 @@ public class CartItemController {
 
         return "add-cartItem";
     } // 장바구니 등록
-    @PostMapping("/addcartItem")
-    public String addCartItem(@ModelAttribute("multiFormDto") MultiFormDto multiFormDto){
-        CartItemReqDto cartItemReqDto = multiFormDto.getCartItemReqDto();
-        ProductResDTO productResDTO = multiFormDto.getProductResDTO();
-        CartResDto cartResDto = multiFormDto.getCartResDto();
 
-        // 여기에서 서비스 클래스를 호출하여 데이터를 저장
-        cartItemService.saveCartItem(cartItemReqDto,productResDTO,cartResDto);
-
-        return "redirect:/cartItem/getList"; // C -> c로 변경
-    }
 
 // 장바구니 수정폼가기
     @GetMapping("/edit/{id}")
@@ -132,3 +155,15 @@ public class CartItemController {
 
 
 }
+
+/*if (token != null) {
+            String email = jwtUtil.getEmailFromToken(token);
+            if (email != null) {
+                // TODO 에러처리 필요
+                User user = userRepository.findByEmail(email).orElseThrow();
+                // 이후 로직 처리...
+                Long userId = user.getId();
+
+
+            }
+        }*/

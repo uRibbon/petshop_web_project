@@ -21,7 +21,7 @@ public class PopularKeywordController {
     @GetMapping("/list")
     public ModelAndView keywordList() {
         List<PopularSearchedKeywordResDTO> popularSearchedKeywordResDTOList = popularKeywordService.getResult();
-        return new ModelAndView("/PopularSearchedKeyword/popular-searched-keyword", "keywords", popularSearchedKeywordResDTOList);
+        return new ModelAndView("/popularSearchedKeyword/popular-searched-keyword-list", "keywords", popularSearchedKeywordResDTOList);
 
     }
 }
