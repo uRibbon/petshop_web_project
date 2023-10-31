@@ -23,9 +23,15 @@ public class CartService {
 
     @Transactional(readOnly = true)
     public CartResDto getCartById(Long id) {
-        Cart cartEntity = cartRepository.findById(id)
-                .orElseThrow(() -> new CommonException(ErrorCode.NON_LOGIN, HttpStatus.NOT_FOUND));
-        CartResDto cartResDto = modelMapper.map(cartEntity,CartResDto.class);
-        return cartResDto;
+        try {
+            Cart cartEntity = cartRepository.findById(id)
+                    .orElseThrow(() -> new CommonException(ErrorCode.NON_LOGIN, HttpStatus.NOT_FOUND));
+            CartResDto cartResDto = modelMapper.map(cartEntity, CartResDto.class);
+            return cartResDto;
+        } catch (CommonException e) {
+            throw e; // 예외를 다시 던져서 컨트롤러에서도 예외를 처리할 수 있도록 함
+        } catch (Exception e) {
+            throw new CommonException(ErrorCode.NON_LOGIN, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }
