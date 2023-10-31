@@ -95,5 +95,15 @@ public class ReviewService {
         return reviewResDtoList;
     }
 
+    // 리뷰 리스트 들고오기
+    public List<ReviewResDto> showAllReview() {
+        List<Review> reviewList = reviewRepository.findAll();
+
+        List<ReviewResDto> reviewResDtoList = reviewList.stream()
+                .map(review -> modelMapper.map(review, ReviewResDto.class))
+                .collect(Collectors.toList());
+
+        return reviewResDtoList;
+    }
 
 }

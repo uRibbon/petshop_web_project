@@ -66,10 +66,9 @@ public class AuthController {
         return authService.getUser();
     }
 
-    @PostMapping("/delete")
-    public ResponseEntity<Boolean> userDelete( UserReqDto userReqDto) {
-        String email = userReqDto.getEmail();
-        boolean result = authService.userDelete(email);
+    @PostMapping("/delete/{userId}")
+    public ResponseEntity<Boolean> userDelete(@PathVariable Long userId, UserReqDto userReqDto) {
+        boolean result = authService.userDelete(userId);
         if (result) {
             return new ResponseEntity<>(true, HttpStatus.OK);
         } else {

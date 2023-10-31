@@ -52,4 +52,10 @@ public class ReviewController {
         List<ReviewResDto> reviewResDtoList = reviewService.showReviewByProductId(orderItemId);
         return new ResponseEntity<>(reviewResDtoList, HttpStatus.OK);
     }
+
+    // 리뷰 가져오기
+    @GetMapping("/reviewList")
+    public List<ReviewResDto> getReview() {
+        return reviewService.showAllReview();
+    }
 }
