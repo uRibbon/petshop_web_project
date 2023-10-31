@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <link th:href="@{/css/main.css}" rel="stylesheet">
+    <link th:href="@{/css/footer.css}" rel="stylesheet">
     <meta charset="UTF-8">
     <title>Poducts List</title>
 </head>
 <body>
+<div th:insert="~{/index/header :: header}"></div>
 <table border="1">
     <tr>
         <th>Seq</th>
@@ -37,6 +40,7 @@
     </tr>
 </table>
 <p><a href="/products/signup">Create</a></p>
+<div th:insert="~{/index/footer :: footer}"></div>
 </body>
 </html>
 
