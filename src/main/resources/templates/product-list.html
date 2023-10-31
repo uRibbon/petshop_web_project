@@ -5,27 +5,26 @@
     <title>Poducts List</title>
     <link th:href="@{/css/main.css}" rel="stylesheet">
 </head>
-<body>
+<body style="display: flex; flex-direction: column; min-height: 100vh;">
 <div th:insert="~{/index/header :: header}"></div>
-</br>
-<div style="display: flex;">
+<br/>
 
-    <div style="display: flex;">
+<div style="display: flex; flex: 1;">
 
-        <div style="flex: 1; padding-right: 5px;">
-            <div th:each="keyword, userState : ${keywords}" style="margin-bottom: 30px;">
-                <a href="#" th:text="${keyword.productName}" style="text-decoration: none; color: black;"></a>
-            </div>
+    <div style="flex: 1; padding-right: 5px;">
+        <div th:each="keyword, userState : ${keywords}" style="margin-bottom: 30px;">
+            <a href="#" th:text="${keyword.productName}" style="text-decoration: none; color: black;"></a>
         </div>
+    </div>
 
-    <div style="flex: 5;">
+    <div style="flex: 5; margin-right: 50px">
         <div style="display: flex; flex-wrap: wrap; justify-content: space-between;">
             <div th:each="product, productStat : ${products}" style="width: 31%; margin-bottom: 40px;">
                 <a th:href="@{/products/{id}(id=${product.id})}">
-                <div>
-                    <img th:if="${product.mainImageUrl != null}" th:src="${product.mainImageUrl}" alt="Invalid url" width="100%"/>
-                    <img th:unless="${product.mainImageUrl != null}" src="/img.png" alt="No image" width="100%"/>
-                </div>
+                    <div>
+                        <img th:if="${product.mainImageUrl != null}" th:src="${product.mainImageUrl}" alt="Invalid url" width="100%"/>
+                        <img th:unless="${product.mainImageUrl != null}" src="/img.png" alt="No image" width="100%"/>
+                    </div>
                 </a>
                 <div>
                     <a th:href="@{/products/{id}(id=${product.id})}" th:text="${product.productName}"></a>
@@ -36,8 +35,7 @@
         </div>
     </div>
 </div>
+
 <div th:insert="~{/index/footer :: footer}"></div>
-</div>
 </body>
 </html>
-

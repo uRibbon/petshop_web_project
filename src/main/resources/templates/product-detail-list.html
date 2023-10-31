@@ -5,23 +5,13 @@
     <title>Products detail</title>
     <link th:href="@{/css/main.css}" rel="stylesheet">
 </head>
-<body>
+<body style="display: flex; flex-direction: column; min-height: 100vh;">
 <div th:insert="~{/index/header :: header}"></div>
 <table>
     <tr>
-        <th>Seq</th>
-        <th>image</th>
-        <th>description</th>
-        <th>price</th>
-        <th>product_name</th>
-        <th>sales_status</th>
-        <th>stock</th>
-    </tr>
-    <tr>
-        <td th:text="${product.id}"></td>
         <td>
             <img th:if="${product.mainImageUrl != null}" th:src="${product.mainImageUrl}" alt="Product image" width="100"/>
-            <img th:unless="${product.mainImageUrl != null}" src="resources/static/image.png" alt="No image available" width="100"/>
+            <img th:unless="${product.mainImageUrl != null}" src="/img.png" alt="No image available" width="100"/>
         </td>
         <td th:text="${product.description}" ></td>
         <td th:text="${product.price}"></td>
