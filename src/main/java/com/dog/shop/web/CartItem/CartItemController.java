@@ -105,21 +105,28 @@ public class CartItemController {
 
 
     // 상품의 정보를 가져오면서 장바구니 등록설정창 들어가기
-    @GetMapping("/signup/{id}") 
-    public String showSignUpForm(@PathVariable Long id, Model model, CartItemReqDto cartItemReqDto) {
+    @GetMapping("/signup/{id}")
+    public String showSignUpForm(@PathVariable Long id, Model model, CartItemReqDto cartItemReqDto, HttpServletRequest request) {
         // product_id 가져오는부분
         ProductResDTO productResDTO = productService.getProductById(id);
-        //임의로 Long값 2 넣음 나중에 user_id와 동일한 cart_id를 받아서 여기에 넣어야함
-        CartResDto cartResDto = cartService.getCartById(2L);
-        MultiFormDto multiFormDto = new MultiFormDto();
-        //CartItemReqDto 객체 넣어주기 값은디폴트값들어있음
-        multiFormDto.setCartItemReqDto(cartItemReqDto);
-        multiFormDto.setCartResDto(cartResDto);
-        // product_id만 담겨있는 ProductResDTO값 가져오기 부트가 자동으로 외래키를 매핑함
-        multiFormDto.setProductResDTO(productResDTO);
+        String token = jwtHelper.extractTokenFromCookies(request);
+        Optional<User> userOpt = jwtHelper.extractUserFromToken(token);
+        if(userOpt.isPresent()) {
+            Long userId = userOpt.get().getId();
+            //임의로 Long값 2 넣음 나중에 user_id와 동일한 cart_id를 받아서 여기에 넣어야함
+            CartResDto cartResDto = cartService.getCartById(userId);
+            MultiFormDto multiFormDto = new MultiFormDto();
+            //CartItemReqDto 객체 넣어주기 값은디폴트값들어있음
+            multiFormDto.setCartItemReqDto(cartItemReqDto);
+            multiFormDto.setCartResDto(cartResDto);
+            // product_id만 담겨있는 ProductResDTO값 가져오기 부트가 자동으로 외래키를 매핑함
+            multiFormDto.setProductResDTO(productResDTO);
 
-        model.addAttribute("multiFormDto", multiFormDto);
+            model.addAttribute("multiFormDto", multiFormDto);
+        }
+        else {
 
+        }
         return "add-cartItem";
     } // 장바구니 등록
 

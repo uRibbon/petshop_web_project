@@ -64,8 +64,8 @@ public class AuthService {
     }
 
     // 회원 정보 명시적 삭제
-    public boolean userDelete(String email) {
-        User user = userRepository.findByEmail(email)
+    public boolean userDelete(Long userId) {
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new MemberNotFoundException("user not found"));
         if (user != null) {
             user.setAddress(null);

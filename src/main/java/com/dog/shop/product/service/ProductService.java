@@ -75,15 +75,15 @@ public class ProductService {
      * "C:/Users/user/Documents/GitHub/petshop_web_project/src/main/resources/static/images/";
      * //원격 주소
      * String uploadDir = "http://49.50.165.98/main/";
-     * 
+     *
      * // 파일 이름 생성 (현준님요청으로 url path하고 image의 fileName만 나오게)
      * String fileName = uploadDir + file.getOriginalFilename();
-     * 
+     *
      * // 파일 저장 경로 설정
      * String filePath = fileName;
-     * 
+     *
      * // 밑에서 경로를 짜르고 파일이름만 가져가기전에 우리가사용할 url path + fileName 변수에담기
-     * 
+     *
      * // 이미지 저장
      * try {
      * file.transferTo(new File(filePath));
@@ -92,7 +92,7 @@ public class ProductService {
      * // 이미지 저장 실패 시 예외 처리
      * throw new RuntimeException("Failed to store the image");
      * }
-     * 
+     *
      * // 이미지 파일의 경로를 반환
      * return filePath;
      * }
@@ -104,8 +104,10 @@ public class ProductService {
 
         // 유니크한 파일 이름 생성 (필요에 따라 로직을 수정할 수 있음)
         String originalFileName = file.getOriginalFilename();
+
          String fileExtension =
          originalFileName.substring(originalFileName.lastIndexOf("."));
+
          String uniqueFileName = UUID.randomUUID().toString() + fileExtension;
 
         // 전체 파일 경로 생성
@@ -119,7 +121,7 @@ public class ProductService {
 
         // 이미지 저장
         try {
-            file.transferTo(new File(filePath));
+            file.transferTo(new File(filePath)); // 여기가저장부분
         } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException("이미지 저장에 실패했습니다.");
@@ -133,18 +135,18 @@ public class ProductService {
      * public String saveImage(MultipartFile file) {
      * // 실제 파일 시스템 경로
      * String uploadDir = "/var/www/html/main";
-     * 
+     *
      * // 원본 파일 이름에서 확장자 추출
      * String extension =
      * file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(
      * "."));
-     * 
+     *
      * // UUID를 사용하여 유일한 파일 이름 생성
      * String uniqueFileName = UUID.randomUUID().toString() + extension;
-     * 
+     *
      * // 파일 저장 경로 설정
      * String filePath = Paths.get(uploadDir, uniqueFileName).toString();
-     * 
+     *
      * // 디렉토리가 존재하는지 확인하고, 존재하지 않으면 생성
      * File dir = new File(uploadDir);
      * if (!dir.exists()) {
@@ -152,7 +154,7 @@ public class ProductService {
      * throw new RuntimeException("Failed to create directory " + uploadDir);
      * }
      * }
-     * 
+     *
      * // 이미지 저장
      * try {
      * file.transferTo(new File(filePath));
@@ -161,7 +163,7 @@ public class ProductService {
      * // 이미지 저장 실패 시 예외 처리
      * throw new RuntimeException("Failed to store the image");
      * }
-     * 
+     *
      * // 이미지 파일의 이름을 반환 (전체 경로가 아닌 파일 이름만)
      * return uniqueFileName;
      * }
