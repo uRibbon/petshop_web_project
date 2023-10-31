@@ -197,10 +197,10 @@ input[id="menuicon"]:checked + label + div {
 
 @keyframes transX {
     0% {
-        transform: translateX(800px); /* Start 800px to the right */
+        transform: translateX(200px); /* Start 800px to the right */
     }
     100% {
-        transform: translateX(-800px); /* Slide to the left, back to the original position */
+        transform: translateX(-1600px); /* Slide to the left, back to the original position */
     }
 }
 
