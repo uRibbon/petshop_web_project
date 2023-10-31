@@ -5,7 +5,6 @@ import com.dog.shop.dto.reviewDto.ReviewReqDto;
 import com.dog.shop.dto.reviewDto.ReviewResDto;
 import com.dog.shop.help.JwtHelper;
 import com.dog.shop.service.ReviewService;
-import com.dog.shop.utils.JwtUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -93,6 +92,7 @@ public class ReviewController {
     }
 
     // 리뷰 가져오기
+    @ResponseBody
     @GetMapping("/reviewList")
     public List<ReviewResDto> getReview() {
         return reviewService.showAllReview();
