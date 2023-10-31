@@ -16,14 +16,19 @@ import com.dog.shop.utils.JwtUtil;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -51,7 +56,15 @@ public class CartItemController {
 
     // 나만의 장바구니
     @GetMapping("/getCartItem")
-    public ModelAndView getCartItem(HttpServletRequest request) {
+    public ModelAndView getCartItem(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+        // 사용자가 로그인하지 않은 경우, 로그인 페이지로 리다이렉트 로그인 토큰정보로 비로그인 장바구니 선택시 에러처리
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || authentication instanceof AnonymousAuthenticationToken)  {
+            response.sendRedirect("/login");
+            return null;
+        }
+
         String token = jwtHelper.extractTokenFromCookies(request);
         Optional<User> userOpt = jwtHelper.extractUserFromToken(token);
         Long userId = userOpt.get().getId();
