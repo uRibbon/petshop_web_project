@@ -1,4 +1,11 @@
 /* CSS for navigation bar */
+
+.box-image img {
+    width: 200px;
+    height: 55px;
+    display: block;
+}
+
 .navbar {
     display: flex; /* Use flexbox for horizontal layout */
     width: 100%; /* Set width to 100% */
