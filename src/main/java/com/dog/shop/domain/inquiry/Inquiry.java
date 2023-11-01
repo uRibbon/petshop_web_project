@@ -1,8 +1,8 @@
 package com.dog.shop.domain.inquiry;
 
 import com.dog.shop.domain.Reply;
-import com.dog.shop.domain.product.Product;
 import com.dog.shop.domain.User;
+import com.dog.shop.domain.product.Product;
 import com.dog.shop.myenum.InquiryStatus;
 import com.dog.shop.utils.InquiryStatusConverter;
 import jakarta.persistence.*;
@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "inquiry")
-public class Inquiry {
+public class Inquiry{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
