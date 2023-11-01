@@ -9,23 +9,23 @@
             </label>
             <div class="sidebar">
                 <ul>
+                    <li><a href="/hello" style="color: black; font-size: 15px">상품 전체 보기</a></li>
+                    <li><a href="#" style="color: black; font-size: 15px">퍼피 웨어</a></li>
+                    <li><a href="#" style="color: black; font-size: 15px">하네스 / 칼라</a></li>
+                    <li><a href="#" style="color: black; font-size: 15px">악세사리</a></li>
+
                     <li>
                         <a th:if="${userId == null}" th:href="@{/login}" style="color: black; font-size: 15px">로그인</a>
                         <a th:if="${userId != null}" th:href="@{/logout}" style="color: black; font-size: 15px">로그아웃</a>
                     </li>
                     <li><a href="#" style="color: black; font-size: 15px">1:1 문의</a></li>
                     <li><a href="#" style="color: black; font-size: 15px">후기</a></li>
-                    <li></li>
-                    <li><a href="/hello" style="color: black; font-size: 15px">상품 전체 보기</a></li>
-                    <li><a href="#" style="color: black; font-size: 15px">퍼피 웨어</a></li>
-                    <li><a href="#" style="color: black; font-size: 15px">하네스 / 칼라</a></li>
-                    <li><a href="#" style="color: black; font-size: 15px">악세사리</a></li>
                 </ul>
             </div>
         </div>
         <div class="box">
             <div class="popularKeyword">
-가                <a href="/keywords/list"><p>추천 검색어</p></a>
+                <a href="/keywords/list"><p>인기 검색어</p></a>
             </div>
         </div>
         <div class="box-image">
@@ -37,8 +37,6 @@
         <div class="box">
             <a href="/cartItem/getCartItem"><img src="/img/icon/cart.png" alt="장바구니"></a>
         </div>
-    </div>
-    <div class="popularKeyword" id="tableContainer">
     </div>
 </div>
 

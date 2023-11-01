@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" name="_csrf" content="your_csrf_token_value">
     <link th:href="@{/css/main.css}" rel="stylesheet">
     <title>장바구니</title>
     <style>
@@ -119,10 +119,10 @@
 
             // 여기서 fee 값을 HTML 요소에서 가져옵니다.
             var feeText = document.getElementById('fee').innerText;
-            var feeValue = feeText.match(/\d+/); // 숫자 부분만 추출
+            var feeValue = feeText.match(/\d+/); // 숫자 부분만 추출 배송비 텍스트가 껴있어서 숫자부분만 출력해야함
             var fee = parseFloat(feeValue);
-            for (var i = 0; i < checkboxes.length; i++) {
-                if (checkboxes[i].checked) {
+            for (var i = 0; i < checkboxes.length; i++) { // 체크박스값포문으로 돌려 더하기
+                if (checkboxes[i].checked) { // i인덱스번째 값이 체크되있다면.
                     var subTotalValue = checkboxes[i].closest('tr').querySelector('[data-subtotal]').getAttribute('data-subtotal');
                     var subTotal = parseFloat(subTotalValue);
                     if (!isNaN(subTotal)) {
@@ -131,9 +131,51 @@
                 }
             }
 
-            totalAmount += fee; // 총 금액에 배송비를 추가합니다.
+            totalAmount += fee; // 총 금액에 배송비를 추가
 
             document.getElementById('totalAmount').innerText = '총 금액 (배송비 포함): ' + totalAmount + '원';
+        }
+
+        function deleteSelectedItems() {  // 체크박스 선택해서 여러개 삭제
+            var checkboxes = document.getElementsByName('selectedItems');
+            var selectedItems = [];
+
+            for (var i = 0; i < checkboxes.length; i++) {
+                if (checkboxes[i].checked) {                  // 체크박스가 존재하면
+                    selectedItems.push(checkboxes[i].value);  // 체크박스의 value값을 배열에집어눈다
+                }
+            }            // 먼저 체크박스 더하고
+                        // 밑에서 더한 항목들을 가공하는 로직
+            if (selectedItems.length > 0) {
+                // 선택된 항목들을 서버로 전송하여 삭제 요청을 보냅니다.
+                fetch('/cartItem/deleteSelected', {  // fetch 함수 Web api 사용
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': getCsrfToken() // CSRF 토큰을 헤더에 포함
+                    },
+                    body: JSON.stringify(selectedItems)
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            // 성공적으로 삭제된 경우 페이지 리로드 또는 다른 작업 수행
+                            window.location.reload(); // 페이지 리로드 예시
+                        } else {
+                            // 실패한 경우에 대한 처리
+                            console.error('삭제 실패');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('오류 발생:', error);
+                    });
+            } else {
+                alert('삭제할 상품을 선택해주세요.');  // 선택을 안하고 선택삭제를 진행했을시에 나오는 메시지
+            }
+        }
+
+        function getCsrfToken() { // JavaScript 단에 Fetch Web API 사용할때 사용하는 제이슨 속성값
+                                  // 'X-CSRF-TOKEN': getCsrfToken() // CSRF 토큰을 헤더에 포함
+            return document.querySelector('meta[name="_csrf"]').getAttribute('content');
         }
     </script>
 </head>
@@ -150,18 +192,17 @@
                 <th>수량</th>
                 <th>합계금액</th>
                 <th>개당가격</th>
-                <!-- <th>Cart ID</th> -->
                 <th class="update-delete-columns">Update</th>
                 <th class="update-delete-columns">Delete</th>
             </tr>
             <tr th:each="cartItem, cartItemStat : ${cartItems}">
                 <td class="checkbox-column"><input type="checkbox" th:value="${cartItem.id}" name="selectedItems"
                                                    onclick="updateTotalAmount();" /></td>
+                <!--체크박스 속성 , 데이터 가져와서 선택삭제-->
                 <td th:text="${cartItemStat.count}"></td>
                 <td th:text="${cartItem.quantity}"></td>
                 <td th:attr="data-subtotal=${cartItem.subTotal}" th:text="${cartItem.subTotal}"></td>
                 <td th:text="${cartItem.unitPrice}"></td>
-                <!-- <td th:text="${cartItem.cart}"></td> -->
                 <td class="update-delete-columns"><a
                         th:href="@{/cartItem/edit/{id}(id=${cartItem.id})}">수정</a></td>
                 <td class="update-delete-columns"><a
@@ -169,11 +210,11 @@
             </tr>
         </table>
         <div id="fee">배송비: <span th:text="${fee}"></span>원</div>
-        <input type="hidden" id="hiddenFee" name="deliveryFee" th:value="${fee}" />
         <input type="submit" class="back-button" value="주문하기" />
     </form>
-    <button id="backButton" class="back-button" onclick="goBack()">뒤로가기</button>
-</div>
+    <button class="back-button" onclick="goBack()">뒤로가기</button>
+    <input type="button" class="back-button" value="선택삭제" onclick="deleteSelectedItems();" />
+</div>                                            <!--선택삭제 로직추가-->
 <div class="footer">
     <div th:insert="~{/index/footer :: footer}"></div>
 </div>

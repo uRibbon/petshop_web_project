@@ -35,4 +35,5 @@ public class OrderItem {
 
     @OneToOne(mappedBy = "orderItem")
     private Review review;
+
 }

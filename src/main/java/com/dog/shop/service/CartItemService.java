@@ -140,4 +140,11 @@ public class CartItemService {
                                 new CommonException(ErrorCode.NON_LOGIN, HttpStatus.NOT_FOUND));
                 cartItemRepository.delete(cartItem);
         }
+
+        public void deleteSelectedCartItems(List<Long> selectedItems) {
+                for (Long itemId : selectedItems) {
+                        cartItemRepository.deleteById(itemId);
+                }
+        }
+
 }
