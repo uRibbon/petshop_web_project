@@ -69,7 +69,7 @@ public class AuthController {
         LocalDateTime creationTime = (LocalDateTime) session.getAttribute("codeCreationTime");
 
         if (creationTime == null) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("fail");
+            return ResponseEntity.status(HttpStatus.OK).body("fail");
         }
 
         // 인증 코드 생성 후 5분 이내인지 확인합니다.
@@ -81,9 +81,9 @@ public class AuthController {
             // 시간이 초과된 경우, 세션에서 인증 코드를 제거합니다.
             session.removeAttribute("verificationCode");
             session.removeAttribute("codeCreationTime");
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("time_expired");
+            return ResponseEntity.status(HttpStatus.OK).body("time_expired");
         } else {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("fail");
+            return ResponseEntity.status(HttpStatus.OK).body("fail");
         }
     }
 

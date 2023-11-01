@@ -15,11 +15,6 @@
             background-image:#34495e;
         }
 
-        .email:focus {
-            outline: none;
-            border-color: white;
-        }
-
         .joinForm {
             position:absolute;
             width:400px;
@@ -39,8 +34,9 @@
         }
 
         .textForm {
-            display: flex;  /* 기본값인 row로 변경 */
-            align-items: center;
+            display: flex;  /* 기존에 있던 flex를 유지합니다. */
+            justify-content: space-between;  /* 항목들을 양쪽 끝으로 정렬합니다. */
+            align-items: center;  /* 항목들을 수직으로 중앙에 정렬합니다. */
             border-bottom: 2px solid #adadad;
             margin: 30px;
             padding: 10px 10px;
@@ -48,6 +44,7 @@
 
         .checkEmailBtn {
             width: 30%;  /* 30%에서 100%로 변경하세요 */
+            /*width: 80px*/;
             height: 25px;
             font-size: 12px;
             color: white;
@@ -59,15 +56,42 @@
             margin-top: 10px;  /* 이 줄을 추가하세요 */
         }
 
-
-        .id {
-            width: 100%;
-            border:none;
-            outline:none;
+        .email {
+            width: 70%;  /* 이메일 입력란의 너비를 줄입니다. */
+            border: none;
+            outline: none;
             color: #636e72;
-            font-size:16px;
-            height:25px;
+            font-size: 16px;
+            height: 25px;
             background: none;
+            flex: 1;  /* 이메일 입력란을 가능한 한 넓게 만듭니다. */
+            margin-right: 10px;  /* 오른쪽에 약간의 여백을 추가합니다. */
+        }
+
+        .checkEmailBtn {
+            width: 20%;  /* 버튼의 너비를 조절합니다. */
+            height: 25px;
+            font-size: 12px;
+            color: white;
+            background: linear-gradient(125deg, #a8d6ea, #9088b5, #a8d6ea);
+            border: none;
+            cursor: pointer;
+            transition: 0.4s;
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        .checkBtn {
+            width: 30%;  /* 버튼의 너비를 조절합니다. */
+            height: 25px;
+            font-size: 12px;
+            color: white;
+            background: linear-gradient(125deg, #a8d6ea, #9088b5, #a8d6ea);
+            border: none;
+            cursor: pointer;
+            transition: 0.4s;
+            display: inline-block;
+            margin-top: 10px;
         }
 
         .pw {
@@ -81,16 +105,6 @@
         }
 
         .name {
-            width: 100%;
-            border:none;
-            outline:none;
-            color: #636e72;
-            font-size:16px;
-            height:25px;
-            background: none;
-        }
-
-        .email {
             width: 100%;
             border:none;
             outline:none;
@@ -176,29 +190,23 @@
             background-position: right;
         }
 
-        /* 여기서부터 작업 시작 */
-        .checkEmailBtn {
-            width: 30%; /* 이메일 중복 확인 버튼의 너비 */
-            height: 25px;
-            font-size: 12px;
-            color: white;
-            background: linear-gradient(125deg, #a8d6ea, #9088b5, #a8d6ea);
-            border: none;
-            cursor: pointer;
-            transition: 0.4s;
-            display: inline-block;
-            margin-left: 10px; /* 이메일 입력란과의 간격 */
-        }
+
 
         .checkEmailBtn:hover {
             background-position: right;
         }
 
-        #verificationCodeSection {
+        /*#verificationCodeSection {
             visibility: hidden;
             height: 0;
             overflow: hidden;
             transition: visibility 0.3s, height 0.3s;
+        }*/
+
+        #timerDisplay {
+            margin-right: 10px;  /* 오른쪽에 10px의 여백을 추가합니다. */
+            margin-top: 10px; /* 원하는 값으로 조절하세요 */
+            font-size: 18px; /* 원하는 크기로 조절하세요 */
         }
     </style>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -208,11 +216,6 @@
 <form th:action="@{/auth/signup}"  method="POST" class="joinForm" onsubmit="DoJoinForm__submit(this); return false;">
 
     <h2>회원가입</h2>
-    <!--<div class="textForm">
-        <input type="text" id="email" class="email" name="email" placeholder="이메일" required />
-        <button type="button" class="checkEmailBtn" onclick="checkEmail()">중복 확인</button>
-        <div id="emailResult"></div>
-    </div>-->
     <div class="textForm">
         <input type="text" id="email" class="email" name="email" placeholder="이메일" required />
         <button type="button" class="checkEmailBtn" onclick="sendEmailVerification()">인증</button>
@@ -220,40 +223,36 @@
     <div class="textForm" id="verificationCodeSection">
         <input type="text" id="emailVerificationCode" class="emailVerificationCode" placeholder="인증 코드 입력" required />
         <span id="timerDisplay">05:00</span>
-        <button type="button" class="checkEmailBtn" onclick="verifyEmailCode()">확인</button>
+        <button type="button" class="checkBtn" onclick="verifyEmailCode()">확인</button>
     </div>
     <div class="textForm">
-        <!--<input name="loginPw" type="password" class="pw" placeholder="비밀번호">-->
-        <!--<label for="password">Password:</label>-->
-        <input type="password" id="password" name="password" class="pw" placeholder="비밀번호" required />
-    </div>
-    <!-- 추가로 만들어줘야함 -->
-    <div class="textForm">
-        <input name="loginPwConfirm" type="password" class="pw" placeholder="비밀번호 확인">
+        <input type="password" id="password" name="password" class="pw" placeholder="비밀번호" required onkeyup="checkPasswordMatch();" />
     </div>
     <div class="textForm">
-        <!--<input name="name" type="password" class="name" placeholder="이름">-->
+        <input name="loginPwConfirm" type="password" class="pw" placeholder="비밀번호 확인" onkeyup="checkPasswordMatch();" />
+    </div>
+
+    <div id="passwordMismatchMessage" style="color:red; display:none;">비밀번호가 일치하지 않습니다.</div>
+
+    <div class="textForm">
         <input type="text" id="name" name="name" class="name" placeholder="이름" required />
     </div>
     <div class="textForm">
-        <!--<input name="email" type="text" class="email" placeholder="이메일">-->
-        <input type="text" id="phone" name="phone" class="phone" placeholder="전화번호" required/>
+        <input type="text" id="phone" name="phone" class="phone" placeholder="전화번호" required onkeyup="validatePhoneNumber(this);" />
     </div>
     <div class="textForm">
-        <!--<input name="nickname" type="text" class="nickname" placeholder="닉네임">-->
         <input type="text" id="address" name="address" class="address" placeholder="주소" required onclick="findAddr()"/>
     </div>
     <div class="textForm">
-        <!--<input name="nickname" type="text" class="nickname" placeholder="닉네임">-->
         <input type="text" id="detailAddress" name="detailAddress" class="detailAddress" placeholder="상세주소" required/>
     </div>
     <div class="textForm">
-        <!--<input name="cellphoneNo" type="number" class="cellphoneNo" placeholder="전화번호">-->
         <input type="date" value="2023-11-03" min="1940-01-01" max="2023-12-31" id="birthDate" class="birthDate" name="birthDate" />
     </div>
     <input type="submit" class="btn" value="회 원 가 입"/>
 </form>
 </body>
+
 <script>
 
     var verificationTimer;
@@ -261,6 +260,32 @@
 
     // 1. 전역 변수로 인증 상태를 저장하는 변수를 생성합니다.
     var isEmailVerified = false;
+
+
+    function validatePhoneNumber(input) {
+        input.value = input.value.replace(/[^\d]/g, ''); // 숫자 외의 문자를 모두 제거
+        if (input.value.length > 11) {
+            input.value = input.value.substring(0, 11); // 11자리를 초과하면 초과하는 부분을 잘라냅니다.
+        }
+    }
+
+    function checkPasswordMatch() {
+        var password = document.getElementById("password").value;
+        var confirmPassword = document.querySelector("[name='loginPwConfirm']").value;
+        var message = document.getElementById("passwordMismatchMessage");
+
+        if (password !== "" && confirmPassword !== "") {
+            if (password !== confirmPassword) {
+                message.style.display = "block"; // 비밀번호가 일치하지 않으면 메시지를 표시
+            } else {
+                message.style.display = "none"; // 비밀번호가 일치하면 메시지를 숨김
+            }
+        } else {
+            message.style.display = "none"; // 둘 중 하나의 필드가 비어 있으면 메시지를 숨김
+        }
+    }
+
+
 
     function startTimer() {
         clearInterval(verificationTimer);
@@ -348,12 +373,20 @@
                 "code": enteredCode
             },
             success: function (result) {
+                console.log(result);
                 if (result === "success") {
                     alert("인증에 성공하였습니다.");
                     clearInterval(verificationTimer); // 인증에 성공했으므로 타이머를 중지합니다.
-                    var verificationSection = document.getElementById("verificationCodeSection");
+                    /*var verificationSection = document.getElementById("verificationCodeSection");
                     verificationSection.style.visibility = "hidden"; // 인증 섹션을 숨깁니다.
-                    verificationSection.style.height = "0";
+                    verificationSection.style.height = "0";*/
+                    // 타이머와 확인 버튼을 숨기고 인증 성공 메시지를 표시합니다.
+                    document.getElementById("timerDisplay").style.display = "none";
+                    document.querySelector(".checkEmailBtn").style.display = "none";
+                    document.getElementById("emailVerificationCode").value = "인증 성공!";
+                    document.getElementById("emailVerificationCode").disabled = true;
+                    document.getElementById("emailVerificationCode").style.color = "green";
+                    document.querySelector(".checkBtn").style.display = "none";
 
                     isEmailVerified = true;
                 } else {
