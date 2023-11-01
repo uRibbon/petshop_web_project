@@ -161,13 +161,14 @@ public class CartItemController {
     public String showUpdateForm(@PathVariable Long id, Model model){
         CartItemResDto cartItemResDto = cartItemService.getCartItemById(id);
     model.addAttribute("cartItem",cartItemResDto);
+
     return "update-cartItem";
 }
 
 // 장바구니 수정 하기
     @PostMapping("/update/{id}")
     public String updateCartItem(@PathVariable("id") long id, @Valid CartItemReqDto cartItem,
-                             BindingResult result, Model model) { //id를써야해서 폼을씀
+                             BindingResult result, Model model,HttpServletRequest request) { //id를써야해서 폼을씀
         if (result.hasErrors()) {
             System.out.println(">>> hasErros cartItem "  + cartItem);
             model.addAttribute("cartItem",cartItem);
@@ -175,7 +176,7 @@ public class CartItemController {
         }
 //        cartItemService.updateCustomerForm(cartItem);
         cartItemService.updateCartItem(id,cartItem);
-        return "redirect:/cartItem/getList"; // C -> c
+        return "redirect:/cartItem/getCartItem"; // 업데이트시에도 장바구니에 배송비를 가져오기위해 리다이렉트
     }
 
     // 장바구니 삭제
