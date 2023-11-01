@@ -87,7 +87,7 @@ public class ReviewController {
     @GetMapping("/myReview/get") // userId를 밑에서 토큰으로 받을거라 매핑에서삭제
     public String myReview(Model model,HttpServletRequest request,
                            HttpServletResponse response){
-
+        // 전단계 myPage에서 임시로 2를보내줬는데 해제하고 토큰으로 userId 정보받기
         String token = jwtHelper.extractTokenFromCookies(request);
         Optional<User> userOpt = jwtHelper.extractUserFromToken(token);
         Long userId = userOpt.get().getId();
