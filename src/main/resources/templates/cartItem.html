@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" name="_csrf" content="your_csrf_token_value">
     <link th:href="@{/css/main.css}" rel="stylesheet">
     <title>장바구니</title>
     <style>
@@ -135,6 +135,47 @@
 
             document.getElementById('totalAmount').innerText = '총 금액 (배송비 포함): ' + totalAmount + '원';
         }
+
+        function deleteSelectedItems() {
+            var checkboxes = document.getElementsByName('selectedItems');
+            var selectedItems = [];
+
+            for (var i = 0; i < checkboxes.length; i++) {
+                if (checkboxes[i].checked) {
+                    selectedItems.push(checkboxes[i].value);
+                }
+            }
+
+            if (selectedItems.length > 0) {
+                // 선택된 항목들을 서버로 전송하여 삭제 요청을 보냅니다.
+                fetch('/cartItem/deleteSelected', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': getCsrfToken() // CSRF 토큰을 헤더에 포함
+                    },
+                    body: JSON.stringify(selectedItems)
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            // 성공적으로 삭제된 경우 페이지 리로드 또는 다른 작업 수행
+                            window.location.reload(); // 페이지 리로드 예시
+                        } else {
+                            // 실패한 경우에 대한 처리
+                            console.error('삭제 실패');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('오류 발생:', error);
+                    });
+            } else {
+                alert('삭제할 상품을 선택해주세요.');
+            }
+        }
+
+        function getCsrfToken() {
+            return document.querySelector('meta[name="_csrf"]').getAttribute('content');
+        }
     </script>
 </head>
 
@@ -150,7 +191,6 @@
                 <th>수량</th>
                 <th>합계금액</th>
                 <th>개당가격</th>
-                <!-- <th>Cart ID</th> -->
                 <th class="update-delete-columns">Update</th>
                 <th class="update-delete-columns">Delete</th>
             </tr>
@@ -161,7 +201,6 @@
                 <td th:text="${cartItem.quantity}"></td>
                 <td th:attr="data-subtotal=${cartItem.subTotal}" th:text="${cartItem.subTotal}"></td>
                 <td th:text="${cartItem.unitPrice}"></td>
-                <!-- <td th:text="${cartItem.cart}"></td> -->
                 <td class="update-delete-columns"><a
                         th:href="@{/cartItem/edit/{id}(id=${cartItem.id})}">수정</a></td>
                 <td class="update-delete-columns"><a
@@ -169,10 +208,10 @@
             </tr>
         </table>
         <div id="fee">배송비: <span th:text="${fee}"></span>원</div>
-        <input type="hidden" id="hiddenFee" name="deliveryFee" th:value="${fee}" />
         <input type="submit" class="back-button" value="주문하기" />
     </form>
-    <button id="backButton" class="back-button" onclick="goBack()">뒤로가기</button>
+    <button class="back-button" onclick="goBack()">뒤로가기</button>
+    <input type="button" class="back-button" value="선택 삭제" onclick="deleteSelectedItems();" />
 </div>
 <div class="footer">
     <div th:insert="~{/index/footer :: footer}"></div>

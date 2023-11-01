@@ -184,6 +184,13 @@ public class CartItemController {
         cartItemService.deleteCartItem(id);
         return "redirect:/cartItem/getList"; // C -> c
     }
+
+    @PostMapping("/deleteSelected")
+    @ResponseBody
+    public void deleteSelectedCartItems(@RequestBody List<Long> selectedItems) {
+        cartItemService.deleteSelectedCartItems(selectedItems);
+    }
+
 }
 /*if (token != null) {
             String email = jwtUtil.getEmailFromToken(token);
