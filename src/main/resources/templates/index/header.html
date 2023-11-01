@@ -20,12 +20,13 @@
                     <li><a href="#" style="color: black; font-size: 15px">퍼피 웨어</a></li>
                     <li><a href="#" style="color: black; font-size: 15px">하네스 / 칼라</a></li>
                     <li><a href="#" style="color: black; font-size: 15px">악세사리</a></li>
-
                 </ul>
             </div>
         </div>
         <div class="box">
-            <a href="#"><img src="/img/icon/popular_keyword.png" alt="인기 검색어"></a>
+            <div class="popularKeyword">
+                <img src="/img/icon/popular_keyword.png" alt="Popular search words" onclick="toggleTable()">
+            </div>
         </div>
         <div class="box-image">
             <a href="/"><img src="/img/icon/Dog_logo_2.png" alt="로고 이미지"></a>
@@ -37,4 +38,17 @@
             <a href="/cartItem/getCartItem"><img src="/img/icon/cart.png" alt="장바구니"></a>
         </div>
     </div>
+    <div class="popularKeyword" id="tableContainer">
+        <table border="1">
+            <tr>
+                <th>Seq</th>
+                <th>Keyword</th>
+            </tr>
+            <tr th:each="userState, keyword : ${keywords}">
+                <td th:text="${userState.count}"></td>
+                <td th:text="${keyword.productName}" ></td>
+            </tr>
+        </table>
+    </div>
 </div>
+
