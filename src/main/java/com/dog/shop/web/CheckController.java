@@ -47,6 +47,6 @@ public class CheckController {
     //회원 가입 페이지
     @GetMapping("/signup") // 중복되는 페이지
     public String showSignup(Model model) {
-        return "signup";
+        return "signup2";
     }
 }

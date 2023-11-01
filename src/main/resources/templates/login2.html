@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>로그인</title>
+    <link th:href="@{/css/login.css}" rel="stylesheet">
+</head>
+<body>
+<div class="container" id="container">
+    <div class="sign-in-container">
+        <h1>로그인</h1>
+        <form th:action="@{/login-process}" method="post">
+            <div class="txt_field">
+                <input type="email" id="email" name="email" required/>
+                <span></span>
+                <label>이메일</label>
+            </div>
+            <div class="txt_field">
+                <input type="password" id="password" name="password" required/>
+                <span></span>
+                <label>패스워드</label>
+            </div>
+
+            <!--<div class="pass">
+                비밀번호 찾기
+            </div>-->
+            <input type="submit" value="Login">
+            <div class="social-login-buttons">
+                <button class="social-login-button naver"></button>
+                <button class="social-login-button kakao"></button>
+            </div>
+
+            <!--<div class="signup_link">
+                회원이 아닌가요? <a href="/check/agree" onclick="showAgreement()">회원가입</a>
+            </div>-->
+
+        </form>
+        <div class="pass">
+            아이디 찾기 | <span>비밀번호 찾기</span> | <a href="/check/agree" onclick="showAgreement()">회원가입</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    function showAgreement() {
+        $('#popup').show();
+    }
+</script>
+</body>
+
+</html>
