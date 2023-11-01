@@ -136,19 +136,19 @@
             document.getElementById('totalAmount').innerText = '총 금액 (배송비 포함): ' + totalAmount + '원';
         }
 
-        function deleteSelectedItems() {
+        function deleteSelectedItems() {  // 체크박스 선택해서 여러개 삭제
             var checkboxes = document.getElementsByName('selectedItems');
             var selectedItems = [];
 
             for (var i = 0; i < checkboxes.length; i++) {
-                if (checkboxes[i].checked) {
-                    selectedItems.push(checkboxes[i].value);
+                if (checkboxes[i].checked) {                  // 체크박스가 존재하면
+                    selectedItems.push(checkboxes[i].value);  // 체크박스의 value값을 배열에집어눈다
                 }
-            }
-
+            }            // 먼저 체크박스 더하고
+                        // 밑에서 더한 항목들을 가공하는 로직
             if (selectedItems.length > 0) {
                 // 선택된 항목들을 서버로 전송하여 삭제 요청을 보냅니다.
-                fetch('/cartItem/deleteSelected', {
+                fetch('/cartItem/deleteSelected', {  // fetch 함수 Web api 사용
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -169,11 +169,12 @@
                         console.error('오류 발생:', error);
                     });
             } else {
-                alert('삭제할 상품을 선택해주세요.');
+                alert('삭제할 상품을 선택해주세요.');  // 선택을 안하고 선택삭제를 진행했을시에 나오는 메시지
             }
         }
 
-        function getCsrfToken() {
+        function getCsrfToken() { // JavaScript 단에 Fetch Web API 사용할때 사용하는 제이슨 속성값
+                                  // 'X-CSRF-TOKEN': getCsrfToken() // CSRF 토큰을 헤더에 포함
             return document.querySelector('meta[name="_csrf"]').getAttribute('content');
         }
     </script>

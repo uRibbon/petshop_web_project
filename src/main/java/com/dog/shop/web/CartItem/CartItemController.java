@@ -176,7 +176,8 @@ public class CartItemController {
         }
 //        cartItemService.updateCustomerForm(cartItem);
         cartItemService.updateCartItem(id,cartItem);
-        return "redirect:/cartItem/getCartItem"; // 업데이트시에도 장바구니에 배송비를 가져오기위해 리다이렉트
+        return "redirect:/cartItem/getCartItem"; // 업데이트시에도 장바구니에 배송비를 가져오기위해 리다이렉트 
+                                                 // 카카오API로 fee 가져오는 로직 다시진행
     }
 
     // 장바구니 삭제
