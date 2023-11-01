@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -23,6 +24,8 @@ import org.springframework.web.servlet.ModelAndView;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Controller
 @RequestMapping("/products")
@@ -32,9 +35,22 @@ public class ProductController {
     private final ProductService productService;
     private final PopularKeywordService popularKeywordService;
     @GetMapping("/list")
-    public ModelAndView listProducts(Pageable pageable, Model model) {
+    public ModelAndView listProducts(@RequestParam(defaultValue = "0") int page, Model model) {
+        Pageable pageable = PageRequest.of(page, 3);
         Page<ProductResDTO> products = productService.findAllProducts(pageable);
         List<PopularSearchedKeywordResDTO> popularSearchedKeywordResDTOList = popularKeywordService.getResult();
+
+        int totalPages = products.getTotalPages();
+        int currentPage = pageable.getPageNumber() + 1;
+        List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
+                .boxed()
+                .collect(Collectors.toList());
+
+        model.addAttribute("currentPage", pageable.getPageNumber() + 1); // 페이지 번호는 0부터 시작하므로 1을 더해줍니다.
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("products", products);
+        model.addAttribute("pageNumbers", pageNumbers);
+
         model.addAttribute("keywords", popularSearchedKeywordResDTOList);
         return new ModelAndView("product-list", "products", products);
     }
