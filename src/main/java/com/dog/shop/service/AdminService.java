@@ -1,16 +1,22 @@
 package com.dog.shop.service;
 
+import com.dog.shop.domain.Reply;
 import com.dog.shop.domain.inquiry.Inquiry;
 import com.dog.shop.domain.product.Product;
 import com.dog.shop.dto.inquiryDto.InquiryResDTO;
+import com.dog.shop.dto.replyDto.ReplyReqDto;
+import com.dog.shop.dto.replyDto.ReplyResDto;
 import com.dog.shop.errorcode.ErrorCode;
 import com.dog.shop.exception.CommonException;
+import com.dog.shop.exception.MemberNotFoundException;
 import com.dog.shop.myenum.SalesStatus;
 import com.dog.shop.product.dto.ProductReqDTO;
 import com.dog.shop.product.dto.ProductReqForm;
 import com.dog.shop.product.dto.ProductResDTO;
 import com.dog.shop.product.repository.ProductRepository;
+import com.dog.shop.repository.ReplyRepository;
 import com.dog.shop.repository.inquiry.InquiryRepository;
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -22,7 +28,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 
@@ -34,6 +42,8 @@ public class AdminService {
 
     private final ProductRepository productRepository;
     private final InquiryRepository inquiryRepository;
+    private final ReplyRepository replyRepository;
+    private EntityManager entityManager;
     private final ModelMapper modelMapper;
 
     // 상품등록
@@ -90,11 +100,18 @@ public class AdminService {
     }
 
     // 상품 삭제
-    public void deleteProduct(Long id) {
+    public boolean deleteProduct(Long id) {
         Product product = productRepository.findById(id)
-                .orElseThrow(() ->
-                        new CommonException(ErrorCode.NON_LOGIN,HttpStatus.NOT_FOUND));
-        productRepository.delete(product);
+                .orElseThrow(() -> new MemberNotFoundException("Product not found with id: " + id));
+        return true;
+    }
+
+    // 상품 리스트 가져오기
+    public List<ProductResDTO> findAllProducts() {
+        List<Product> products = productRepository.findAll();
+        return products.stream()
+                .map(product -> modelMapper.map(product, ProductResDTO.class))
+                .collect(Collectors.toList());
     }
 
     // QnA 전체리스트 가져오기
@@ -107,5 +124,32 @@ public class AdminService {
                 .collect(toList());
 
         return inquiryResDTOList;
+    }
+
+    // QnA 댓글달기
+    public Boolean QnaReply(Long inquiryId, ReplyReqDto replyReqDto) {
+        Optional<Inquiry> optionalInquiry = inquiryRepository.findById(inquiryId);
+        if (optionalInquiry.isPresent()) {
+            Inquiry inquiry = optionalInquiry.get();
+            Reply reply = modelMapper.map(replyReqDto, Reply.class);
+            reply.setInquiry(inquiry);
+            replyRepository.save(reply);
+            return true;
+        }
+        return false;
+    }
+
+    // QnA 리스트 가져오기
+    public List<ReplyResDto> getReplyList() {
+        List<Reply> replyList = replyRepository.findAll();
+        List<ReplyResDto> resDtoList = replyList.stream().map(reply ->
+            modelMapper.map(reply, ReplyResDto.class)
+        ).collect(toList());
+        return resDtoList;
+    }
+
+    public boolean deleteReply(Long replyId) {
+        replyRepository.deleteById(replyId);
+        return true;
     }
 }
