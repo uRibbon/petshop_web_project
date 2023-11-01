@@ -169,7 +169,9 @@ public class SocialController {
 
         httpServletResponse.addCookie(jwtCookie);
 
-        ModelAndView modelAndView = new ModelAndView("index");
+        ModelAndView modelAndView = new ModelAndView("redirect:/");
+        //modelAndView.addObject("userId", email);  // 여기에 사용자 이메일을 userId로 전달합니다.
+
         return modelAndView;
 
 

@@ -1,6 +1,7 @@
 package com.dog.shop.domain.cart;
 
 import com.dog.shop.domain.User;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,6 +21,7 @@ public class Cart { // 장바구니
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //@JsonProperty("cartId")
     private Long id;
 
     @OneToMany(mappedBy = "cart")   //디비에안생김 mappedBy = "cart"라는것은 밑에 CartItem의 필드를 나타낸다.

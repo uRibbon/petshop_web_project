@@ -1,52 +1,368 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <meta charset="UTF-8">
-    <title>SignUp</title>
+    <title>Title</title>
+    <style>
+        * {
+            margin: 0px;
+            padding: 0px;
+            text-decoration: none;
+            font-family:sans-serif;
+
+        }
+        body {
+            background-image:#34495e;
+        }
+
+        .email:focus {
+            outline: none;
+            border-color: white;
+        }
+
+        .joinForm {
+            position:absolute;
+            width:400px;
+            height:400px;
+            padding: 30px, 20px;
+            background-color:#FFFFFF;
+            text-align:center;
+            top:40%;
+            left:50%;
+            transform: translate(-50%,-50%);
+            border-radius: 15px;
+        }
+
+        .joinForm h2 {
+            text-align: center;
+            margin: 30px;
+        }
+
+        .textForm {
+            display: flex;  /* 기본값인 row로 변경 */
+            align-items: center;
+            border-bottom: 2px solid #adadad;
+            margin: 30px;
+            padding: 10px 10px;
+        }
+
+        .checkEmailBtn {
+            width: 30%;  /* 30%에서 100%로 변경하세요 */
+            height: 25px;
+            font-size: 12px;
+            color: white;
+            background: linear-gradient(125deg, #a8d6ea, #9088b5, #a8d6ea);
+            border: none;
+            cursor: pointer;
+            transition: 0.4s;
+            display: inline-block;
+            margin-top: 10px;  /* 이 줄을 추가하세요 */
+        }
+
+
+        .id {
+            width: 100%;
+            border:none;
+            outline:none;
+            color: #636e72;
+            font-size:16px;
+            height:25px;
+            background: none;
+        }
+
+        .pw {
+            width: 100%;
+            border:none;
+            outline:none;
+            color: #636e72;
+            font-size:16px;
+            height:25px;
+            background: none;
+        }
+
+        .name {
+            width: 100%;
+            border:none;
+            outline:none;
+            color: #636e72;
+            font-size:16px;
+            height:25px;
+            background: none;
+        }
+
+        .email {
+            width: 100%;
+            border:none;
+            outline:none;
+            color: #636e72;
+            font-size:16px;
+            height:25px;
+            background: none;
+        }
+
+        .phone {
+            width: 100%;
+            border: none;
+            outline: none;
+            color: #636e72;
+            font-size: 16px;
+            height: 25px;
+            background: none;
+        }
+
+        .address {
+            width: 100%;
+            border: none;
+            outline: none;
+            color: #636e72;
+            font-size: 16px;
+            height: 25px;
+            background: none;
+        }
+
+        .detailAddress {
+            width: 100%;
+            border:none;
+            outline:none;
+            color: #636e72;
+            font-size:16px;
+            height:25px;
+            background: none;
+        }
+
+        .birthDate {
+            width: 100%;
+            height: 25px;
+            font-size: 16px;
+            color: #636e72;
+            background: none;
+            border: none;
+            outline: none;
+            padding-left: 5px; /* 날짜 선택기 아이콘과 텍스트 간격 조절 */
+            cursor: pointer; /* 커서를 손 모양으로 변경 */
+        }
+
+        .emailVerificationCode {
+            width: 100%;
+            border:none;
+            outline:none;
+            color: #636e72;
+            font-size:16px;
+            height:25px;
+            background: none;
+        }
+
+
+        .btn {
+            position:relative;
+            left:40%;
+            transform: translateX(-50%);
+            margin-bottom: 40px;
+            width:80%;
+            height:40px;
+            /*background: linear-gradient(125deg,#81ecec,#6c5ce7,#81ecec);*/
+            background: linear-gradient(125deg, #a8d6ea, #9088b5, #a8d6ea);
+            background-position: left;
+            background-size: 200%;
+            color:white;
+            font-weight: bold;
+            border:none;
+            cursor:pointer;
+            transition: 0.4s;
+            display:inline;
+        }
+
+        .btn:hover {
+            background-position: right;
+        }
+
+        /* 여기서부터 작업 시작 */
+        .checkEmailBtn {
+            width: 30%; /* 이메일 중복 확인 버튼의 너비 */
+            height: 25px;
+            font-size: 12px;
+            color: white;
+            background: linear-gradient(125deg, #a8d6ea, #9088b5, #a8d6ea);
+            border: none;
+            cursor: pointer;
+            transition: 0.4s;
+            display: inline-block;
+            margin-left: 10px; /* 이메일 입력란과의 간격 */
+        }
+
+        .checkEmailBtn:hover {
+            background-position: right;
+        }
+
+        #verificationCodeSection {
+            visibility: hidden;
+            height: 0;
+            overflow: hidden;
+            transition: visibility 0.3s, height 0.3s;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 </head>
-<link rel="icon" href="data:;base64,iVBORw0KGgo=">
 <body>
-<div class="signUp-container">
-    <h2>SignUp</h2>
-    <form th:action="@{/auth/signup}" method="post">
-        <div class="form-group">
-            <label for="email">Email:</label>
-            <input type="text" id="email" name="email" required />
-            <button type="button" onclick="checkEmail()">이메일 중복 확인</button>
-            <div id="emailResult"></div>
-        </div>
-        <div class="form-group">
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required />
-        </div>
-        <div class="form-group">
-            <label for="name">Name:</label>
-            <input type="text" id="name" name="name" required />
-        </div>
-        <div class="form-group">
-            <label for="phone">전화번호:</label>
-            <input type="text" id="phone" name="phone" required/>
-        </div>
-        <div class="form-group">
-            <label for="address">주소:</label>
-            <input type="text" id="address" name="address" required onclick="findAddr()"/>
-        </div>
-        <div class="form-group">
-            <label for="detailAddress">상세주소:</label>
-            <input type="text" id="detailAddress" name="detailAddress" required />
-        </div>
-        <div class="form-group">
-            <label for="birthDate">BirthDate:</label>
-            <input type="date" value="2023-11-03" min="1940-01-01" max="2023-12-31" id="birthDate" name="birthDate" />
-        </div>
-        <div class="form-group">
-            <button type="submit">SignUp</button>
-        </div>
-    </form>
-</div>
+<form th:action="@{/auth/signup}"  method="POST" class="joinForm" onsubmit="DoJoinForm__submit(this); return false;">
+
+    <h2>회원가입</h2>
+    <!--<div class="textForm">
+        <input type="text" id="email" class="email" name="email" placeholder="이메일" required />
+        <button type="button" class="checkEmailBtn" onclick="checkEmail()">중복 확인</button>
+        <div id="emailResult"></div>
+    </div>-->
+    <div class="textForm">
+        <input type="text" id="email" class="email" name="email" placeholder="이메일" required />
+        <button type="button" class="checkEmailBtn" onclick="sendEmailVerification()">인증</button>
+    </div>
+    <div class="textForm" id="verificationCodeSection">
+        <input type="text" id="emailVerificationCode" class="emailVerificationCode" placeholder="인증 코드 입력" required />
+        <span id="timerDisplay">05:00</span>
+        <button type="button" class="checkEmailBtn" onclick="verifyEmailCode()">확인</button>
+    </div>
+    <div class="textForm">
+        <!--<input name="loginPw" type="password" class="pw" placeholder="비밀번호">-->
+        <!--<label for="password">Password:</label>-->
+        <input type="password" id="password" name="password" class="pw" placeholder="비밀번호" required />
+    </div>
+    <!-- 추가로 만들어줘야함 -->
+    <div class="textForm">
+        <input name="loginPwConfirm" type="password" class="pw" placeholder="비밀번호 확인">
+    </div>
+    <div class="textForm">
+        <!--<input name="name" type="password" class="name" placeholder="이름">-->
+        <input type="text" id="name" name="name" class="name" placeholder="이름" required />
+    </div>
+    <div class="textForm">
+        <!--<input name="email" type="text" class="email" placeholder="이메일">-->
+        <input type="text" id="phone" name="phone" class="phone" placeholder="전화번호" required/>
+    </div>
+    <div class="textForm">
+        <!--<input name="nickname" type="text" class="nickname" placeholder="닉네임">-->
+        <input type="text" id="address" name="address" class="address" placeholder="주소" required onclick="findAddr()"/>
+    </div>
+    <div class="textForm">
+        <!--<input name="nickname" type="text" class="nickname" placeholder="닉네임">-->
+        <input type="text" id="detailAddress" name="detailAddress" class="detailAddress" placeholder="상세주소" required/>
+    </div>
+    <div class="textForm">
+        <!--<input name="cellphoneNo" type="number" class="cellphoneNo" placeholder="전화번호">-->
+        <input type="date" value="2023-11-03" min="1940-01-01" max="2023-12-31" id="birthDate" class="birthDate" name="birthDate" />
+    </div>
+    <input type="submit" class="btn" value="회 원 가 입"/>
+</form>
 </body>
 <script>
+
+    var verificationTimer;
+    var timeLimit = 5 * 60; // 5 minutes in seconds
+
+    // 1. 전역 변수로 인증 상태를 저장하는 변수를 생성합니다.
+    var isEmailVerified = false;
+
+    function startTimer() {
+        clearInterval(verificationTimer);
+        var currentTime = timeLimit;
+
+        updateTimerDisplay(currentTime);
+
+        verificationTimer = setInterval(function() {
+            currentTime -= 1;
+            updateTimerDisplay(currentTime);
+
+            if (currentTime <= 0) {
+                clearInterval(verificationTimer);
+                alert("인증 코드의 유효 시간이 만료되었습니다. 다시 시도해주세요.");
+                document.getElementById("emailVerificationCode").disabled = true;
+            }
+        }, 1000);
+    }
+
+    function updateTimerDisplay(seconds) {
+        var minutes = Math.floor(seconds / 60);
+        var remainingSeconds = seconds % 60;
+        document.getElementById("timerDisplay").textContent = String(minutes).padStart(2, '0') + ":" + String(remainingSeconds).padStart(2, '0');
+    }
+
+    function sendEmailVerification() {
+        var email = document.getElementById('email').value;
+        if (email === "") {
+            alert("이메일을 입력해주세요.");
+            $('#email').focus();
+            return false;
+        }
+
+        // First, check if email already exists
+        $.ajax({
+            type: "get",
+            url : "/auth/check",
+            data: {"email": email},
+            success: function (result) {
+                if (result === "1") {
+                    alert("이미 사용중인 이메일입니다.");
+                    $("#email").val("");
+                    $("#email").focus();
+
+                } else {
+                    // If email doesn't exist, send verification code
+                    $.ajax({
+                        type: "get",
+                        url : "/send/email",
+                        data: {"email": email},
+                        success: function (response) {
+                            if (response === "success") {
+                                alert("인증 코드가 이메일로 전송되었습니다.");
+                                // Show the verification code section
+                                var verificationSection = document.getElementById("verificationCodeSection");
+                                verificationSection.style.visibility = "visible";
+                                verificationSection.style.height = "auto";
+                                startTimer(); // Start the timer when the code is successfully sent
+                            } else {
+                                alert("인증 코드 전송 실패. 다시 시도해주세요.");
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+
+    function verifyEmailCode() {
+        var enteredCode = document.getElementById('emailVerificationCode').value;
+        var email = document.getElementById('email').value;
+
+        if (enteredCode === "") {
+            alert("인증 코드를 입력해주세요.");
+            return false;
+        }
+
+        // 서버에 인증 코드 일치 확인 요청을 보냅니다.
+        $.ajax({
+            type: "post",
+            url: "/auth/checkVerification",
+            data: {
+                "email": email,
+                "code": enteredCode
+            },
+            success: function (result) {
+                if (result === "success") {
+                    alert("인증에 성공하였습니다.");
+                    clearInterval(verificationTimer); // 인증에 성공했으므로 타이머를 중지합니다.
+                    var verificationSection = document.getElementById("verificationCodeSection");
+                    verificationSection.style.visibility = "hidden"; // 인증 섹션을 숨깁니다.
+                    verificationSection.style.height = "0";
+
+                    isEmailVerified = true;
+                } else {
+                    alert("인증 코드가 일치하지 않습니다. 다시 확인해주세요.");
+                }
+            }
+        });
+    }
+
     function findAddr() {
         new daum.Postcode({
             oncomplete: function(data) {
@@ -62,7 +378,7 @@
                 if(data.userSelectedType === 'R'){
                     if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
                         extraAddr += data.bname;
-                console.log(addr);
+                        console.log(addr);
                     }
                     if(data.buildingName !== '' && data.apartment === 'Y'){
                         extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
@@ -75,16 +391,15 @@
                 document.getElementById('address').value = data.zonecode;
                 document.getElementById("address").value = addr;
                 document.getElementById("detailAddress").focus();
-                
+
             }
         }).open();
     }
 
-
     function checkEmail() {
         var email = document.getElementById('email').value;
-        console.log(email);
-        if (email == "") {
+        //console.log(email);
+        if (email === "") {
             alert("이메일을 입력해주세요.");
             $('#email');
             return false;
@@ -96,7 +411,8 @@
             data: {"email": email},
 
             success: function (result) {
-                if (result.result == "0") {
+                console.log(result);
+                if (result === "0") {
                     if (confirm("이 아이디는 사용 가능합니다. \n 사용하시겠습니까?")) {
                         usernameOverlapCheck = 1;
                         $("#email").attr("readonly", true);
@@ -106,14 +422,72 @@
                         $("#resetUseremail").css("display", "inline-block");
                     }
                     return false;
-                }else if (result.result == "1") {
+                } else if (result === "1") {
                     alert("이미 사용중인 아이디입니다.");
+                    $("#email").val("");  // 아이디 입력 필드의 값을 지웁니다.
                     $("#email").focus();
                 }
             }
         });
     }
 
+    function DoJoinForm__submit(form) {
+        // 3. 회원가입 버튼을 누를 때 해당 변수의 상태를 확인하고,
+        // 인증되지 않았다면 회원가입을 중단하고 경고 메시지를 표시합니다.
+        if (!isEmailVerified) {
+            alert("이메일 인증을 완료해주세요.");
+            return false; // form submit 중단
+        }
+
+        // 여기에 추가적인 회원가입 처리 로직을 넣을 수 있습니다.
+
+        // 모든 검사를 통과하면 실제로 form을 제출합니다.
+        form.submit();
+    }
+
+/*
+    function sendEmailVerification() {
+        var email = document.getElementById('email').value;
+        if (email === "") {
+            alert("이메일을 입력해주세요.");
+            $('#email').focus();
+            return false;
+        }
+
+        // First, check if email already exists
+        $.ajax({
+            type: "get",
+            url : "/auth/check",
+            data: {"email": email},
+            success: function (result) {
+                if (result === "1") {
+                    alert("이미 사용중인 이메일입니다.");
+                    $("#email").val("");
+                    $("#email").focus();
+                    var verificationSection = document.getElementById("verificationCodeSection");
+                    verificationSection.style.visibility = "visible";
+                    verificationSection.style.height = "auto";
+                } else {
+                    // If email doesn't exist, send verification code
+                    $.ajax({
+                        type: "get",
+                        url : "/auth/sendVerification",
+                        data: {"email": email},
+                        success: function (response) {
+                            if (response === "success") {
+                                alert("인증 코드가 이메일로 전송되었습니다.");
+                                // Show the verification code section
+                                $("#verificationCodeSection").css("display", "block");
+                            } else {
+                                alert("인증 코드 전송 실패. 다시 시도해주세요.");
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    }
+*/
+
 </script>
-<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 </html>
