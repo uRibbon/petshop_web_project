@@ -208,4 +208,7 @@ input[id="menuicon"]:checked + label + div {
     display: none; /* Hide the scrollbar in Chrome, Safari, and Opera */
 }
 
-/* 인기 검색어 */
+/* 추천 검색어 */
+p {
+    margin: 0;
+}
