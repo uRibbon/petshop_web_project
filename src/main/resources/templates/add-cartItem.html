@@ -9,13 +9,27 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
+            background-color: #f1f1f1;
         }
 
         .container {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
             max-width: 600px;
             margin: 0 auto;
             padding: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            margin-top: 50px;
         }
+        .button-container {
+            display: flex;
+            gap: 10px; /* 버튼 사이의 간격을 조절합니다. */
+        }
+
 
         form {
             margin-top: 20px;
@@ -32,22 +46,19 @@
         label[for="productResDTO.price"] {
             font-size: 20px; /* Change the value as per your requirement */
         }
-
         button {
-            margin-top: 10px;
-            background-color: white; /* Set background color to white */
-            color: #4CAF50; /* Change text color to green */
+            margin-top: 20px;
+            background-color: #6fb98f; /* 세련된 색상으로 변경 */
+            color: white;
             padding: 10px 20px;
-            border: 1px solid #ddd; /* Set border color to gray */
-            border-radius: 5px;
+            border: none;
             cursor: pointer;
-            color: #737373;
+            border-radius: 25px; /* 동그랗게 만들기 위한 속성 */
+            transition: background-color 0.3s ease; /* 마우스 호버 시 부드러운 전환 효과 적용 */
         }
-
         button:hover {
-            background-color: #f2f2f2; /* Change background color on hover */
+            background-color: #578b6d; /* 호버 시 색상 변경 */
         }
-
         .footer {
             background-color: #f1f1f1;
             padding: 10px;
@@ -71,7 +82,7 @@
 
         input[type="text"],
         input[type="number"] {
-            width: 100%;
+            width: 94%;
             padding: 10px;
             border: 1px solid #ddd; /* Set border color to gray */
             border-radius: 5px;
@@ -105,10 +116,14 @@
             <label for="productResDTO.id"><!--product_id--></label>
             <input type="hidden" th:field="*{productResDTO.id}" id="productResDTO.id">
 
-            <button type="button" onclick="increaseQuantity()">+</button>
-            <button type="button" onclick="decreaseQuantity()">-</button>
-            <button id="submitButton">장바구니 담기</button>
+            <div class="button-container">
+                <button type="button" onclick="increaseQuantity()">╊</button>
+                <button type="button" onclick="decreaseQuantity()">━</button>
+                <button id="submitButton">장바구니 담기</button>
+                <button onclick="goBack()">뒤로 가기</button>
+            </div>
         </form>
+
     </div>
 </div>
 
@@ -140,19 +155,25 @@
         var quantity = document.getElementById("cartItemReqDto.quantity").value;
         var unitPrice = document.getElementById("productResDTO.price").value;
 
-        // quantity와 unitPrice가 숫자인지 확인
         if (!isNaN(quantity) && !isNaN(unitPrice)) {
             var subtotal = quantity * unitPrice;
             document.getElementById("cartItemReqDto.subTotal").value = subtotal;
         } else {
-            // 에러 처리: 유효한 숫자가 아닌 경우 메시지 표시 또는 다른 처리 수행
             alert("유효한 숫자가 아닙니다.");
         }
     }
+
+    function goBack() {
+        window.history.back();
+    }
+
+    document.getElementById("submitButton").onclick = function () {
+        document.getElementById("yourFormId").submit();
+    };
+
     /*]]>*/
 
     document.getElementById("submitButton").onclick = function() {
-        // 폼을 제출
         document.getElementById("yourFormId").submit();
     };
 </script>

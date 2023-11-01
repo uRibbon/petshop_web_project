@@ -1,26 +1,35 @@
 package com.dog.shop.web.CartItem;
 
-
 import com.dog.shop.api.service.KakaoApiService;
 import com.dog.shop.domain.User;
+import com.dog.shop.domain.cart.Cart;
 import com.dog.shop.dto.*;
 import com.dog.shop.help.JwtHelper;
 import com.dog.shop.product.dto.ProductResDTO;
 import com.dog.shop.product.service.CartService;
 import com.dog.shop.product.service.ProductService;
+import com.dog.shop.repository.CartRepository;
 import com.dog.shop.repository.UserRepository;
 import com.dog.shop.service.AuthService;
 import com.dog.shop.service.CartItemService;
 import com.dog.shop.utils.JwtUtil;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,6 +45,7 @@ public class CartItemController {
     private final JwtUtil jwtUtil;
     private final UserRepository userRepository;
     private final JwtHelper jwtHelper;
+    private final CartRepository cartRepository;
     private final KakaoApiService kakaoApiService;
 
     @GetMapping("/getList")
@@ -46,7 +56,15 @@ public class CartItemController {
 
     // 나만의 장바구니
     @GetMapping("/getCartItem")
-    public ModelAndView getCartItem(HttpServletRequest request) {
+    public ModelAndView getCartItem(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+        // 사용자가 로그인하지 않은 경우, 로그인 페이지로 리다이렉트 로그인 토큰정보로 비로그인 장바구니 선택시 에러처리
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || authentication instanceof AnonymousAuthenticationToken)  {
+            response.sendRedirect("/login");
+            return null;
+        }
+
         String token = jwtHelper.extractTokenFromCookies(request);
         Optional<User> userOpt = jwtHelper.extractUserFromToken(token);
         Long userId = userOpt.get().getId();
@@ -103,17 +121,28 @@ public class CartItemController {
         return null;
     }
 
-
     // 상품의 정보를 가져오면서 장바구니 등록설정창 들어가기
     @GetMapping("/signup/{id}")
     public String showSignUpForm(@PathVariable Long id, Model model, CartItemReqDto cartItemReqDto, HttpServletRequest request) {
-        // product_id 가져오는부분
-        ProductResDTO productResDTO = productService.getProductById(id);
+        // 로그인 정보를 바탕으로 토큰에 등록되어있는 id를받아오기
         String token = jwtHelper.extractTokenFromCookies(request);
         Optional<User> userOpt = jwtHelper.extractUserFromToken(token);
-        if(userOpt.isPresent()) {
-            Long userId = userOpt.get().getId();
-            //임의로 Long값 2 넣음 나중에 user_id와 동일한 cart_id를 받아서 여기에 넣어야함
+        Long userId = userOpt.get().getId();
+        // 처음 계정 생성시 Cart(장바구니가 없을시에 User Entity 를먼저 가져오는로직)
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + userId));
+        // 처음 계정 생성시 Cart(장바구니가 없을때) 장바구니를 눌렀을때 장바구니를 새로 생성하고 장바구니로 들어가기
+        // 이부분은 Cart 테이블과 user_id 를 초기화하면 user_id와 id가 동일하게되면 정상작동 
+        Cart cart = cartRepository.findByUserId(userId)
+                .orElseGet(() -> {
+                    Cart newCart = new Cart();
+                    newCart.setUser(user);
+                    return cartRepository.save(newCart);
+                });
+
+        // product_id 가져오는부분
+        ProductResDTO productResDTO = productService.getProductById(id);
+
             CartResDto cartResDto = cartService.getCartById(userId);
             MultiFormDto multiFormDto = new MultiFormDto();
             //CartItemReqDto 객체 넣어주기 값은디폴트값들어있음
@@ -123,13 +152,9 @@ public class CartItemController {
             multiFormDto.setProductResDTO(productResDTO);
 
             model.addAttribute("multiFormDto", multiFormDto);
-        }
-        else {
 
-        }
         return "add-cartItem";
     } // 장바구니 등록
-
 
 // 장바구니 수정폼가기
     @GetMapping("/edit/{id}")
@@ -159,10 +184,7 @@ public class CartItemController {
         cartItemService.deleteCartItem(id);
         return "redirect:/cartItem/getList"; // C -> c
     }
-
-
 }
-
 /*if (token != null) {
             String email = jwtUtil.getEmailFromToken(token);
             if (email != null) {
@@ -170,7 +192,6 @@ public class CartItemController {
                 User user = userRepository.findByEmail(email).orElseThrow();
                 // 이후 로직 처리...
                 Long userId = user.getId();
-
 
             }
         }*/

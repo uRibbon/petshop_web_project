@@ -3,40 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <title>Poducts List</title>
+    <link th:href="@{/css/main.css}" rel="stylesheet">
 </head>
-<body>
-<table border="1">
-    <tr>
-        <th>Seq</th>
-        <th>Keyword</th>
-    </tr>
-    <tr th:each="keyword, userState : ${keywords}">
-        <td th:text="${userState.count}"></td>
-        <td th:text="${keyword.productName}" ></td>
-    </tr>
-</table>
-<table>
+<body style="display: flex; flex-direction: column; min-height: 100vh;">
+<div th:insert="~{/index/header :: header}"></div>
+<br/>
 
-    <tr>
-        <th>Seq</th>
-        <th>description</th>
-        <th>price</th>
-        <th>product_name</th>
-        <th>sales_status</th>
-        <th>stock</th>
-    </tr>
-    <tr th:each="product, productStat : ${products}">
-        <td th:text="${productStat.count}"></td>
-        <td th:text="${product.description}" ></td>
-        <td th:text="${product.price}"></td>
-        <td><a th:href="@{/products/{id}(id=${product.id})}" th:text="${product.productName}"></a></td>
-        <td th:text="${product.salesStatus}"></td>
-        <td th:text="${product.stock}"></td>
-        <td><a th:href="@{/products/edit/{id}(id=${product.id})}">update</a></td>
-        <td><a th:href="@{/products/delete/{id}(id=${product.id})}">delete</a></td>
-    </tr>
-</table>
-<p><a href="/products/signup">Create</a></p>
+<div style="display: flex; flex: 1;">
+
+<!--    <div style="flex: 1; padding-right: 5px;">-->
+<!--        <div th:each="keyword, userState : ${keywords}" style="margin-bottom: 30px;">-->
+<!--            <a href="#" th:text="${keyword.productName}" style="text-decoration: none; color: black;"></a>-->
+<!--        </div>-->
+<!--    </div>-->
+
+    <div style="flex: 5;">
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between;">
+            <div th:each="product, productStat : ${products}" style="width: 31%; margin-bottom: 40px;">
+                <a th:href="@{/products/{id}(id=${product.id})}">
+                    <div>
+                        <img th:if="${product.mainImageUrl != null}" th:src="${product.mainImageUrl}" alt="Invalid url" width="100%"/>
+                        <img th:unless="${product.mainImageUrl != null}" src="/img.png" alt="No image" width="100%"/>
+                    </div>
+                </a>
+                <div>
+                    <a th:href="@{/products/{id}(id=${product.id})}" th:text="${product.productName}"></a>
+                </div>
+                <div th:text="${product.price}"></div>
+                <div th:text="${product.salesStatus}"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:insert="~{/index/footer :: footer}"></div>
 </body>
 </html>
-
