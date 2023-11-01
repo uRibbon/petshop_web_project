@@ -36,4 +36,25 @@ public class Cart { // 장바구니
     public String toString() {
         return "" + id;
     }
+
+    public int getTotalItems() {
+        return cartItems.size();
+    }
+
+    public int getTotalPrice() {
+        return cartItems.stream()
+                .mapToInt(item -> item.getSubTotal())
+                .sum();
+    }
+
+    public double calculateTotalPrice() {
+        double totalPrice = 0.0;
+
+        // 모든 cartItems에 대해 합계를 계산합니다.
+        for(CartItem item : cartItems) {
+            totalPrice += item.getSubTotal();
+        }
+
+        return totalPrice;
+    }
 }

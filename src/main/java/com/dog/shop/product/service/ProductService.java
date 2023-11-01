@@ -49,11 +49,21 @@ public class ProductService {
     }
 
     @Transactional(readOnly = true)
-    public ProductResDTO getProductById(Long id) {
-        Product productEntity = productRepository.findById(id)
-                .orElseThrow(() -> new CommonException(ErrorCode.NON_LOGIN, HttpStatus.NOT_FOUND));
+    public ProductResDTO getProductById(Long productId) {
+        // TODO 에러처리 필요!
+        Product productEntity = productRepository.findById(productId)
+                .orElseThrow();
         ProductResDTO productResDTO = modelMapper.map(productEntity, ProductResDTO.class);
         return productResDTO;
+    }
+
+    @Transactional(readOnly = true)
+    public Product fetchProductById(Long productId) {
+        // TODO 에러처리 필요!
+        Product productEntity = productRepository.findById(productId)
+                .orElseThrow();
+        // ProductResDTO productResDTO = modelMapper.map(productEntity, ProductResDTO.class);
+        return productEntity;
     }
 
     public void deleteProduct(Long id) {
