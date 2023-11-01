@@ -98,8 +98,8 @@
 
     <div class="product-info">
         <h2 class="product-title" th:text="${product.productName}"></h2>
-        <h3 class="product-price" th:text="${'판매가 ' + product.price + '원'}"></h3>
         <p th:text="${'수량 ' + product.stock}"></p>
+        <h3 class="product-price" th:text="${'판매가 ' + product.price + '원'}"></h3>
         </br>
         <div>
             <a th:if="${product.salesStatus != '품절'}" th:href="@{/cartItem/signup/{id}(id=${product.id})}" class="button add-to-cart">장바구니 담기</a>
