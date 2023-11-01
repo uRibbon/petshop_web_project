@@ -21,6 +21,6 @@ public class CustomLogoutSuccessHandler implements LogoutSuccessHandler {
         response.addCookie(jwtTokenCookie);
 
         // 로그아웃 후 리디렉션 또는 다른 로직
-        response.sendRedirect("/login");
+        response.sendRedirect("/");
     }
 }
