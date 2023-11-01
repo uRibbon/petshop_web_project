@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <link th:href="@{/css/main.css}" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>마이페이지</title>
     <style>
@@ -31,6 +32,46 @@
             text-decoration: none;
             color: inherit;
         }
+        .container {
+            flex: 1;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .back-button {
+            background-color: #6fb98f;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            border-radius: 25px;
+            transition: background-color 0.3s ease;
+        }
+
+        .back-button:hover {
+            background-color: #578b6d;
+        }
+
+        .back-button-container {
+            margin-top: 20px;
+        }
     </style>
     <script type="text/javascript">
         function goBack() {
@@ -45,9 +86,11 @@
 <div class="category-grid">
     <div class="category-item"><a href="/order/check">주문조회</a></div>
     <div class="category-item"><a href="/updateInfo/page">회원정보</a></div>
-    <div class="category-item"><a href="/review/myReview/get/2">리뷰조회</a></div>
+    <div class="category-item"><a href="/review/myReview/get">리뷰조회</a></div> <!--userId를 토큰으로받을거라 2삭제-->
     <div class="category-item"><a href="/api/inquiry">문의조회</a></div>
 </div>
-<button onclick="goBack()">뒤로가기</button>
+<div class="back-button-container">
+    <button class="back-button" onclick="goBack()">뒤로가기</button>
+</div>
 </body>
 </html>

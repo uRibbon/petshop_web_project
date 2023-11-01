@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <title>Poducts List</title>
     <link th:href="@{/css/main.css}" rel="stylesheet">
+    <style>
+        .active {
+            font-weight: bold;
+        }
+    </style>
+
 </head>
 <body style="display: flex; flex-direction: column; min-height: 100vh;">
 <div th:insert="~{/index/header :: header}"></div>
@@ -17,13 +23,18 @@
 <!--        </div>-->
 <!--    </div>-->
 
-    <div style="flex: 5;">
+    <div style="flex: 5; margin-left: 50px; margin-right: 50px">
         <div style="display: flex; flex-wrap: wrap; justify-content: space-between;">
             <div th:each="product, productStat : ${products}" style="width: 31%; margin-bottom: 40px;">
                 <a th:href="@{/products/{id}(id=${product.id})}">
-                    <div>
+                    <div style="position: relative; width: 100%; height: auto;">
                         <img th:if="${product.mainImageUrl != null}" th:src="${product.mainImageUrl}" alt="Invalid url" width="100%"/>
                         <img th:unless="${product.mainImageUrl != null}" src="/img.png" alt="No image" width="100%"/>
+                        <!-- 어둡게 처리 (품절 상태일 경우에만 표시) -->
+                        <div th:if="${product.salesStatus == '품절'}" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5);"></div>
+
+                        <!-- SOLD OUT 라벨 (품절 상태일 경우에만 표시) -->
+                        <div th:if="${product.salesStatus == '품절'}" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: rgba(255,0,0,0.6); color: white; padding: 10px 20px; font-size: 20px;">SOLD OUT</div>
                     </div>
                 </a>
                 <div>
@@ -34,6 +45,21 @@
             </div>
         </div>
     </div>
+</div>
+
+<div style="text-align:center; margin: 20px 0;">
+    <ul style="list-style-type:none; display:inline-flex; padding:0;">
+        <li th:if="${currentPage > 1}">
+            <a th:href="@{/products/list?page=(currentPage-2)}"><　</a>
+        </li>
+        <li th:each="pageNumber : ${pageNumbers}" th:class="${pageNumber == currentPage ? 'active' : ''}">
+            <a th:if="${pageNumber != currentPage}" th:href="@{/products/list?page=(pageNumber-1)}" th:text="${pageNumber}"></a>
+            <span th:if="${pageNumber == currentPage}" th:text="${pageNumber}"></span>
+        </li>
+        <li th:if="${currentPage < totalPages}">
+            <a th:href="@{/products/list?page=(currentPage+1)}">　></a>
+        </li>
+    </ul>
 </div>
 
 <div th:insert="~{/index/footer :: footer}"></div>
