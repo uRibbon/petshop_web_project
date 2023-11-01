@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <link th:href="@{/css/main.css}" rel="stylesheet">
@@ -9,41 +10,63 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
+
         .container {
+            flex: 1;
             max-width: 800px;
             margin: 0 auto;
             padding: 20px;
+            overflow-y: auto;
+            display: flex; /* 부모 요소에 대해 flex 속성 추가 */
+            flex-direction: column; /* 세로 방향으로 정렬 */
         }
+
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 20px;
         }
-        th, td {
+
+        th,
+        td {
             border: 1px solid #ddd;
             padding: 10px;
             text-align: center;
         }
+
         th {
             background-color: #f2f2f2;
         }
+
         .checkbox-column {
             width: 5%;
         }
+
         .update-delete-columns {
             width: 10%;
         }
-        #fee {
-            margin-bottom: 10px;
-        }
+
         #totalAmount {
             font-weight: bold;
             font-size: 18px;
-            margin-top: 20px;
+            text-align: right;
+            margin-bottom: 10px;
+            order: 1;
         }
-        .back-button, input[type="submit"] {
+
+        #totalAmount,
+        #fee,
+        .back-button,
+        input[type="submit"] {
             margin-top: 5px;
+            order: 2;
+        }
+
+        .back-button,
+        input[type="submit"] {
             background-color: #6fb98f;
             color: white;
             padding: 10px 20px;
@@ -52,16 +75,21 @@
             border-radius: 25px;
             transition: background-color 0.3s ease;
         }
-        .back-button:hover, input[type="submit"]:hover {
+
+        .back-button:hover,
+        input[type="submit"]:hover {
             background-color: #578b6d;
         }
+
         .footer {
             background-color: #f1f1f1;
             padding: 10px;
             text-align: center;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
+        }
+
+        #backButton {
+            margin-left: auto;
+            order: 3;
         }
     </style>
     <script>
@@ -91,7 +119,7 @@
 
             // 여기서 fee 값을 HTML 요소에서 가져옵니다.
             var feeText = document.getElementById('fee').innerText;
-            var feeValue = feeText.match(/\d+/);  // 숫자 부분만 추출
+            var feeValue = feeText.match(/\d+/); // 숫자 부분만 추출
             var fee = parseFloat(feeValue);
             for (var i = 0; i < checkboxes.length; i++) {
                 if (checkboxes[i].checked) {
@@ -109,9 +137,11 @@
         }
     </script>
 </head>
+
 <body>
 <div th:insert="~{/index/header :: header}"></div>
 <div class="container">
+    <div id="totalAmount">총 금액: 0원</div>
     <form th:action="@{/preparePayment}" method="post" onsubmit="return validateForm();">
         <table>
             <tr>
@@ -120,31 +150,33 @@
                 <th>수량</th>
                 <th>합계금액</th>
                 <th>개당가격</th>
-<!--                <th>Cart ID</th>-->
+                <!-- <th>Cart ID</th> -->
                 <th class="update-delete-columns">Update</th>
                 <th class="update-delete-columns">Delete</th>
             </tr>
             <tr th:each="cartItem, cartItemStat : ${cartItems}">
-                <td class="checkbox-column"><input type="checkbox" th:value="${cartItem.id}" name="selectedItems" onclick="updateTotalAmount();"/></td>
+                <td class="checkbox-column"><input type="checkbox" th:value="${cartItem.id}" name="selectedItems"
+                                                   onclick="updateTotalAmount();" /></td>
                 <td th:text="${cartItemStat.count}"></td>
                 <td th:text="${cartItem.quantity}"></td>
                 <td th:attr="data-subtotal=${cartItem.subTotal}" th:text="${cartItem.subTotal}"></td>
                 <td th:text="${cartItem.unitPrice}"></td>
-<!--                <td th:text="${cartItem.cart}"></td>-->
-                <td class="update-delete-columns"><a th:href="@{/cartItem/edit/{id}(id=${cartItem.id})}">수정</a></td>
-                <td class="update-delete-columns"><a th:href="@{/cartItem/delete/{id}(id=${cartItem.id})}">삭제</a></td>
+                <!-- <td th:text="${cartItem.cart}"></td> -->
+                <td class="update-delete-columns"><a
+                        th:href="@{/cartItem/edit/{id}(id=${cartItem.id})}">수정</a></td>
+                <td class="update-delete-columns"><a
+                        th:href="@{/cartItem/delete/{id}(id=${cartItem.id})}">삭제</a></td>
             </tr>
         </table>
         <div id="fee">배송비: <span th:text="${fee}"></span>원</div>
         <input type="hidden" id="hiddenFee" name="deliveryFee" th:value="${fee}" />
-        <input type="submit" class="back-button" value="주문하기"/>
+        <input type="submit" class="back-button" value="주문하기" />
     </form>
-    <div id="totalAmount">총 금액: 0원</div>
-    </br>
-    <button class="back-button" onclick="goBack()">뒤로가기</button>
+    <button id="backButton" class="back-button" onclick="goBack()">뒤로가기</button>
 </div>
 <div class="footer">
     <div th:insert="~{/index/footer :: footer}"></div>
 </div>
 </body>
+
 </html>
