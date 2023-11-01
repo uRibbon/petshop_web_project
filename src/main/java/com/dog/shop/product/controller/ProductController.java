@@ -36,7 +36,7 @@ public class ProductController {
     private final PopularKeywordService popularKeywordService;
     @GetMapping("/list")
     public ModelAndView listProducts(@RequestParam(defaultValue = "0") int page, Model model) {
-        Pageable pageable = PageRequest.of(page, 3);
+        Pageable pageable = PageRequest.of(page, 6);
         Page<ProductResDTO> products = productService.findAllProducts(pageable);
         List<PopularSearchedKeywordResDTO> popularSearchedKeywordResDTOList = popularKeywordService.getResult();
 
