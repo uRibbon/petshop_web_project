@@ -64,7 +64,8 @@ public class User extends BaseTimeEntity { // 사용자 가입일에 대한 내�
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Review> reviews = new ArrayList<>();
 
-    @OneToOne(fetch = FetchType.LAZY)
-    private Cart cart;
+    @OneToOne(mappedBy = "user" ,fetch = FetchType.LAZY)
 
+    private Cart cart;
+    //mappedBy 가 있으면 cart_id가 안생김 근데이미생겨서 JPA가 안건듬
 }

@@ -37,7 +37,9 @@ public class ReviewService {
     private final ModelMapper modelMapper;
 
     // 리뷰 작성하기
-    public boolean writeReview(Long userId, Long orderItemId, ReviewReqDto reviewReqDto) {
+    public boolean writeReview(Long orderItemId,Long userId, ReviewReqDto reviewReqDto) {
+        // ReviewController에서 보내는 orderItemId,userId 순서가 반대여서 값이 반대로들어가서 수정
+        // userId랑 orderItemId가 디비에 반대로들어가고있음
         User userEntity = userRepository.findById(userId)
                 .orElseThrow(() -> new MemberNotFoundException("user not found"));
 

@@ -1,51 +1,97 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>로그인</title>
-    <link th:href="@{/css/login.css}" rel="stylesheet">
+    <title>로그인 페이지</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .social-icon.kakao {
+            background-image: url('/images/6285350df01af.png');
+            background-size: 115%;  /* 이미지 크기를 줄임 */
+            background-repeat: no-repeat;
+            background-position: center;
+            width: 40px;
+            height: 40px;
+        }
+
+        .social-icon.naver {
+            background-image: url('/images/btnG_아이콘원형.png'); /* 네이버 아이콘 경로를 확인해주세요 */
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            width: 40px; /* 이미지의 크기에 따라 조정 */
+            height: 40px; /* 이미지의 크기에 따라 조정 */
+        }
+    </style>
 </head>
 <body>
-<div class="container" id="container">
-    <div class="sign-in-container">
-        <h1>로그인</h1>
-        <form th:action="@{/login-process}" method="post">
-            <div class="txt_field">
-                <input type="email" id="email" name="email" required/>
-                <span></span>
-                <label>이메일</label>
-            </div>
-            <div class="txt_field">
-                <input type="password" id="password" name="password" required/>
-                <span></span>
-                <label>패스워드</label>
-            </div>
+<section class="ftco-section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-7 col-lg-5">
+                <div class="wrap">
+                    <div class="img" style="background-image: url(/img/icon/Dog_logo.png);"></div>
+                    <div class="login-wrap p-4 p-md-5">
+                        <div class="d-flex">
+                            <div class="w-100">
+                                <h3 class="mb-4">로그인</h3>
+                            </div>
+                            <div class="w-100">
+                                <p class="social-media d-flex justify-content-end">
+                                    <a href="https://kauth.kakao.com/oauth/authorize?client_id=0995812abee8d29ce73b3bfb49440747&redirect_uri=http://localhost:8080/kakao/callback&response_type=code"
+                                       class="social-icon kakao d-flex align-items-center justify-content-center"></a>
+                                    <a href="/naver-login"
+                                       class="social-icon naver d-flex align-items-center justify-content-center"></a>
+                                </p>
+                            </div>
 
-            <!--<div class="pass">
-                비밀번호 찾기
-            </div>-->
-            <input type="submit" value="Login">
-            <div class="social-login-buttons">
-                <button class="social-login-button naver"></button>
-                <button class="social-login-button kakao"></button>
+                        </div>
+                        <form th:action="@{/login-process}" method="post" class="signin-form">
+                            <div class="form-group mt-3">
+                                <input type="email" id="email" name="email" class="form-control" required>
+                                <label class="form-control-placeholder" for="email">이메일</label>
+                            </div>
+                            <div class="form-group">
+                                <input id="password" name="password" type="password" class="form-control" required>
+                                <label class="form-control-placeholder" for="password">패스워드</label>
+                                <span toggle="#password-field"
+                                      class="fa fa-fw fa-eye field-icon toggle-password"></span>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="form-control btn btn-primary rounded submit px-3">로그인
+                                </button>
+                            </div>
+                            <div class="form-group d-md-flex">
+                                <div class="w-50 text-left">
+                                    <!--<label class="checkbox-wrap checkbox-primary mb-0">Remember Me
+                                        <input type="checkbox" checked>
+                                        <span class="checkmark"></span>
+                                    </label>-->
+                                </div>
+                                <div class="w-50 text-md-right">
+                                    <a href="#">비밀번호 찾기</a>
+                                </div>
+                            </div>
+                        </form>
+                        <p class="text-center">회원이 아닌가요? <a data-toggle="tab" href="/check/agree" onclick="showAgreement()">회원가입</a></p>
+                    </div>
+                </div>
             </div>
-
-            <!--<div class="signup_link">
-                회원이 아닌가요? <a href="/check/agree" onclick="showAgreement()">회원가입</a>
-            </div>-->
-
-        </form>
-        <div class="pass">
-            아이디 찾기 | <span>비밀번호 찾기</span> | <a href="/check/agree" onclick="showAgreement()">회원가입</a>
         </div>
     </div>
-</div>
+</section>
 
-<script>
-    function showAgreement() {
-        $('#popup').show();
-    }
-</script>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/popper.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/main.js"></script>
+
 </body>
-
 </html>
+

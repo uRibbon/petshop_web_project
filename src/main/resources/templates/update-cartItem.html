@@ -1,41 +1,128 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<meta charset="UTF-8">
 <head>
+    <meta charset="UTF-8">
+    <link th:href="@{/css/main.css}" rel="stylesheet">
+    <title>장바구니 수정</title>
     <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f1f1f1;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            margin-top: 50px;
+        }
+        .button-container {
+            display: flex;
+            gap: 10px; /* 버튼 사이의 간격을 조절합니다. */
+        }
+
+
+        form {
+            margin-top: 20px;
+        }
+
+        label,
+        input {
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        label[for="quantity"],
+        label[for="subTotal"],
+        label[for="unitPrice"] {
+            font-size: 20px; /* Change the value as per your requirement */
+        }
+
         button {
-            display: inline-block;
-            margin-top: 10px; /* 버튼 상단 여백을 조절할 수 있습니다. */
+            margin-top: 20px;
+            background-color: #6fb98f; /* 세련된 색상으로 변경 */
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            border-radius: 25px; /* 동그랗게 만들기 위한 속성 */
+            transition: background-color 0.3s ease; /* 마우스 호버 시 부드러운 전환 효과 적용 */
+        }
+        button:hover {
+            background-color: #578b6d; /* 호버 시 색상 변경 */
+        }
+
+        .footer {
+            background-color: #f1f1f1;
+            padding: 10px;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .center-box {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            /*border: 1px solid #ddd;*/
+            padding: 20px;
+            border-radius: 5px;
+            width: 70%; /* Adjusted width */
+            max-width: 400px; /* Added max-width */
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            width: 94%;
+            padding: 10px;
+            border: 1px solid #ddd; /* Set border color to gray */
+            border-radius: 5px;
+            margin-bottom: 20px;
         }
     </style>
 </head>
 <body>
-<form id="yourFormId" action="#" th:action="@{/cartItem/update/{id}(id=${cartItem.id})}" th:object="${cartItem}" method="post" onsubmit="return false;">
-    <label for="quantity">Quantity</label>
-    <input type="number" th:field="*{quantity}" id="quantity" oninput="calculateSubtotal()">
-    <span th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}"></span>  <br/>
+<div th:insert="~{/index/header :: header}"></div>
+<div class="center-box">
+    <div class="container">
+        <form id="yourFormId" action="#" th:action="@{/cartItem/update/{id}(id=${cartItem.id})}" th:object="${cartItem}" method="post" onsubmit="return false;">
+            <label for="quantity">수량</label>
+            <input type="number" th:field="*{quantity}" id="quantity" oninput="calculateSubtotal()">
+            <span th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}"></span>
+            <br/>
 
-    <label for="subTotal">SubTotal</label>
-    <input type="text" th:field="*{subTotal}" id="subTotal" readonly> <!--수정 안되게-->
-    <span th:if="${#fields.hasErrors('subTotal')}" th:errors="*{subTotal}"></span>  <br/>
+            <label for="subTotal">합계 금액</label>
+            <input type="text" th:field="*{subTotal}" id="subTotal" readonly>
+            <br/>
 
-    <label for="unitPrice">UnitPrice</label>
-    <input type="text" th:field="*{unitPrice}" id="unitPrice" readonly>
-    <span th:if="${#fields.hasErrors('unitPrice')}" th:errors="*{unitPrice}"></span>  <br/>
+            <label for="unitPrice">개당 가격</label>
+            <input type="text" th:field="*{unitPrice}" id="unitPrice" readonly>
+            <br/>
+            <div class="button-container">
+                <button type="button" onclick="increaseQuantity()">╊</button>
+                <button type="button" onclick="decreaseQuantity()">━</button>
+                <button id="submitButton">장바구니 담기</button>
+                <button onclick="goBack()">뒤로 가기</button>
+            </div>
+        </form>
+    </div>
+</div>
 
-    <label for="cart">Cart</label>
-    <input type="text" th:field="*{cart}" id="cart" readonly>
-    <span th:if="${#fields.hasErrors('cart')}" th:errors="*{cart}"></span>  <br/>
+<div class="footer">
+    <div th:insert="~{/index/footer :: footer}"></div>
+</div>
 
-    <label for="product">Product</label>
-    <input type="text" th:field="*{product}" id="product" readonly>
-    <span th:if="${#fields.hasErrors('product')}" th:errors="*{product}"></span>  <br/>
-
-    <button id="submitButton">장바구니 수정</button>
-
-    <button onclick="increaseQuantity()">수량추가</button>
-    <button onclick="decreaseQuantity()">수량제거</button>
-</form>
 <script th:inline="javascript">
     /*<![CDATA[*/
     function increaseQuantity() {
@@ -52,7 +139,7 @@
             document.getElementById("quantity").value = quantity;
             calculateSubtotal();
         } else {
-            alert("더이상 수량을 제거할수 없습니다.");
+            alert("더이상 수량을 제거할 수 없습니다.");
         }
     }
 
@@ -60,21 +147,22 @@
         var quantity = parseInt(document.getElementById("quantity").value);
         var unitPrice = parseInt(document.getElementById("unitPrice").value);
 
-        // quantity와 unitPrice가 숫자인지 확인
         if (!isNaN(quantity) && !isNaN(unitPrice)) {
             var subtotal = quantity * unitPrice;
             document.getElementById("subTotal").value = subtotal;
         } else {
-            // 에러 처리: 유효한 숫자가 아닌 경우 메시지 표시 또는 다른 처리 수행
             alert("유효한 숫자가 아닙니다.");
         }
     }
-    /*]]>*/
+
+    function goBack() {
+        window.history.back();
+    }
 
     document.getElementById("submitButton").onclick = function() {
-        // 폼을 제출
         document.getElementById("yourFormId").submit();
     };
+    /*]]>*/
 </script>
 </body>
 </html>

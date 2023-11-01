@@ -1,5 +1,6 @@
 package com.dog.shop.web;
 
+import com.dog.shop.domain.User;
 import com.dog.shop.dto.userDto.UserReqDto;
 import com.dog.shop.dto.userDto.UserResDto;
 import com.dog.shop.dto.userDto.UserUpdateReqDto;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
@@ -30,12 +32,14 @@ public class AuthController {
     }
 
     @GetMapping("/check")
+    @ResponseBody
     public String memCheck(@RequestParam String email) {
         System.out.println("이메일 확인 : " + email);
-        String  result = String.valueOf(authService.userCheck(email));
-        System.out.println(result);
-        return result;
+        Boolean check = authService.userCheck(email);
+        return check ? "1" : "0";
     }
+
+    // sendVerification
 
     @PostMapping("/signup")
     public String saveUser(UserReqDto userReqDto, HttpSession session) {
@@ -56,6 +60,30 @@ public class AuthController {
         } catch (MemberNotFoundException e) {
             // 유효하지 않은 비밀번호로 회원가입 시도한 경우에 대한 예외 처리
             return "redirect:/signup?error=invalid_password"; // 유효하지 않은 비밀번호 오류 메시지를 URL 파라미터로 전달
+        }
+    }
+
+    @PostMapping("/checkVerification")
+    public ResponseEntity<String> checkVerificationCode(HttpSession session, @RequestParam String code) {
+        String savedCode = (String) session.getAttribute("verificationCode");
+        LocalDateTime creationTime = (LocalDateTime) session.getAttribute("codeCreationTime");
+
+        if (creationTime == null) {
+            return ResponseEntity.status(HttpStatus.OK).body("fail");
+        }
+
+        // 인증 코드 생성 후 5분 이내인지 확인합니다.
+        boolean isWithinTimeLimit = creationTime.plusMinutes(5).isAfter(LocalDateTime.now());
+
+        if (savedCode != null && savedCode.equals(code) && isWithinTimeLimit) {
+            return ResponseEntity.ok("success");
+        } else if (!isWithinTimeLimit) {
+            // 시간이 초과된 경우, 세션에서 인증 코드를 제거합니다.
+            session.removeAttribute("verificationCode");
+            session.removeAttribute("codeCreationTime");
+            return ResponseEntity.status(HttpStatus.OK).body("time_expired");
+        } else {
+            return ResponseEntity.status(HttpStatus.OK).body("fail");
         }
     }
 

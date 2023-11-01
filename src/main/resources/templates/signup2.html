@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <meta charset="UTF-8">
+    <title>SignUp</title>
+</head>
+<link rel="icon" href="data:;base64,iVBORw0KGgo=">
+<body>
+<div class="signUp-container">
+    <h2>SignUp</h2>
+    <form th:action="@{/auth/signup}" method="post">
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="text" id="email" name="email" required />
+            <button type="button" onclick="checkEmail()">이메일 중복 확인</button>
+            <div id="emailResult"></div>
+        </div>
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required />
+        </div>
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required />
+        </div>
+        <div class="form-group">
+            <label for="phone">전화번호:</label>
+            <input type="text" id="phone" name="phone" required/>
+        </div>
+        <div class="form-group">
+            <label for="address">주소:</label>
+            <input type="text" id="address" name="address" required onclick="findAddr()"/>
+        </div>
+        <div class="form-group">
+            <label for="detailAddress">상세주소:</label>
+            <input type="text" id="detailAddress" name="detailAddress" required />
+        </div>
+        <div class="form-group">
+            <label for="birthDate">BirthDate:</label>
+            <input type="date" value="2023-11-03" min="1940-01-01" max="2023-12-31" id="birthDate" name="birthDate" />
+        </div>
+        <div class="form-group">
+            <button type="submit">SignUp</button>
+        </div>
+    </form>
+</div>
+</body>
+<script>
+    function findAddr() {
+        new daum.Postcode({
+            oncomplete: function(data) {
+
+                var addr = ''; // 주소 변수
+                var extraAddr = ''; // 참고항목 변수
+
+                if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+                    addr = data.roadAddress;
+                } else { // 사용자가 지번 주소를 선택했을 경우(J)
+                    addr = data.jibunAddress;
+                }
+                if(data.userSelectedType === 'R'){
+                    if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+                        extraAddr += data.bname;
+                console.log(addr);
+                    }
+                    if(data.buildingName !== '' && data.apartment === 'Y'){
+                        extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                    }
+                    document.getElementById("address").value = addr;
+                    console.log(addr);
+                } else {
+                    document.getElementById("detailAddress").value = '';
+                }
+                document.getElementById('address').value = data.zonecode;
+                document.getElementById("address").value = addr;
+                document.getElementById("detailAddress").focus();
+                
+            }
+        }).open();
+    }
+
+
+    function checkEmail() {
+        var email = document.getElementById('email').value;
+        console.log(email);
+        if (email == "") {
+            alert("이메일을 입력해주세요.");
+            $('#email');
+            return false;
+        }
+        // 서버에 이메일 중복 확인 요청을 보냅니다.
+        $.ajax({
+            type: "get",
+            url : "/auth/check",
+            data: {"email": email},
+
+            success: function (result) {
+                if (result.result == "0") {
+                    if (confirm("이 아이디는 사용 가능합니다. \n 사용하시겠습니까?")) {
+                        usernameOverlapCheck = 1;
+                        $("#email").attr("readonly", true);
+                        $("#emailOverlay").attr("disabled", true);
+                        $("#emailOverlay").css("display", "none");
+                        $("#resetUseremail").attr("disabled", false);
+                        $("#resetUseremail").css("display", "inline-block");
+                    }
+                    return false;
+                }else if (result.result == "1") {
+                    alert("이미 사용중인 아이디입니다.");
+                    $("#email").focus();
+                }
+            }
+        });
+    }
+
+</script>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+</html>

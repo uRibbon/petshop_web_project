@@ -1,11 +1,15 @@
 package com.dog.shop.web.social;
 
+import com.dog.shop.custom.CustomUserDetailService;
 import com.dog.shop.domain.User;
 import com.dog.shop.dto.userDto.UserReqDto;
 import com.dog.shop.myenum.Role;
 import com.dog.shop.service.AuthService;
+import com.dog.shop.utils.JwtUtil;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,12 +17,17 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
@@ -32,12 +41,19 @@ public class NaverLoginController {
 
     @Autowired
     private AuthService authService;
+    @Autowired
+    private CustomUserDetailService customUserDetailService;
+
+    @Autowired
+    private JwtUtil jwtUtil;
 
     private static final String AUTH_URL = "https://nid.naver.com/oauth2.0/authorize";
     private static final String RESPONSE_TYPE = "code";
     private static final String STATE_SESSION_KEY = "OAUTH2_STATE";
 
-    private String clientId = "gKBIU9kjlGIFKmj9nI7t";  // TODO: Replace with your client ID
+    //private String clientId = "gKBIU9kjlGIFKmj9nI7t";  // TODO: Replace with your client ID
+    //private String clientId = "IoYLAsbOUnBFDytGCMHa";  // TODO: Replace with your client ID
+    private String clientId = "aFRqMTyF9PL6vY9KbxxR";  // TODO: Replace with your client ID
     private String redirectUri = "http://localhost:8080/auth/callback";  // TODO: Replace with your redirect URI
 
     @GetMapping("/naver-login")
@@ -60,18 +76,20 @@ public class NaverLoginController {
     }
 
     @GetMapping("/auth/callback")
-    public String oauth2Callback(@RequestParam String state, @RequestParam String code, HttpSession session) {
+    public ModelAndView oauth2Callback(@RequestParam String state, @RequestParam String code, HttpSession session, HttpServletResponse httpServletResponse) {
+        ModelAndView modelAndView = null;
+        // TODO 에러 처리가 필요합니다
         // 1. 상태 토큰 검증
         String storedState = (String) session.getAttribute(STATE_SESSION_KEY);
         if (storedState == null || !storedState.equals(state)) {
-            return "Invalid state token! Possible CSRF attack.";
+            //return "Invalid state token! Possible CSRF attack.";
         }
 
         // 2. 액세스 토큰 요청
         String accessToken = requestAccessToken(code);
 
         if (accessToken == null) {
-            return "Failed to obtain access token.";
+            //return "Failed to obtain access token.";
         }
 
         // 3. 액세스 토큰 저장 (예제에서는 세션에 저장)
@@ -114,13 +132,39 @@ public class NaverLoginController {
                 UserReqDto userReqDto = modelMapper1.map(user, UserReqDto.class);
                 authService.signUser(userReqDto);
 
-                return "Success! ID: " + id + ", Email: " + email + ", Mobile: " + mobile + ", Name: " + name + ", Birthday: " + birthday + ", Birthyear: " + birthyear;
+
+                // JWT 액세스 토큰 생성
+                String accessTokenJWT = jwtUtil.createAccessToken(email, Role.USER);
+
+                // JWT를 이용한 Spring Security 인증
+                UserDetails userDetails = customUserDetailService.loadUserByUsername(email);
+                Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+
+                // 토큰을 HTTP-only 쿠키로 설정
+                Cookie jwtCookie = new Cookie("JWT-TOKEN", accessTokenJWT);
+                jwtCookie.setHttpOnly(true);
+                jwtCookie.setSecure(false); // For development.
+                jwtCookie.setPath("/");
+                int expirationDuration = (int) jwtUtil.getTokenValidityInMilliseconds() / 1000;
+                if (expirationDuration > 0) {
+                    jwtCookie.setMaxAge(expirationDuration);
+                } else {
+                    // Handle or log an error about invalid token validity duration
+                }
+
+                httpServletResponse.addCookie(jwtCookie);
+
+                return new ModelAndView("redirect:/");
+                //return "Success! ID: " + id + ", Email: " + email + ", Mobile: " + mobile + ", Name: " + name + ", Birthday: " + birthday + ", Birthyear: " + birthyear;
             } else {
-                return "Error! Resultcode: " + resultcode + ", Message: " + message;
+                //return "Error! Resultcode: " + resultcode + ", Message: " + message;
             }
+            return modelAndView;
         } catch (IOException e) {
             e.printStackTrace();
-            return "Failed to parse user profile.";
+            //return "Failed to parse user profile.";
+            return modelAndView;
         }
     }
 
@@ -132,7 +176,9 @@ public class NaverLoginController {
         MultiValueMap<String, String> requestParams = new LinkedMultiValueMap<>();
         requestParams.add("client_id", clientId);
         // TODO: Add your client secret
-        requestParams.add("client_secret", "lTpPaZgZOi");
+        //requestParams.add("client_secret", "lTpPaZgZOi");
+        //requestParams.add("client_secret", "JFrxLh_w93");
+        requestParams.add("client_secret", "pVyP00_flS");
         requestParams.add("grant_type", "authorization_code");
         requestParams.add("code", code);
         requestParams.add("redirect_uri", redirectUri);

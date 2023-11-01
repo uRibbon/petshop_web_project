@@ -16,5 +16,6 @@ public class ProductResDTO {
     private String productName;
     private String salesStatus;
     private int stock;
+    private String MainImageUrl;
 
 }

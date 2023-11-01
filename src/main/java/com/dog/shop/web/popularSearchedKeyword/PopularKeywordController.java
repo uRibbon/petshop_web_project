@@ -2,8 +2,10 @@ package com.dog.shop.web.popularSearchedKeyword;
 
 import com.dog.shop.domain.popularSearchedKeyword.resDTO.PopularSearchedKeywordResDTO;
 import com.dog.shop.service.popularKeyword.PopularKeywordService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -25,3 +27,4 @@ public class PopularKeywordController {
 
     }
 }
+

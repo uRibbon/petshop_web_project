@@ -9,29 +9,55 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
+            background-color: #f1f1f1;
         }
+
         .container {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
             max-width: 600px;
             margin: 0 auto;
             padding: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            margin-top: 50px;
         }
+        .button-container {
+            display: flex;
+            gap: 10px; /* 버튼 사이의 간격을 조절합니다. */
+        }
+
+
         form {
             margin-top: 20px;
         }
-        label, input {
+
+        label,
+        input {
             margin-bottom: 10px;
             display: block;
         }
+
+        label[for="cartItemReqDto.quantity"],
+        label[for="cartItemReqDto.subTotal"],
+        label[for="productResDTO.price"] {
+            font-size: 20px; /* Change the value as per your requirement */
+        }
         button {
-            margin-top: 10px;
-            background-color: #4CAF50;
+            margin-top: 20px;
+            background-color: #6fb98f; /* 세련된 색상으로 변경 */
             color: white;
             padding: 10px 20px;
             border: none;
             cursor: pointer;
+            border-radius: 25px; /* 동그랗게 만들기 위한 속성 */
+            transition: background-color 0.3s ease; /* 마우스 호버 시 부드러운 전환 효과 적용 */
         }
         button:hover {
-            background-color: #45a049;
+            background-color: #578b6d; /* 호버 시 색상 변경 */
         }
         .footer {
             background-color: #f1f1f1;
@@ -41,35 +67,64 @@
             bottom: 0;
             width: 100%;
         }
+
+        .center-box {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            /*border: 1px solid #ddd;*/
+            padding: 20px;
+            border-radius: 5px;
+            width: 70%; /* Adjusted width */
+            max-width: 400px; /* Added max-width */
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            width: 94%;
+            padding: 10px;
+            border: 1px solid #ddd; /* Set border color to gray */
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+
     </style>
 </head>
 <body>
 <div th:insert="~{/index/header :: header}"></div>
-<div class="container">
-    <form id="yourFormId" action="#" th:action="@{/cartItem/addcartItem}" th:object="${multiFormDto}" method="post" onsubmit="return false;">
-        <label for="cartItemReqDto.quantity">수량</label>
-        <input type="number" th:field="*{cartItemReqDto.quantity}" id="cartItemReqDto.quantity" oninput="calculateSubtotal()">
-        <span th:if="${#fields.hasErrors('cartItemReqDto.quantity')}" th:errors="*{cartItemReqDto.quantity}"></span>
-        <br/>
+<div class="center-box">
+    <div class="container">
+        <form id="yourFormId" action="#" th:action="@{/cartItem/addcartItem}" th:object="${multiFormDto}" method="post" onsubmit="return false;">
+            <label for="cartItemReqDto.quantity">수량</label>
+            <input type="number" th:field="*{cartItemReqDto.quantity}" id="cartItemReqDto.quantity" oninput="calculateSubtotal()">
+            <span th:if="${#fields.hasErrors('cartItemReqDto.quantity')}" th:errors="*{cartItemReqDto.quantity}"></span>
+            <br/>
 
-        <label for="cartItemReqDto.subTotal">합계 금액</label>
-        <input type="text" th:field="*{cartItemReqDto.subTotal}" id="cartItemReqDto.subTotal" readonly>
-        <br/>
+            <label for="cartItemReqDto.subTotal">합계 금액</label>
+            <input type="text" th:field="*{cartItemReqDto.subTotal}" id="cartItemReqDto.subTotal" readonly>
+            <br/>
 
-        <label for="productResDTO.price">개당 가격</label>
-        <input type="text" th:field="*{productResDTO.price}" id="productResDTO.price" readonly>
-        <br/>
-        <!--cart_id는 이용자들이 볼 필요가 없어서 hidden 처리후 br 제거해서 줄 병합-->
-        <label for="cartResDto.id"><!--cart_id--></label>
-        <input type="hidden" th:field="*{cartResDto.id}" id="cartResDto.id">
-        <!--proudct_id 도 이용자들이 볼 필요가 없어서 hidden 처리후 br 제거해서 줄 병합-->
-        <label for="productResDTO.id"><!--product_id--></label>
-        <input type="hidden" th:field="*{productResDTO.id}" id="productResDTO.id">
+            <label for="productResDTO.price">개당 가격</label>
+            <input type="text" th:field="*{productResDTO.price}" id="productResDTO.price" readonly>
+            <br/>
+            <!--cart_id는 이용자들이 볼 필요가 없어서 hidden 처리후 br 제거해서 줄 병합-->
+            <label for="cartResDto.id"><!--cart_id--></label>
+            <input type="hidden" th:field="*{cartResDto.id}" id="cartResDto.id">
+            <!--proudct_id 도 이용자들이 볼 필요가 없어서 hidden 처리후 br 제거해서 줄 병합-->
+            <label for="productResDTO.id"><!--product_id--></label>
+            <input type="hidden" th:field="*{productResDTO.id}" id="productResDTO.id">
 
-        <button id="submitButton">장바구니 담기</button>
-        <button type="button" onclick="increaseQuantity()">수량 추가</button>
-        <button type="button" onclick="decreaseQuantity()">수량 제거</button>
-    </form>
+            <div class="button-container">
+                <button type="button" onclick="increaseQuantity()">╊</button>
+                <button type="button" onclick="decreaseQuantity()">━</button>
+                <button id="submitButton">장바구니 담기</button>
+                <button onclick="goBack()">뒤로 가기</button>
+            </div>
+        </form>
+
+    </div>
 </div>
 
 <div class="footer">
@@ -92,7 +147,7 @@
             document.getElementById("cartItemReqDto.quantity").value = quantity;
             calculateSubtotal();
         } else {
-            alert("더 이상 수량을 제거할 수 없습니다.");
+            alert("상품은 최소 1개 이상 선택해야 합니다.");
         }
     }
 
@@ -100,21 +155,23 @@
         var quantity = document.getElementById("cartItemReqDto.quantity").value;
         var unitPrice = document.getElementById("productResDTO.price").value;
 
-        // quantity와 unitPrice가 숫자인지 확인
         if (!isNaN(quantity) && !isNaN(unitPrice)) {
             var subtotal = quantity * unitPrice;
             document.getElementById("cartItemReqDto.subTotal").value = subtotal;
         } else {
-            // 에러 처리: 유효한 숫자가 아닌 경우 메시지 표시 또는 다른 처리 수행
             alert("유효한 숫자가 아닙니다.");
         }
     }
-    /*]]>*/
 
-    document.getElementById("submitButton").onclick = function() {
-        // 폼을 제출
+    function goBack() {
+        window.history.back();
+    }
+
+    document.getElementById("submitButton").onclick = function () {
         document.getElementById("yourFormId").submit();
     };
+
+    /*]]>*/
 </script>
 </body>
 </html>

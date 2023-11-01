@@ -2,58 +2,87 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-    <script type="text/javascript">
-        function goBack() {
-            window.history.back();
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>주문 조회 페이지</title>
+    <script th:src="@{/js/scripts.js}" defer></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
         }
 
-        $(document).on('click', '.trackBtn', function() {
-            var invoice = $(this).data('invoice');  // 운송장 번호 가져오기
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
 
-            $.ajax({
-                type: "POST",
-                url: "http://info.sweettracker.co.kr/tracking/5",
-                data: {
-                    t_key: "R5R7h5Iw6IoSyY0X3TN5Ug",
-                    t_code: "04",
-                    t_invoice: invoice
-                },
-                success: function(response) {
-                    // 여기에 배송 정보를 웹 페이지에 표시하는 코드를 추가합니다.
-                    // 예: alert(response);
-                },
-                error: function(error) {
-                    console.log("Error:", error);
-                }
-            });
-        });
-    </script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: center;
+            border-bottom: 1px solid #e1e1e1;
+        }
+
+        thead th {
+            background-color: #e1e1e1;
+        }
+
+        tbody tr:nth-child(odd) {
+            background-color: #f8f8f8;
+        }
+
+        button {
+            padding: 10px 15px;
+            border: none;
+            background-color: #007BFF;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
-    주문 조회 페이지
-
-    <table border="1">
+<div class="container">
+    <h1>주문 조회 페이지</h1>
+    <table>
         <thead>
         <tr>
-            <th>Order ID</th>
-            <th>Status</th>
-            <th>Total Price</th>
-            <th>Tracking Number</th>
-            <th>택배조회</th>
+            <th>주문 번호</th>
+            <th>주문 상태</th>
+            <th>주문 가격</th>
+            <th>운송장 번호</th>
+            <th>택배 조회</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="order : ${orderList}">
-            <td><a th:href="@{/order/{id}(id=${order.id})}" th:text="${order.id}"></a></td>
+        <!-- Example for iterating over a list of orders -->
+        <tr th:each="order : ${orders}">
+            <td th:text="${order.id}"></td>
             <td th:text="${order.status}"></td>
             <td th:text="${order.totalPrice}"></td>
             <td th:text="${order.trackingNumber}"></td>
-            <td><button class="trackBtn" data-invoice="${order.trackingNumber}">택배조회</button></td>
+            <td><button th:onclick="'trackOrder(\'' + ${order.trackingNumber} + '\')'">택배 조회</button></td>
         </tr>
         </tbody>
     </table>
     <button onclick="goBack()">뒤로가기</button>
+</div>
 </body>
 </html>

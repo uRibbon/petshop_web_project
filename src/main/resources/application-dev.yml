@@ -1,4 +1,17 @@
 spring:
+  mail:
+    host: smtp.naver.com
+    port: 465
+    username: juni303@naver.com
+    password: Wjddms@1100
+    protocol: smtps
+    properties:
+      mail:
+        smtp:
+          auth: true
+          ssl:
+            enable: true
+            trust: smtp.naver.com
   security:
     user:
       name: test
@@ -52,3 +65,5 @@ file:
 #  /src/main/resources/static/images ( 로컬경로)
 endpoint:
   path: /payment/api
+
+

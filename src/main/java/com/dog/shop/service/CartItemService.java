@@ -1,6 +1,7 @@
 package com.dog.shop.service;
 
 
+import com.dog.shop.domain.User;
 import com.dog.shop.domain.cart.Cart;
 import com.dog.shop.domain.cart.CartItem;
 import com.dog.shop.domain.product.Product;
@@ -14,6 +15,8 @@ import com.dog.shop.product.dto.ProductResDTO;
 import com.dog.shop.product.repository.ProductRepository;
 import com.dog.shop.repository.CartItemRepository;
 import com.dog.shop.repository.CartRepository;
+import com.dog.shop.repository.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpRequest;
@@ -34,6 +37,7 @@ public class CartItemService {
         private final ModelMapper modelMapper;
         private final CartRepository cartRepository;
         private final ProductRepository productRepository;
+        private final UserRepository userRepository;
 
         @Transactional(readOnly = true)
         public List<CartItemResDto> getCartItems() {
@@ -47,17 +51,25 @@ public class CartItemService {
         // 유저에서 가져오기
 
         // TODO 수정중
-        @Transactional(readOnly = true)
+        @Transactional
         public List<CartItemResDto> getUserCartItems(Long userId) {
-                // TODO 에러처리 필요
-                Cart cart = cartRepository.findByUserId(userId).orElseThrow();
+                // 처음 계정 생성시 Cart(장바구니가 없을시에 User Entity 를먼저 가져오는로직)
+                User user = userRepository.findById(userId)
+                        .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + userId));
+                // 처음 계정 생성시 Cart(장바구니가 없을때) 장바구니를 눌렀을때 장바구니를 새로 생성하고 장바구니로 들어가기
+                Cart cart = cartRepository.findByUserId(userId)
+                        .orElseGet(() -> {
+                                Cart newCart = new Cart();
+                                newCart.setUser(user);
+                                return cartRepository.save(newCart);
+                        });
+
                 List<CartItem> cartItemList = cartItemRepository.findByCartId(cart.getId());
                 List<CartItemResDto> cartItemResDtoList = cartItemList.stream()
                         .map(cartItem -> modelMapper.map(cartItem,CartItemResDto.class))
                         .collect(toList());    //Entity를 Res로 그리고 다시 리스트로
                 return cartItemResDtoList;
         }
-
 
         public void saveCartItem(CartItemReqDto cartItemReqDto, ProductResDTO productResDTO, CartResDto cartResDto) {
                 // 데이터베이스에서 실제 Product 엔티티 조회
@@ -128,4 +140,11 @@ public class CartItemService {
                                 new CommonException(ErrorCode.NON_LOGIN, HttpStatus.NOT_FOUND));
                 cartItemRepository.delete(cartItem);
         }
+
+        public void deleteSelectedCartItems(List<Long> selectedItems) {
+                for (Long itemId : selectedItems) {
+                        cartItemRepository.deleteById(itemId);
+                }
+        }
+
 }

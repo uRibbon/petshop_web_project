@@ -2,44 +2,30 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <link th:href="@{/css/main.css}" rel="stylesheet">
-    <script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">
+
     </script>
 </head>
 <body>
 <div th:insert="~{/index/header :: header}"></div>
-<!-- image slide -->
-<div class="section">
-    <input type="radio" name="slide" id="slide01" checked>
-    <input type="radio" name="slide" id="slide02">
-    <input type="radio" name="slide" id="slide03">
-
-    <div class="slidewrap">
-        <ul class="slidelist">
-            <li>
-                <a>
-                    <label for="slide03" class="left"></label>
-                    <img src="/img/icon/product_img/product_1.jpeg">
-                    <label for="slide02" class="right"></label>
-                </a>
-            </li>
-            <li>
-                <a>
-                    <label for="slide01" class="left"></label>
-                    <img src="/img/icon/product_img/product_2.jpeg">
-                    <label for="slide03" class="right"></label>
-                </a>
-            </li>
-            <li>
-                <a>
-                    <label for="slide02" class="left"></label>
-                    <img src="/img/icon/product_img/product_3.jpeg">
-                    <label for="slide01" class="right"></label>
-                </a>
-            </li>
-
-
-        </ul>
-    </div>
+<div class="indexImage">
+<ul>
+    <li>
+        <img src="/img/icon/product_img/product_1.jpeg">
+    </li>
+    <li>
+        <img src="/img/icon/product_img/product_2.jpeg">
+    </li>
+    <li>
+        <img src="/img/icon/product_img/product_3.jpeg">
+    </li>
+    <li>
+        <img src="/img/icon/product_img/product_4.jpeg">
+    </li>
+    <li>
+        <img src="/img/icon/product_img/product_5.jpeg">
+    </li>
+</ul>
 </div>
 <div th:insert="~{/index/footer :: footer}"></div>
 </body>
