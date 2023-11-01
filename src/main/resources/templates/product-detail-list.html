@@ -100,11 +100,13 @@
         <h2 class="product-title" th:text="${product.productName}"></h2>
         <h3 class="product-price" th:text="${'판매가 ' + product.price + '원'}"></h3>
         <p th:text="${'수량 ' + product.stock}"></p>
+        </br>
         <div>
             <a th:if="${product.salesStatus != '품절'}" th:href="@{/cartItem/signup/{id}(id=${product.id})}" class="button add-to-cart">장바구니 담기</a>
             <span th:if="${product.salesStatus == '품절'}" style="color: red;">품절된 상품입니다.</span>
             <a th:href="@{/api/inquiry/register/{id}(id=${product.id})}" class="button purchase">상품 문의하기</a>
         </div>
+        </br>
         <p th:text="${product.description}"></p>
     </div>
 </div>
