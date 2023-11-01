@@ -42,18 +42,18 @@
             font-size: 18px;
             margin-top: 20px;
         }
-        button {
-            margin-top: 20px;
-            background-color: #6fb98f; /* 세련된 색상으로 변경 */
+        .back-button, input[type="submit"] {
+            margin-top: 5px;
+            background-color: #6fb98f;
             color: white;
             padding: 10px 20px;
             border: none;
             cursor: pointer;
-            border-radius: 25px; /* 동그랗게 만들기 위한 속성 */
-            transition: background-color 0.3s ease; /* 마우스 호버 시 부드러운 전환 효과 적용 */
+            border-radius: 25px;
+            transition: background-color 0.3s ease;
         }
-        button:hover {
-            background-color: #578b6d; /* 호버 시 색상 변경 */
+        .back-button:hover, input[type="submit"]:hover {
+            background-color: #578b6d;
         }
         .footer {
             background-color: #f1f1f1;
@@ -137,10 +137,11 @@
         </table>
         <div id="fee">배송비: <span th:text="${fee}"></span>원</div>
         <input type="hidden" id="hiddenFee" name="deliveryFee" th:value="${fee}" />
-        <input type="submit" value="주문하기"/>
+        <input type="submit" class="back-button" value="주문하기"/>
     </form>
     <div id="totalAmount">총 금액: 0원</div>
-    <button onclick="goBack()">뒤로 가기</button>
+    </br>
+    <button class="back-button" onclick="goBack()">뒤로가기</button>
 </div>
 <div class="footer">
     <div th:insert="~{/index/footer :: footer}"></div>
