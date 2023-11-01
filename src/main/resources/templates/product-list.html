@@ -8,6 +8,23 @@
         .active {
             font-weight: bold;
         }
+        .section-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        .product-title {
+            font-weight: bold;
+            cursor: pointer;
+        }
+        h3 {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.2); /* 이 부분은 투명도를 조절합니다. 0.1은 10% 투명도를 의미합니다. */
+            padding-bottom: 5px; /* 제목 아래의 여백을 추가합니다. */
+            margin-bottom: 10px; /* 선 아래의 여백을 추가합니다. */
+        }
+        .price-color {
+            color: #0f6674; /* 청록색의 표준 값입니다. 원하는 색상 코드로 수정 가능합니다. */
+        }
+
     </style>
 
 </head>
@@ -15,6 +32,7 @@
 <div th:insert="~{/index/header :: header}"></div>
 <br/>
 
+<div class="section-title">　　ALL</div>
 <div style="display: flex; flex: 1;">
 
 <!--    <div style="flex: 1; padding-right: 5px;">-->
@@ -37,11 +55,11 @@
                         <div th:if="${product.salesStatus == '품절'}" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: rgba(255,0,0,0.6); color: white; padding: 10px 20px; font-size: 20px;">SOLD OUT</div>
                     </div>
                 </a>
-                <div>
-                    <a th:href="@{/products/{id}(id=${product.id})}" th:text="${product.productName}"></a>
+                <div th:onclick="'window.location.href=\'/products/' + ${product.id} + '\''" style="cursor: pointer;">
+                    <h3 th:text="${product.productName}"></h3>
                 </div>
-                <div th:text="${product.price}"></div>
                 <div th:text="${product.salesStatus}"></div>
+                <div th:text="${product.price + '원'}"></div>
             </div>
         </div>
     </div>
