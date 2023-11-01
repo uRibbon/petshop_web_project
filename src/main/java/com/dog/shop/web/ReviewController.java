@@ -6,6 +6,7 @@ import com.dog.shop.dto.reviewDto.ReviewResDto;
 import com.dog.shop.help.JwtHelper;
 import com.dog.shop.service.ReviewService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -83,9 +84,14 @@ public class ReviewController {
     }
 
     // 회원별 리뷰 가져오는거
-    @GetMapping("/myReview/get/{userId}")
-    public String myReview(@PathVariable Long userId, Model model){
-        userId = 2L;
+    @GetMapping("/myReview/get") // userId를 밑에서 토큰으로 받을거라 매핑에서삭제
+    public String myReview(Model model,HttpServletRequest request,
+                           HttpServletResponse response){
+
+        String token = jwtHelper.extractTokenFromCookies(request);
+        Optional<User> userOpt = jwtHelper.extractUserFromToken(token);
+        Long userId = userOpt.get().getId();
+
         List<ReviewResDto> result = reviewService.myReview(userId);
         model.addAttribute("result", result); // 이 부분을 추가합니다.
         return "reviewCheck";
