@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <title>Poducts List</title>
     <link th:href="@{/css/main.css}" rel="stylesheet">
+    <style>
+        .active {
+            font-weight: bold;
+        }
+    </style>
+
 </head>
 <body style="display: flex; flex-direction: column; min-height: 100vh;">
 <div th:insert="~{/index/header :: header}"></div>
@@ -35,6 +41,29 @@
         </div>
     </div>
 </div>
+
+<div style="text-align:center; margin: 20px 0;">
+    <ul style="list-style-type:none; display:inline-flex; padding:0;">
+        <li th:if="${currentPage > 1}">
+            <a th:href="@{/products/list?page=(currentPage-2)}"><　</a>
+        </li>
+        <li th:each="pageNumber : ${pageNumbers}" th:class="${pageNumber == currentPage ? 'active' : ''}">
+            <a th:if="${pageNumber != currentPage}" th:href="@{/products/list?page=(pageNumber-1)}" th:text="${pageNumber}"></a>
+            <span th:if="${pageNumber == currentPage}" th:text="${pageNumber}"></span>
+        </li>
+        <li th:if="${currentPage < totalPages}">
+            <a th:href="@{/products/list?page=(currentPage+1)}">　></a>
+        </li>
+    </ul>
+</div>
+
+
+
+
+
+
+
+
 
 <div th:insert="~{/index/footer :: footer}"></div>
 </body>

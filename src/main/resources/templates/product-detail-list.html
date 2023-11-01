@@ -4,24 +4,99 @@
     <meta charset="UTF-8">
     <title>Products detail</title>
     <link th:href="@{/css/main.css}" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f6f6f6;
+        }
+        .product-container {
+            width: 80%;
+            border: 1px solid #e0e0e0;
+            padding: 2em;
+            display: flex;
+            margin: 2em auto;
+            background-color: #fff;
+        }
+        .product-image {
+            flex: 1;
+            margin-right: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .product-image img {
+            max-width: 80%;
+        }
+        .product-info {
+            flex: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: start;
+        }
+        .product-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .product-price {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: #e94e77;
+        }
+        .product-original-price {
+            font-size: 16px;
+            text-decoration: line-through;
+            color: #aaa;
+            margin-bottom: 20px;
+        }
+        .product-option {
+            margin-bottom: 20px;
+        }
+        .button {
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        .add-to-cart {
+            background-color: #e94e77;
+            color: #fff;
+        }
+        .purchase {
+            background-color: #4CAF50;
+            color: #fff;
+        }
+        .payment-info {
+            background-color: #4CAF50;
+            color: #fff;
+            padding: 10px;
+            margin-top: 20px;
+        }
+    </style>
 </head>
-<body style="display: flex; flex-direction: column; min-height: 100vh;">
+<body>
 <div th:insert="~{/index/header :: header}"></div>
-<table>
-    <tr>
-        <td>
-            <img th:if="${product.mainImageUrl != null}" th:src="${product.mainImageUrl}" alt="Product image" width="100"/>
-            <img th:unless="${product.mainImageUrl != null}" src="/img.png" alt="No image available" width="100"/>
-        </td>
-        <td th:text="${product.description}" ></td>
-        <td th:text="${product.price}"></td>
-        <td th:text="${product.productName}"></td>
-        <td th:text="${product.salesStatus}"></td>
-        <td th:text="${product.stock}"></td>
-        <td><a th:href="@{/cartItem/signup/{id}(id=${product.id})}">장바구니 담기설정</a></td>
-        <td><a th:href="@{/api/inquiry/register/{id}(id=${product.id})}">상품 문의하기</a></td>
-    </tr>
-</table>
+<div class="product-container">
+    <div class="product-image">
+        <img th:if="${product.mainImageUrl != null}" th:src="${product.mainImageUrl}" alt="Product image"/>
+        <img th:unless="${product.mainImageUrl != null}" src="/img.png" alt="No image available"/>
+    </div>
+
+    <div class="product-info">
+        <h2 class="product-title" th:text="${product.productName}"></h2>
+        <p th:text="${product.description}"></p>
+        <h3 class="product-price" th:text="${'판매가 ' + product.price + '원'}"></h3>
+        <p th:text="${product.salesStatus}"></p>
+        <p th:text="${'수량 ' + product.stock}"></p>
+        </br>
+        <div>
+            <a th:href="@{/cartItem/signup/{id}(id=${product.id})}" class="button add-to-cart">장바구니 담기설정</a>
+            <a th:href="@{/api/inquiry/register/{id}(id=${product.id})}" class="button purchase">상품 문의하기</a>
+        </div>
+    </div>
+</div>
 <div th:insert="~{/index/footer :: footer}"></div>
 </body>
 </html>
