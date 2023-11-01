@@ -3,6 +3,14 @@
 <head>
     <link th:href="@{/css/main.css}" rel="stylesheet">
     <script>
+        function toggleTable() {
+            var tableContainer = document.getElementById("tableContainer");
+            if (tableContainer.style.display === "none") {
+                tableContainer.style.display = "block";
+            } else {
+                tableContainer.style.display = "none";
+            }
+        }
     </script>
 </head>
 <body>

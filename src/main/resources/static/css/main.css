@@ -207,3 +207,5 @@ input[id="menuicon"]:checked + label + div {
 ::-webkit-scrollbar {
     display: none; /* Hide the scrollbar in Chrome, Safari, and Opera */
 }
+
+/* 인기 검색어 */
