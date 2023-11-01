@@ -119,10 +119,10 @@
 
             // 여기서 fee 값을 HTML 요소에서 가져옵니다.
             var feeText = document.getElementById('fee').innerText;
-            var feeValue = feeText.match(/\d+/); // 숫자 부분만 추출
+            var feeValue = feeText.match(/\d+/); // 숫자 부분만 추출 배송비 텍스트가 껴있어서 숫자부분만 출력해야함
             var fee = parseFloat(feeValue);
-            for (var i = 0; i < checkboxes.length; i++) {
-                if (checkboxes[i].checked) {
+            for (var i = 0; i < checkboxes.length; i++) { // 체크박스값포문으로 돌려 더하기
+                if (checkboxes[i].checked) { // i인덱스번째 값이 체크되있다면.
                     var subTotalValue = checkboxes[i].closest('tr').querySelector('[data-subtotal]').getAttribute('data-subtotal');
                     var subTotal = parseFloat(subTotalValue);
                     if (!isNaN(subTotal)) {
@@ -131,7 +131,7 @@
                 }
             }
 
-            totalAmount += fee; // 총 금액에 배송비를 추가합니다.
+            totalAmount += fee; // 총 금액에 배송비를 추가
 
             document.getElementById('totalAmount').innerText = '총 금액 (배송비 포함): ' + totalAmount + '원';
         }
@@ -197,6 +197,7 @@
             <tr th:each="cartItem, cartItemStat : ${cartItems}">
                 <td class="checkbox-column"><input type="checkbox" th:value="${cartItem.id}" name="selectedItems"
                                                    onclick="updateTotalAmount();" /></td>
+                <!--체크박스 속성 , 데이터 가져와서 선택삭제-->
                 <td th:text="${cartItemStat.count}"></td>
                 <td th:text="${cartItem.quantity}"></td>
                 <td th:attr="data-subtotal=${cartItem.subTotal}" th:text="${cartItem.subTotal}"></td>
@@ -212,7 +213,7 @@
     </form>
     <button class="back-button" onclick="goBack()">뒤로가기</button>
     <input type="button" class="back-button" value="선택삭제" onclick="deleteSelectedItems();" />
-</div>
+</div>                                            <!--선택삭제 로직추가-->
 <div class="footer">
     <div th:insert="~{/index/footer :: footer}"></div>
 </div>
