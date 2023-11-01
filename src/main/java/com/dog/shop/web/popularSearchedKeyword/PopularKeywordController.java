@@ -20,16 +20,11 @@ public class PopularKeywordController {
     private final PopularKeywordService popularKeywordService;
 
     // 인기 검색어 보여주기
-//    @GetMapping("/list")
-//    public ModelAndView keywordList() {
-//        List<PopularSearchedKeywordResDTO> popularSearchedKeywordResDTOList = popularKeywordService.getResult();
-//        return new ModelAndView("/index/header", "keywords", popularSearchedKeywordResDTOList);
-//    }
-
     @GetMapping("/list")
-    public String keywordList(Model model) {
+    public ModelAndView keywordList() {
         List<PopularSearchedKeywordResDTO> popularSearchedKeywordResDTOList = popularKeywordService.getResult();
-        model.addAttribute("keywords", popularSearchedKeywordResDTOList);
-        return "index/header";
+        return new ModelAndView("/popularSearchedKeyword/popular-searched-keyword-list", "keywords", popularSearchedKeywordResDTOList);
+
     }
 }
+
