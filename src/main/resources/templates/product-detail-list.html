@@ -102,22 +102,6 @@
         <h3 class="product-price" th:text="${'판매가 ' + product.price + '원'}"></h3>
         </br>
 
-<!--        <form id="yourFormId" action="#" th:action="@{/cartItem/addcartItem}" th:object="${multiFormDto}" method="post" onsubmit="return false;">-->
-<!--        <label for="cartItemReqDto.quantity">수량</label>-->
-<!--        <div class="button-container">-->
-<!--            <button type="button" onclick="decreaseQuantity()">-</button>-->
-<!--            <input type="number" th:field="*{cartItemReqDto.quantity}" id="cartItemReqDto.quantity" oninput="calculateSubtotal()" min="1">-->
-<!--            <button type="button" onclick="increaseQuantity()">+</button>-->
-<!--        </div>-->
-<!--        <span th:if="${#fields.hasErrors('cartItemReqDto.quantity')}" th:errors="*{cartItemReqDto.quantity}"></span>-->
-<!--        <br/>-->
-
-<!--        &lt;!&ndash; 합계 금액 &ndash;&gt;-->
-<!--        <label for="cartItemReqDto.subTotal">합계 금액</label>-->
-<!--        <input type="text" th:field="*{cartItemReqDto.subTotal}" id="cartItemReqDto.subTotal" readonly>-->
-<!--        <br/>-->
-<!--        </form>-->
-
         <div>
             <a th:if="${product.salesStatus != '품절'}" th:href="@{/cartItem/signup/{id}(id=${product.id})}" class="button add-to-cart">장바구니 담기</a>
             <span th:if="${product.salesStatus == '품절'}" style="color: red;">품절된 상품입니다.</span>
@@ -127,41 +111,78 @@
         <p th:text="${product.description}"></p>
     </div>
 </div>
+
+<div class="center-box">
+    <div class="container">
+        <form id="yourFormId" action="#" th:action="@{/cartItem/addcartItem}" th:object="${multiFormDto}" method="post" onsubmit="return false;">
+            <!-- 폼 내용 코드 -->
+            <label for="cartItemReqDto.quantity">수량</label>
+            <input type="number" th:field="*{cartItemReqDto.quantity}" id="cartItemReqDto.quantity" oninput="calculateSubtotal()">
+            <span th:if="${#fields.hasErrors('cartItemReqDto.quantity')}" th:errors="*{cartItemReqDto.quantity}"></span>
+            <br/>
+
+            <label for="cartItemReqDto.subTotal">합계 금액</label>
+            <input type="text" th:field="*{cartItemReqDto.subTotal}" id="cartItemReqDto.subTotal" readonly>
+            <br/>
+
+            <label for="productResDTO.price">개당 가격</label>
+            <input type="text" th:field="*{productResDTO.price}" id="productResDTO.price" readonly>
+            <br/>
+            <!--cart_id는 이용자들이 볼 필요가 없어서 hidden 처리후 br 제거해서 줄 병합-->
+            <label for="cartResDto.id"><!--cart_id--></label>
+            <input type="hidden" th:field="*{cartResDto.id}" id="cartResDto.id">
+            <!--proudct_id 도 이용자들이 볼 필요가 없어서 hidden 처리후 br 제거해서 줄 병합-->
+            <label for="productResDTO.id"><!--product_id--></label>
+            <input type="hidden" th:field="*{productResDTO.id}" id="productResDTO.id">
+
+            <div class="button-container">
+                <button type="button" onclick="increaseQuantity()">╊</button>
+                <button type="button" onclick="decreaseQuantity()">━</button>
+                <button id="submitButton">장바구니 담기</button>
+            </div>
+        </form>
+    </div>
+</div>
+
 <div th:insert="~{/index/footer :: footer}"></div>
 
-<!--<script th:inline="javascript">-->
-<!--    /*<![CDATA[*/-->
-<!--    function increaseQuantity() {-->
-<!--        var quantity = parseInt(document.getElementById("cartItemReqDto.quantity").value);-->
-<!--        quantity += 1;-->
-<!--        document.getElementById("cartItemReqDto.quantity").value = quantity;-->
-<!--        calculateSubtotal();-->
-<!--    }-->
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    function increaseQuantity() {
+        var quantity = parseInt(document.getElementById("cartItemReqDto.quantity").value);
+        quantity += 1;
+        document.getElementById("cartItemReqDto.quantity").value = quantity;
+        calculateSubtotal();
+    }
 
-<!--    function decreaseQuantity() {-->
-<!--        var quantity = parseInt(document.getElementById("cartItemReqDto.quantity").value);-->
-<!--        quantity -= 1;-->
-<!--        if (quantity >= 1) {  // 최소 수량은 1로 설정-->
-<!--            document.getElementById("cartItemReqDto.quantity").value = quantity;-->
-<!--        } else {-->
-<!--            alert("상품은 최소 1개 이상 선택해야 합니다.");-->
-<!--        }-->
-<!--        calculateSubtotal();-->
-<!--    }-->
+    function decreaseQuantity() {
+        var quantity = parseInt(document.getElementById("cartItemReqDto.quantity").value);
+        quantity -= 1;
+        if (quantity >= 0) {
+            document.getElementById("cartItemReqDto.quantity").value = quantity;
+            calculateSubtotal();
+        } else {
+            alert("상품은 최소 1개 이상 선택해야 합니다.");
+        }
+    }
 
-<!--    function calculateSubtotal() {-->
-<!--        var quantity = parseInt(document.getElementById("cartItemReqDto.quantity").value);-->
-<!--        // Use the provided product price here, assuming it's available as a JavaScript variable-->
-<!--        var unitPrice = parseFloat(product.price); // hypothetical variable, replace with actual value source-->
+    function calculateSubtotal() {
+        var quantity = document.getElementById("cartItemReqDto.quantity").value;
+        var unitPrice = document.getElementById("productResDTO.price").value;
 
-<!--        if (!isNaN(quantity) && !isNaN(unitPrice)) {-->
-<!--            var subtotal = quantity * unitPrice;-->
-<!--            document.getElementById("cartItemReqDto.subTotal").value = subtotal;-->
-<!--        } else {-->
-<!--            alert("유효한 숫자가 아닙니다.");-->
-<!--        }-->
-<!--    }-->
-<!--</script>-->
+        if (!isNaN(quantity) && !isNaN(unitPrice)) {
+            var subtotal = quantity * unitPrice;
+            document.getElementById("cartItemReqDto.subTotal").value = subtotal;
+        } else {
+            alert("유효한 숫자가 아닙니다.");
+        }
+    }
+
+    document.getElementById("submitButton").onclick = function () {
+        document.getElementById("yourFormId").submit();
+    };
+    /*]]>*/
+</script>
 
 </body>
 </html>
