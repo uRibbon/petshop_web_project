@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
     <title>List of popular search words</title>
+    <link th:href="@{/css/main.css}" rel="stylesheet">
     <style>
         .content {
             display: flex;
@@ -12,10 +12,20 @@
             flex-direction: column;
         }
 
+        .table-container {
+            display: flex;
+            justify-content: space-around;
+        }
+
         table {
             margin-top: 20px;
             border-collapse: collapse;
-            width: 50%;
+            width: 45%;
+        }
+
+        table:nth-child(2) {
+            width: 500px; /* Adjust the width as needed */
+            margin-left: 120px; /* Adjust the spacing as needed */
         }
 
         th, td {
@@ -36,19 +46,34 @@
     </style>
 </head>
 <body>
-<h1 style="text-align: center;">인기 검색어</h1>
+<div th:insert="~{/index/header :: header}"></div>
 <div class="content">
-    <img src="/img/icon/trophy.png" style="width: 100px; height: 100px;">
-    <table>
-        <tr>
-            <th>순위</th>
-            <th>상품명</th>
-        </tr>
-        <tr th:each="keyword, userState : ${keywords}" th:class="${userState.index lt 3} ? 'yellow-row'">
-            <td th:text="${userState.count}"></td>
-            <td th:text="${keyword.productName}"></td>
-        </tr>
-    </table>
+    <div class="table-container" style="margin-top: 100px; margin-bottom: 100px;">
+        <table style="border-collapse: collapse;">
+            <tr>
+                <td style="border: none;"><img src="/img/icon/popularKeyword/gold.png" style="width: 190px; height: 240px;"></td>
+                <td style="border: none;"><img src="/img/icon/popularKeyword/silver.png" style="width: 170px; height: 220px;"></td>
+                <td style="border: none;"><img src="/img/icon/popularKeyword/bronze.png" style="width: 190px; height: 220px;"></td>
+            </tr>
+            <tr th:if="${#lists.size(keywords) > 0}" style="height: 30px;">
+                <td th:text="${keywords[0].productName}" style="border: none; font-size: 40px;"></td>
+                <td th:if="${#lists.size(keywords) > 1}" th:text="${keywords[1].productName}" style="border: none; font-size: 40px;"></td>
+                <td th:if="${#lists.size(keywords) > 2}" th:text="${keywords[2].productName}" style="border: none; font-size: 40px;"></td>
+            </tr>
+        </table>
+
+        <table>
+            <tr>
+                <th>순위</th>
+                <th>상품명</th>
+            </tr>
+            <tr th:each="keyword, userState : ${keywords}" th:if="${userState.count != 1 and userState.count != 2 and userState.count != 3}" th:class="${userState.index lt 3} ? 'yellow-row'">
+                <td th:text="${userState.count}"></td>
+                <td th:text="${keyword.productName}"></td>
+            </tr>
+        </table>
+    </div>
 </div>
+<div th:insert="~{/index/footer :: footer}"></div>
 </body>
 </html>
