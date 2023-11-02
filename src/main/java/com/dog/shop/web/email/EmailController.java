@@ -46,7 +46,4 @@ public class EmailController {
 
         return ResponseEntity.ok("success");
     }
-
-
-
 }
