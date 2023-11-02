@@ -9,23 +9,30 @@
             </label>
             <div class="sidebar">
                 <ul>
-                    <li><a href="/hello" style="color: black; font-size: 15px">상품 전체 보기</a></li>
-                    <li><a href="#" style="color: black; font-size: 15px">퍼피 웨어</a></li>
-                    <li><a href="#" style="color: black; font-size: 15px">하네스 / 칼라</a></li>
-                    <li><a href="#" style="color: black; font-size: 15px">악세사리</a></li>
-
-                    <li>
-                        <a th:if="${userId == null}" th:href="@{/login}" style="color: black; font-size: 15px">로그인</a>
-                        <a th:if="${userId != null}" th:href="@{/logout}" style="color: black; font-size: 15px">로그아웃</a>
-                    </li>
-                    <li><a href="#" style="color: black; font-size: 15px">1:1 문의</a></li>
-                    <li><a href="#" style="color: black; font-size: 15px">후기</a></li>
+                    <li><a href="/hello" style="color: black; font-size: 15px;">상품 전체 보기</a></li>
+                    <li><a href="#" style="color: black; font-size: 15px;">퍼피 웨어</a></li>
+                    <li><a href="#" style="color: black; font-size: 15px;">하네스 / 칼라</a></li>
+                    <li><a href="#" style="color: black; font-size: 15px;">악세사리</a></li>
+                    <div class="no-bottom">
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                    </div>
+                    <div class="personal" style="text-align: left;">
+                        <li>
+                            <a th:if="${userId == null}" th:href="@{/login}" style="color: black; font-size: 13px; text-decoration: none;">로그인</a>
+                            <a th:if="${userId != null}" th:href="@{/logout}" style="color: black; font-size: 13px; text-decoration: none;">로그아웃</a>
+                        </li>
+                        <li><a href="#" style="color: black; font-size: 13px; text-decoration: none;">1:1 문의</a></li>
+                        <li><a href="#" style="color: black; font-size: 13px; text-decoration: none;">후기</a></li>
+                    </div>
                 </ul>
             </div>
         </div>
         <div class="box">
             <div class="popularKeyword">
-                <a href="/keywords/list"><p>인기 검색어</p></a>
+<!--                <a href="/keywords/list"><p>인기 검색어</p></a>-->
+                <a href="/keywords/list"><img src="/img/icon/popular_keyword.png" alt="인기 검색어"></a>
             </div>
         </div>
         <div class="box-image">

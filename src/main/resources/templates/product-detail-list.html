@@ -9,10 +9,12 @@
             font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 20px;
+            height: 100vh;
+            place-items: center;
             background-color: #f6f6f6;
         }
         .product-container {
-            width: 80%;
+            width: 95%;
             border: 1px solid #e0e0e0;
             padding: 2em;
             display: flex;
@@ -20,7 +22,7 @@
             background-color: #fff;
         }
         .product-image {
-            flex: 1;
+            flex: 2;
             margin-right: 40px;
             display: flex;
             align-items: center;
@@ -48,7 +50,7 @@
             left: 0;
             width: 100%;
             height: 2px;
-            background: rgba(0, 0, 0, 0.1); /* 반투명 선 */
+            /*background: rgba(0, 0, 0, 0.1); !* 반투명 선 *!*/
         }
         .product-price {
             font-size: 20px;
@@ -65,7 +67,7 @@
             margin-bottom: 20px;
         }
         .button {
-            padding: 10px 20px;
+            padding: 20px 30px;
             border: none;
             cursor: pointer;
             margin-right: 10px;
@@ -109,6 +111,59 @@
             -webkit-appearance: none;
             margin: 0;
         }
+        .detail {
+            text-align: center;
+        }
+        .notice {
+            text-align: center;
+        }
+         .review {
+             max-width: 93%;
+             margin: auto;
+             /*text-align: center;*/
+         }
+
+        .review ul {
+            list-style-type: none;
+            padding: 0;
+            background-color: #f9f9f9;
+            padding: 20px;
+        }
+
+        .review li {
+            background-color: #f9f9f9;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+
+        .review h5.rating::before {
+            content: "★★★★★";
+            letter-spacing: 3px;
+            opacity: 0.3;
+        }
+
+        .review h5.rating[data-rating="4"]::before {
+            content: "★★★★☆";
+        }
+
+        /* 별점에 다른 스타일을 적용하려면 이와 같이 추가하세요. */
+        .review h5.rating[data-rating="3"]::before {
+            content: "★★★☆☆";
+        }
+
+        .review h5.rating[data-rating="2"]::before {
+            content: "★★☆☆☆";
+        }
+
+        .review h5.rating[data-rating="1"]::before {
+            content: "★☆☆☆☆";
+        }
+        h2 {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.2); /* 이 부분은 투명도를 조절합니다. 0.1은 10% 투명도를 의미합니다. */
+            padding-bottom: 5px; /* 제목 아래의 여백을 추가합니다. */
+            margin-bottom: 10px; /* 선 아래의 여백을 추가합니다. */
+        }
     </style>
 </head>
 <body>
@@ -116,18 +171,19 @@
 <div class="product-container">
     <div class="product-image">
         <img th:if="${product.mainImageUrl != null}" th:src="${product.mainImageUrl}" alt="Product image"/>
-        <img th:unless="${product.mainImageUrl != null}" src="/img.png" alt="No image available"/>
+        <img th:unless="${product.mainImageUrl != null}" src="/img/icon/product_list/product_01.jpeg" alt="No image available"/>
     </div>
 
     <div class="product-info">
         <h2 class="product-title" th:text="${product.productName}"></h2>
         <p th:text="${'수량 ' + product.stock}"></p>
+        <p th:text="${product.description}"></p>
         <h3 class="product-price" th:text="${'판매가 ' + product.price + '원'}"></h3>
         </br>
         <!-- 폼 내용 코드 -->
         <form id="yourFormId" action="#" th:action="@{/cartItem/addcartItem}" th:object="${multiFormDto}" method="post" onsubmit="return false;">
 
-
+</br>
             <button type="button" onclick="decreaseQuantity()">━</button>
             <input type="number" th:field="*{cartItemReqDto.quantity}" id="cartItemReqDto.quantity" oninput="calculateSubtotal()">
             <span th:if="${#fields.hasErrors('cartItemReqDto.quantity')}" th:errors="*{cartItemReqDto.quantity}"></span>
@@ -135,10 +191,11 @@
             <br/>
             </br>
 
-
+            </br>
             <span id="cartItemReqDto.subTotal"></span>
             </br>
             <br/>
+            </br>
 
             <label for="productResDTO.price"></label>
             <input type="hidden" th:field="*{productResDTO.price}" id="productResDTO.price" readonly>
@@ -154,7 +211,7 @@
 
 
         </form>
-
+</br>
         <div>
 <!--            <a th:if="${product.salesStatus != '품절'}" th:href="@{/cartItem/signup/{id}(id=${product.id})}" class="button add-to-cart">장바구니 담기</a>-->
 <!--            <a th:if="${product.salesStatus != '품절'}" th:href="@{/cartItem/signup/{id}(id=${product.id}, stock=${product.stock})}" class="button add-to-cart">장바구니 담기</a>-->
@@ -164,9 +221,50 @@
             <a th:href="@{/api/inquiry/register/{id}(id=${product.id})}" class="button purchase">상품 문의하기</a>
         </div>
         </br>
-        <p th:text="${product.description}"></p>
     </div>
 </div>
+
+<div th:if="${reviews.isEmpty()}">
+    <p></p>
+</div>
+<div th:each="review : ${reviews}">
+    <div class="review-card">
+        <h3 th:text="${review.title}">Review Title</h3>
+        <p th:text="${review.content}">Review Content</p>
+        <p><strong>User:</strong> <span th:text="${review.user.name}">User Name</span></p>
+        <p><strong>Status:</strong> <span th:text="${review.reviewStatus}">Review Status</span></p>
+    </div>
+</div>
+<nav><h1>　　　　　　상품정보</h1></nav>
+<h3></h3>
+<article class="detail">
+    <img src="/test/test2.jpg" alt="상세페이지1">
+    <img src="/test/test3.jpg" alt="상세페이지2">
+    <img src="/test/test4.jpg" alt="상세페이지3">
+</article>
+
+<article class="review">
+    <nav><h1>　상품리뷰</h1></nav>
+    <h3></h3>
+    <ul>
+            <h2></h2>
+            <div>
+                <h5 class="rating" data-rating="4"></h5>
+                <span>seo****** 2018-07-10</span>
+            </div>
+            <h3>상품명/BLUE/L</h3>
+            <p>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
+       <h2></h2>
+        <!-- 다른 리뷰 항목도 같은 방식으로 추가 -->
+            <div>
+                <h5 class="rating" data-rating="3"></h5>
+                <span>heo****** 2023-07-10</span>
+            </div>
+            <h3>상품명/RED/M</h3>
+            <p>bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb</p>
+            <h2></h2>
+    </ul>
+</article>
 
 <div th:insert="~{/index/footer :: footer}"></div>
 

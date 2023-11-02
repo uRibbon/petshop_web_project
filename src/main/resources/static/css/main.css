@@ -105,11 +105,11 @@ input[id="menuicon"]:checked + label span:nth-child(3) {
 
 /* menu sidebar */
 div[class="sidebar"] {
-    width:200px;
-    height:50%;
-    background: rgba(246, 245, 245, 0.52);
+    width:243px;
+    height:68%;
+    background: white;
     position: fixed;
-    top:80px;
+    top:68px;
     left: -300px;
     z-index:1;
     transition: all .35s;
@@ -130,7 +130,7 @@ input[id="menuicon"]:checked + label + div {
 .sidebar li {
     list-style-type: none; /* 머리 기호를 없앰 */
     width: 100%; /* sidebar의 너비를 100%로 설정 */
-    text-align: center; /* 텍스트를 가운데 정렬 */
+    text-align: left; /* 텍스트를 가운데 정렬 */
     position: relative; /* 상대 위치 설정 */
     display: flex; /* Flexbox 사용 */
     justify-content: center; /* 가로 방향으로 가운데 정렬 */
@@ -144,7 +144,7 @@ input[id="menuicon"]:checked + label + div {
     display: block;
     width: 100%; /* 선의 길이를 100%로 설정 */
     height: 1px; /* 선의 두께 */
-    background-color: black; /* 선의 색상 */
+    background-color: rgb(45, 45, 45); /* 선의 색상 */
     position: absolute;
     bottom: 0;
     left: 0;
@@ -173,6 +173,11 @@ input[id="menuicon"]:checked + label + div {
 .slidelist li img {
     width: 100%;
     height: auto;
+}
+
+.personal {
+    font-size: 15px;
+
 }
 
 /* img slide */
