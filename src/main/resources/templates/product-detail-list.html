@@ -96,7 +96,7 @@
             background-color: #f5f5f5; /* 배경색 */
             border: 1px solid #ddd; /* 테두리 색 */
             align-items: center; /* 수직 중앙 정렬 */
-            justify-content: center; /* 수평 중앙 정렬 */ㄴ
+            justify-content: center; /* 수평 중앙 정렬 */
             cursor: pointer; /* 마우스 포인터 변경 */
         }
         input[type="number"] {
@@ -216,8 +216,8 @@
 <!--            <a th:if="${product.salesStatus != '품절'}" th:href="@{/cartItem/signup/{id}(id=${product.id})}" class="button add-to-cart">장바구니 담기</a>-->
 <!--            <a th:if="${product.salesStatus != '품절'}" th:href="@{/cartItem/signup/{id}(id=${product.id}, stock=${product.stock})}" class="button add-to-cart">장바구니 담기</a>-->
             <a th:if="${product.salesStatus != '품절'}" onclick="updateLinkWithQuantity();" th:href="@{/cartItem/signup/{id}(id=${product.id})}" id="addToCartLink" class="button add-to-cart">장바구니 담기</a>
-            <span th:if="${product.salesStatus == '품절'}" style="color: red;">품절 상품입니다.</span>
-            <br />
+            <span th:if="${product.salesStatus == '품절'}" style="color: red;">품절된 상품입니다.</span>
+
             <a th:href="@{/api/inquiry/register/{id}(id=${product.id})}" class="button purchase">상품 문의하기</a>
         </div>
         </br>
