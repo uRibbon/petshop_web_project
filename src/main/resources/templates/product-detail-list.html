@@ -67,7 +67,7 @@
             margin-bottom: 20px;
         }
         .button {
-            padding: 10px 20px;
+            padding: 20px 30px;
             border: none;
             cursor: pointer;
             margin-right: 10px;
@@ -177,12 +177,13 @@
     <div class="product-info">
         <h2 class="product-title" th:text="${product.productName}"></h2>
         <p th:text="${'수량 ' + product.stock}"></p>
+        <p th:text="${product.description}"></p>
         <h3 class="product-price" th:text="${'판매가 ' + product.price + '원'}"></h3>
         </br>
         <!-- 폼 내용 코드 -->
         <form id="yourFormId" action="#" th:action="@{/cartItem/addcartItem}" th:object="${multiFormDto}" method="post" onsubmit="return false;">
 
-
+</br>
             <button type="button" onclick="decreaseQuantity()">━</button>
             <input type="number" th:field="*{cartItemReqDto.quantity}" id="cartItemReqDto.quantity" oninput="calculateSubtotal()">
             <span th:if="${#fields.hasErrors('cartItemReqDto.quantity')}" th:errors="*{cartItemReqDto.quantity}"></span>
@@ -190,10 +191,11 @@
             <br/>
             </br>
 
-
+            </br>
             <span id="cartItemReqDto.subTotal"></span>
             </br>
             <br/>
+            </br>
 
             <label for="productResDTO.price"></label>
             <input type="hidden" th:field="*{productResDTO.price}" id="productResDTO.price" readonly>
@@ -209,7 +211,7 @@
 
 
         </form>
-
+</br>
         <div>
 <!--            <a th:if="${product.salesStatus != '품절'}" th:href="@{/cartItem/signup/{id}(id=${product.id})}" class="button add-to-cart">장바구니 담기</a>-->
 <!--            <a th:if="${product.salesStatus != '품절'}" th:href="@{/cartItem/signup/{id}(id=${product.id}, stock=${product.stock})}" class="button add-to-cart">장바구니 담기</a>-->
@@ -219,7 +221,6 @@
             <a th:href="@{/api/inquiry/register/{id}(id=${product.id})}" class="button purchase">상품 문의하기</a>
         </div>
         </br>
-        <p th:text="${product.description}"></p>
     </div>
 </div>
 
