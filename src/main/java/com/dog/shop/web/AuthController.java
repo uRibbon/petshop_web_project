@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -93,6 +94,19 @@ public class AuthController {
 
         return authService.getUser();
     }
+
+//    @PostMapping("/resetPassword")
+//    public ResponseEntity<?> resetPassword(@RequestParam String email, @RequestParam String verificationCode) {
+//        try {
+//            // AuthService의 비밀번호 업데이트 메서드 호출
+//            authService.updatePassword(email, verificationCode);
+//            return new ResponseEntity<>("Password updated successfully!", HttpStatus.OK);
+//        } catch (UsernameNotFoundException e) {
+//            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+//        } catch (Exception e) {
+//            return new ResponseEntity<>("An error occurred while updating the password.", HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//    }
 
     @PostMapping("/delete/{userId}")
     public ResponseEntity<Boolean> userDelete(@PathVariable Long userId, UserReqDto userReqDto) {
