@@ -50,7 +50,7 @@
             left: 0;
             width: 100%;
             height: 2px;
-            background: rgba(0, 0, 0, 0.1); /* 반투명 선 */
+            /*background: rgba(0, 0, 0, 0.1); !* 반투명 선 *!*/
         }
         .product-price {
             font-size: 20px;
@@ -67,7 +67,7 @@
             margin-bottom: 20px;
         }
         .button {
-            padding: 10px 20px;
+            padding: 20px 30px;
             border: none;
             cursor: pointer;
             margin-right: 10px;
@@ -118,7 +118,7 @@
             text-align: center;
         }
          .review {
-             max-width: 95%;
+             max-width: 93%;
              margin: auto;
              /*text-align: center;*/
          }
@@ -126,6 +126,8 @@
         .review ul {
             list-style-type: none;
             padding: 0;
+            background-color: #f9f9f9;
+            padding: 20px;
         }
 
         .review li {
@@ -157,7 +159,7 @@
         .review h5.rating[data-rating="1"]::before {
             content: "★☆☆☆☆";
         }
-        h3 {
+        h2 {
             border-bottom: 1px solid rgba(0, 0, 0, 0.2); /* 이 부분은 투명도를 조절합니다. 0.1은 10% 투명도를 의미합니다. */
             padding-bottom: 5px; /* 제목 아래의 여백을 추가합니다. */
             margin-bottom: 10px; /* 선 아래의 여백을 추가합니다. */
@@ -175,12 +177,13 @@
     <div class="product-info">
         <h2 class="product-title" th:text="${product.productName}"></h2>
         <p th:text="${'수량 ' + product.stock}"></p>
+        <p th:text="${product.description}"></p>
         <h3 class="product-price" th:text="${'판매가 ' + product.price + '원'}"></h3>
         </br>
         <!-- 폼 내용 코드 -->
         <form id="yourFormId" action="#" th:action="@{/cartItem/addcartItem}" th:object="${multiFormDto}" method="post" onsubmit="return false;">
 
-
+</br>
             <button type="button" onclick="decreaseQuantity()">━</button>
             <input type="number" th:field="*{cartItemReqDto.quantity}" id="cartItemReqDto.quantity" oninput="calculateSubtotal()">
             <span th:if="${#fields.hasErrors('cartItemReqDto.quantity')}" th:errors="*{cartItemReqDto.quantity}"></span>
@@ -188,10 +191,11 @@
             <br/>
             </br>
 
-
+            </br>
             <span id="cartItemReqDto.subTotal"></span>
             </br>
             <br/>
+            </br>
 
             <label for="productResDTO.price"></label>
             <input type="hidden" th:field="*{productResDTO.price}" id="productResDTO.price" readonly>
@@ -207,7 +211,7 @@
 
 
         </form>
-
+</br>
         <div>
 <!--            <a th:if="${product.salesStatus != '품절'}" th:href="@{/cartItem/signup/{id}(id=${product.id})}" class="button add-to-cart">장바구니 담기</a>-->
 <!--            <a th:if="${product.salesStatus != '품절'}" th:href="@{/cartItem/signup/{id}(id=${product.id}, stock=${product.stock})}" class="button add-to-cart">장바구니 담기</a>-->
@@ -217,7 +221,6 @@
             <a th:href="@{/api/inquiry/register/{id}(id=${product.id})}" class="button purchase">상품 문의하기</a>
         </div>
         </br>
-        <p th:text="${product.description}"></p>
     </div>
 </div>
 
@@ -244,15 +247,22 @@
     <nav><h1>　상품리뷰</h1></nav>
     <h3></h3>
     <ul>
-        <li>
+            <h2></h2>
             <div>
                 <h5 class="rating" data-rating="4"></h5>
                 <span>seo****** 2018-07-10</span>
             </div>
             <h3>상품명/BLUE/L</h3>
             <p>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
-        </li>
+       <h2></h2>
         <!-- 다른 리뷰 항목도 같은 방식으로 추가 -->
+            <div>
+                <h5 class="rating" data-rating="3"></h5>
+                <span>heo****** 2023-07-10</span>
+            </div>
+            <h3>상품명/RED/M</h3>
+            <p>bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb</p>
+            <h2></h2>
     </ul>
 </article>
 
