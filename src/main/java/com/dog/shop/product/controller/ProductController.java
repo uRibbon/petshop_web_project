@@ -1,21 +1,26 @@
 package com.dog.shop.product.controller;
 
 import com.dog.shop.api.service.KakaoApiService;
+import com.dog.shop.domain.Review;
 import com.dog.shop.domain.User;
 import com.dog.shop.domain.cart.Cart;
 import com.dog.shop.domain.popularSearchedKeyword.resDTO.PopularSearchedKeywordResDTO;
+import com.dog.shop.domain.product.Product;
 import com.dog.shop.dto.CartItemReqDto;
 import com.dog.shop.dto.CartResDto;
 import com.dog.shop.dto.MultiFormDto;
+import com.dog.shop.dto.reviewDto.ReviewResDto;
 import com.dog.shop.help.JwtHelper;
 import com.dog.shop.product.dto.ProductReqDTO;
 import com.dog.shop.product.dto.ProductReqForm;
 import com.dog.shop.product.dto.ProductResDTO;
+import com.dog.shop.product.repository.ProductRepository;
 import com.dog.shop.product.service.CartService;
 import com.dog.shop.product.service.ProductService;
 import com.dog.shop.repository.CartRepository;
 import com.dog.shop.repository.UserRepository;
 import com.dog.shop.service.CartItemService;
+import com.dog.shop.service.ReviewService;
 import com.dog.shop.service.popularKeyword.PopularKeywordService;
 import com.dog.shop.utils.JwtUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -55,6 +60,8 @@ public class ProductController {
     private final UserRepository userRepository;
     private final JwtHelper jwtHelper;
     private final CartRepository cartRepository;
+    private final ReviewService reviewService;
+    private final ProductRepository productRepository;
 
 
     @GetMapping("/list")
@@ -119,8 +126,14 @@ public class ProductController {
                     return cartRepository.save(newCart);
                 });
 
-        // product_id 가져오는부분
+// product_id 가져오는부분
         ProductResDTO productResDTO = productService.getProductById(id);
+
+// productResDTO에서 productId를 추출합니다.
+        Long productId = productResDTO.getId(); // getId()는 productId를 반환하는 메서드여야 합니다.
+
+// productId를 showReviewByProductId 메서드에 전달합니다.
+        List<ReviewResDto> reviews = reviewService.showReviewByProductId(productId);
 
         CartResDto cartResDto = cartService.getCartById(userId);
         MultiFormDto multiFormDto = new MultiFormDto();
@@ -129,6 +142,10 @@ public class ProductController {
         multiFormDto.setCartResDto(cartResDto);
         // product_id만 담겨있는 ProductResDTO값 가져오기 부트가 자동으로 외래키를 매핑함
         multiFormDto.setProductResDTO(productResDTO);
+
+
+
+        model.addAttribute("reviews", reviews);
 
         model.addAttribute("multiFormDto", multiFormDto);
 
