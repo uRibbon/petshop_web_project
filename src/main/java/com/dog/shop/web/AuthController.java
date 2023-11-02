@@ -108,7 +108,7 @@ public class AuthController {
     @PostMapping("/update/{userId}")
     public String updateUser(@PathVariable Long userId, UserUpdateReqDto userUpdateReqDto) {
         authService.updateUserInfo(userId, userUpdateReqDto);
-        return "redirect:/";
+        return "redirect:/user-detail";
     }
 
     @PostMapping("/resetPwd/{email}")
