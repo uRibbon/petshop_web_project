@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>회원정보 수정</title>
+    <title>회원정보</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -30,7 +30,7 @@
             display: block;
             margin-bottom: 8px;
         }
-        input[type="text"], input[type="password"], input[type="date"] {
+        input[type="text"], input[type="date"] {
             width: calc(100% - 16px);
             padding: 8px;
             font-size: 16px;
@@ -38,57 +38,47 @@
             border-radius: 5px;
             box-sizing: border-box;
         }
-        .button-group {
-            display: flex;
-            justify-content: center;
+        .update-button {
             margin-top: 20px;
         }
-        .button-group button {
+        .update-button a {
             padding: 10px 20px;
             background-color: #4caf50;
             color: #fff;
-            border: none;
+            text-decoration: none;
             border-radius: 5px;
-            cursor: pointer;
-            margin: 0 10px;
         }
-        .button-group button:hover {
+        .update-button a:hover {
             background-color: #45a049;
         }
     </style>
 </head>
 <body>
 <div class="login-container">
-    <h2>회원정보 수정</h2>
-    <form th:action="@{/auth/update/{userId}(userId=${user.id})}" method="post">
-        <div class="form-group">
-            <label for="email">Email:</label>
-            <input type="text" id="email" name="email" th:value="${user.email}" required />
-        </div>
-        <div class="form-group">
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" />
-        </div>
-        <div class="form-group">
-            <label for="name">이름:</label>
-            <input type="text" id="name" name="name" th:value="${user.name}" required />
-        </div>
-        <div class="form-group">
-            <label for="address">주소:</label>
-            <input type="text" id="address" name="address" th:value="${user.address}" required onclick="findAddr()"/>
-        </div>
-        <div class="form-group">
-            <label for="detailAddress">상세주소:</label>
-            <input type="text" id="detailAddress" name="detailAddress" th:value="${user.detailAddress}" required />
-        </div>
-        <div class="form-group">
-            <label for="birthDate">생년월일:</label>
-            <input type="date" id="birthDate" name="birthDate" th:value="${user.birthDate}" required />
-        </div>
-        <div class="button-group">
-            <button type="submit">회원정보 수정</button>
-        </div>
-    </form>
+    <h2>회원정보</h2>
+    <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="text" id="email" name="email" th:value="${user.email}" required />
+    </div>
+    <div class="form-group">
+        <label for="name">이름:</label>
+        <input type="text" id="name" name="name" th:value="${user.name}" required />
+    </div>
+    <div class="form-group">
+        <label for="address">주소:</label>
+        <input type="text" id="address" name="address" th:value="${user.address}" required onclick="findAddr()" />
+    </div>
+    <div class="form-group">
+        <label for="detailAddress">상세주소:</label>
+        <input type="text" id="detailAddress" name="detailAddress" th:value="${user.detailAddress}" required />
+    </div>
+    <div class="form-group">
+        <label for="birthDate">생년월일:</label>
+        <input type="date" id="birthDate" name="birthDate" th:value="${user.birthDate}" required />
+    </div>
+    <div class="update-button">
+        <a th:href="@{/updateInfo/page/{id}(id=${user.id})}">회원정보 수정</a>
+    </div>
 </div>
 <script>
     function findAddr() {
@@ -106,6 +96,7 @@
 
                 document.getElementById("address").value = addr;
                 document.getElementById("detailAddress").value = extraAddr;
+                document.getElementById("zipcode").value = data.zonecode;
             }
         }).open();
     }
