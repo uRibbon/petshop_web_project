@@ -40,8 +40,15 @@
             text-transform: uppercase;
         }
 
-        .yellow-row {
-            background-color: yellow;
+        table:nth-child(2) {
+            width: 500px; /* Adjust the width as needed */
+            margin-left: 120px; /* Adjust the spacing as needed */
+        }
+
+        table:nth-child(2) th,
+        table:nth-child(2) td {
+            border: none; /* Remove all borders */
+            border-bottom: 1px solid #ddd; /* Add only the bottom border */
         }
     </style>
 </head>
@@ -56,20 +63,20 @@
                 <td style="border: none;"><img src="/img/icon/popularKeyword/bronze.png" style="width: 190px; height: 220px;"></td>
             </tr>
             <tr th:if="${#lists.size(keywords) > 0}" style="height: 30px;">
-                <td th:text="${keywords[0].productName}" style="border: none; font-size: 40px;"></td>
-                <td th:if="${#lists.size(keywords) > 1}" th:text="${keywords[1].productName}" style="border: none; font-size: 40px;"></td>
-                <td th:if="${#lists.size(keywords) > 2}" th:text="${keywords[2].productName}" style="border: none; font-size: 40px;"></td>
+                <td th:text="${keywords[0].productName}" style="border: none; font-size: 35px;"></td>
+                <td th:if="${#lists.size(keywords) > 1}" th:text="${keywords[1].productName}" style="border: none; font-size: 35px;"></td>
+                <td th:if="${#lists.size(keywords) > 2}" th:text="${keywords[2].productName}" style="border: none; font-size: 35px;"></td>
             </tr>
         </table>
 
         <table>
             <tr>
-                <th>순위</th>
-                <th>상품명</th>
+                <th style="font-size: 25px">순위</th>
+                <th style="font-size: 25px">상품명</th>
             </tr>
             <tr th:each="keyword, userState : ${keywords}" th:if="${userState.count != 1 and userState.count != 2 and userState.count != 3}" th:class="${userState.index lt 3} ? 'yellow-row'">
-                <td th:text="${userState.count}"></td>
-                <td th:text="${keyword.productName}"></td>
+                <td th:text="${userState.count}" style="font-size: 20px;"></td>
+                <td th:text="${keyword.productName}" style="font-size: 20px;"></td>
             </tr>
         </table>
     </div>
