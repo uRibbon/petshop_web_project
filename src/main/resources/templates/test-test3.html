@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Kmarket::main layout</title>
@@ -10,9 +10,11 @@
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.css">
-    <link rel="stylesheet" href="../css/common.css">
-    <link rel="stylesheet" href="./css/product.css">
+    <!--<link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="./css/product.css">-->
     <style>
+
+
         #product > .cart > form {
         }
 
@@ -166,24 +168,117 @@
             padding-left: 10%; !* 원하는 위치로 정확하게 이동시키기 위해 이 값을 조절해 보세요. *!
         }*/
     </style>
+    <script>
+
+        function updateQuantityOnServer(itemId, quantity) {
+            $.ajax({
+                url: "/updateCartItemQuantity",
+                type: "POST",
+                data: {
+                    itemId: itemId,
+                    quantity: quantity
+                },
+                success: function (response) {
+                    // 서버로부터 응답을 받아 합계를 업데이트합니다.
+                    $(`#subtotal-${itemId}`).text(response.newSubtotal);
+
+                    // 체크박스의 상태를 확인합니다.
+                    const isChecked = $(`.item-checkbox[value="${itemId}"]`).is(':checked');
+
+                    if (isChecked) {
+                        // 체크된 상품의 서브 합계만 업데이트하고 전체 합계도 업데이트합니다.
+                        updateTotals();
+                    }
+                }
+            });
+        }
+
+        function updateTotals() {
+            let totalItems = 0;
+            let totalPrice = 0;
+
+            $(".item-checkbox:checked").each(function() {
+                const itemId = $(this).val();
+                const quantity = parseFloat($(`input[data-item-id=${itemId}]`).val());
+                const itemPrice = parseFloat($(`#subtotal-${itemId}`).text());
+
+                totalItems += quantity;
+                totalPrice += itemPrice;
+            });
+
+            const shippingFee = parseFloat($(".shipping-fee").text());
+            const totalWithShipping = totalPrice + shippingFee;
+
+            $(".product-total-price").text(totalPrice);
+            $("#totalPrice").text(totalWithShipping);
+
+            // 숨겨진 입력 필드에 값을 설정
+            $("#hiddenTotalPrice").val(totalWithShipping);
+        }
+
+    </script>
+    <script>
+        $(document).ready(function () {
+
+            updateTotals(); // 페이지 로드 시 합계 업데이트
+
+            $('.quantity-input').on('change', function () {
+                const itemId = $(this).data('item-id');
+                console.log(itemId);
+                const newQuantity = $(this).val();
+
+                // AJAX 요청을 사용하여 서버에 변경된 수량 정보를 전송하십시오.
+                updateQuantityOnServer(itemId, newQuantity);
+            });
+
+            $(".item-checkbox").on("change", updateTotals);
+
+
+
+            // 전체 선택 체크박스 클릭 이벤트
+            $('input[name="all"]').on('change', function () {
+                if ($(this).prop('checked')) {
+                    // 전체 선택 체크박스가 선택된 경우, 모든 상품 체크박스를 선택합니다.
+                    $('.item-checkbox').prop('checked', true);
+                } else {
+                    // 전체 선택 체크박스가 선택 해제된 경우, 모든 상품 체크박스의 선택을 해제합니다.
+                    $('.item-checkbox').prop('checked', false);
+                }
+                // 합계 업데이트 함수를 호출합니다.
+                updateTotals();
+            });
+
+            // 상품별 체크박스 클릭 이벤트
+            $('.item-checkbox').on('change', function () {
+                if ($('.item-checkbox:checked').length === $('.item-checkbox').length) {
+                    // 모든 상품 체크박스가 선택된 경우, 전체 선택 체크박스를 선택합니다.
+                    $('input[name="all"]').prop('checked', true);
+                } else {
+                    // 하나라도 선택되지 않은 상품 체크박스가 있을 경우, 전체 선택 체크박스의 선택을 해제합니다.
+                    $('input[name="all"]').prop('checked', false);
+                }
+            });
+
+        });
+    </script>
 </head>
 <body>
 <div id="wrapper">
 
     <main id="product">
-        <aside>
+        <!-- <aside>
 
-        </aside>
+         </aside>-->
         <section class="cart">
             <nav>
                 <h1>장바구니</h1>
 
             </nav>
-            <form id="yourFormId" action="#" th:action="@{/cartItem/addcartItem}" th:object="${multiFormDto}"
-                  method="post" onsubmit="return false;">
+            <form id="yourFormId" action="#" th:action="@{/preparePayment}"
+                  method="post">
                 <table border="0">
                     <tr>
-                        <th><input type="checkbox" name="all" ></th>
+                        <th><input type="checkbox" name="all"></th>
                         <th>상품명</th>
                         <th>총수량</th>
                         <th>판매가</th>
@@ -193,54 +288,51 @@
                     <tr class="empty">
                         <td colspan="7">장바구니에 상품이 없습니다.</td>
                     </tr>
-                    <tr>
-                        <td><input type="checkbox" name="1"></td>
+                    <!-- 장바구니 항목 표시 -->
+                    <tr th:each="cartItem : ${cart.cartItems}">
+                        <td><input type="checkbox" name="selectedItems" th:value="${cartItem.id}" class="item-checkbox">
+                        </td>
+                        <!--<td><input type="checkbox" name="1"></td>-->
                         <td>
                             <article>
                                 <a href="#">
-                                    <img src="https://via.placeholder.com/80x80" alt="1">
+                                    <img th:src="${cartItem.product.mainImageUrl}">
                                 </a>
                                 <div>
-                                    <h2><a href="#">상품명</a></h2>
-                                    <p>상품설명</p>
+                                    <h2 th:text="${cartItem.product.productName}"></h2>
+                                    <p th:text="${cartItem.product.description}"></p>
                                 </div>
                             </article>
                         </td>
-                        <td>1</td>
-                        <td>27,000</td>
-                        <td>무료배송</td>
-                        <td>27,000</td>
+                        <td>
+                            <input type="number" th:value="${cartItem.quantity}" min="1" class="quantity-input"
+                                   th:data-item-id="${cartItem.id}"/>
+                        </td>
+                        <td th:text="${cartItem.unitPrice}"></td>
+                        <td>별도</td>
+                        <td th:id="'subtotal-' + ${cartItem.id}" th:text="${cartItem.subTotal}"></td>
+
                     </tr>
-
-
                 </table>
                 <input type="button" name="del" value="선택삭제">
                 <div class="total">
                     <h2>전체합계</h2>
                     <table>
-                        <tr>
-                            <td>상품수</td>
-                            <td>1</td>
-                        </tr>
+                        <!-- 전체합계 표시 -->
+
                         <tr>
                             <td>상품금액</td>
-                            <td>27,000</td>
+                            <td class="product-total-price" th:text="0"></td>
                         </tr>
-                        <!--                        <tr>-->
-                        <!--                            <td>할인금액</td>-->
-                        <!--                            <td>-1,000</td>-->
-                        <!--                        </tr>-->
                         <tr>
                             <td>배송비</td>
-                            <td>0</td>
+                            <td class="shipping-fee" th:text="${fee}"></td>
+                            <input type="hidden" id="hiddenFeePrice" name="feePrice" th:value="${fee}">
                         </tr>
-                        <!--                        <tr>-->
-                        <!--                            <td>포인트</td>-->
-                        <!--                            <td>260</td>-->
-                        <!--                        </tr>-->
                         <tr>
                             <td>전체주문금액</td>
-                            <td>26,000</td>
+                            <td th:id="totalPrice" th:text="${cart.totalPrice + fee}"></td>
+                            <input type="hidden" id="hiddenTotalPrice" name="totalPrice" value="0">
                         </tr>
                     </table>
                     <input type="submit" value="주문하기">
@@ -248,10 +340,10 @@
             </form>
         </section>
     </main>
-    <footer>
+    <!--    <footer>
 
 
-    </footer>
+        </footer>-->
     <button type="button" id="top">상단이동</button>
 </div>
 </body>

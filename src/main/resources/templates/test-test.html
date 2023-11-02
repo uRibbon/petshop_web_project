@@ -80,7 +80,7 @@
         #product > .order > form > .final {
             float: right;
             width: 360px;
-            height: 412px;
+            height: 320px;
             padding: 20px;
             margin-top: 12px;
             background: #fff;
@@ -249,59 +249,17 @@
                         <td>무료배송</td>
                         <td>27,000</td>
                     </tr>
-                    <tr>
-                        <td><article>
-                            <a href="#">
-                                <img src="	https://via.placeholder.com/80x80" alt="1">
-                            </a>
-                            <div>
-                                <h2><a href="#">상품명</a></h2>
-                                <p>상품설명</p>
-                            </div>
-                        </article></td>
-                        <td>1</td>
-                        <td>27,000</td>
-                        <td>무료배송</td>
-                        <td>27,000</td>
-                    </tr>
-                    <tr>
-                        <td><article>
-                            <a href="#">
-                                <img src="	https://via.placeholder.com/80x80" alt="1">
-                            </a>
-                            <div>
-                                <h2><a href="#">상품명</a></h2>
-                                <p>상품설명</p>
-                            </div>
-                        </article></td>
-                        <td>1</td>
-                        <td>27,000</td>
-                        <td>무료배송</td>
-                        <td>27,000</td>
-                    </tr>
                 </table>
                 <div class="final">
                     <h2>최종결제 정보</h2>
                     <table>
                         <tr>
-                            <td>총</td>
-                            <td>3 건</td>
-                        </tr>
-                        <tr>
                             <td>상품금액</td>
                             <td>27,000</td>
                         </tr>
                         <tr>
-                            <td>할인금액</td>
-                            <td>-1,000</td>
-                        </tr>
-                        <tr>
                             <td>배송비</td>
-                            <td>0</td>
-                        </tr>
-                        <tr>
-                            <td>포인트 할인</td>
-                            <td>-1,000</td>
+                            <td th:text="${feePrice}">0</td>
                         </tr>
                         <tr>
                             <td>전체주문금액</td>
@@ -323,13 +281,6 @@
                             <td>
                                 <input type="text" name="hp">
                                 <span>- 포함 입력</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>우편번호</td>
-                            <td>
-                                <input type="text" name="zip">
-                                <input type="button" value="검색">
                             </td>
                         </tr>
                         <tr>

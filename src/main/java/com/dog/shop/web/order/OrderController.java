@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -87,11 +88,15 @@ public class OrderController {
 
 
     @PostMapping("/preparePayment")
-    public String preparePayment(@RequestParam List<Long> selectedItems, @RequestParam int deliveryFee, Model model, HttpServletRequest request, RedirectAttributes redirectAttributes) {
+    public String preparePayment(@RequestParam String selectedItems, @RequestParam int feePrice, @RequestParam int totalPrice, Model model, HttpServletRequest request, RedirectAttributes redirectAttributes) {
         // ... 기존 코드 ...
         String token = getJwtTokenFromCookies(request); // 쿠키에서 jwtToken 가져오기
         List<CartItem> cartItemList = null;
         User user = null;
+
+        List<Long> selectedItemsList = Arrays.stream(selectedItems.split(","))
+                .map(Long::valueOf)
+                .collect(Collectors.toList());
 
         if (token != null) {
             String email = jwtUtil.getEmailFromToken(token); // 토큰에서 이메일 가져오기
@@ -103,7 +108,7 @@ public class OrderController {
 
 
                 Cart cart = cartRepository.findByUserId(userId).orElseThrow();
-                cartItemList = cartItemRepository.findAllById(selectedItems);
+                cartItemList = cartItemRepository.findAllById(selectedItemsList);
             }
         }
         if (cartItemList != null && !cartItemList.isEmpty()) {
@@ -114,13 +119,13 @@ public class OrderController {
                 goodsName += " 외 " + (cartItemList.size() - 1) + "개";
             }
             // int price = cartItemList.stream().mapToInt(CartItem::getSubTotal).sum(); // + 배달비
-            int price = cartItemList.stream().mapToInt(CartItem::getSubTotal).sum() + deliveryFee; // + 배달비
+            // int price = totalPrice; // + 배달비
 
             // 1. 복사 (Copy)
             Order order = new Order();
             order.setUser(user);
             order.setStatus("Pending");  // 초기 상태 설정
-            order.setTotalPrice(price);
+            order.setTotalPrice(totalPrice);
             orderRepository.save(order);
 
             for (CartItem cartItem : cartItemList) {
@@ -140,11 +145,13 @@ public class OrderController {
 
 
             redirectAttributes.addFlashAttribute("goodsName", goodsName);
-            redirectAttributes.addFlashAttribute("price", price);
+            redirectAttributes.addFlashAttribute("price", totalPrice);
+            redirectAttributes.addFlashAttribute("feePrice", feePrice);
             redirectAttributes.addFlashAttribute("moid", order.getId()); // moid는 주문번호를 넣어줌!
+            redirectAttributes.addFlashAttribute("user", user);
         }
 
-        return "redirect:/payment"; // payment.html로 리다이렉트
+        return "redirect:/testTest"; // payment.html로 리다이렉트
     }
 
 

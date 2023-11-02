@@ -3,11 +3,14 @@ package com.dog.shop.web.CartItem;
 import com.dog.shop.api.service.KakaoApiService;
 import com.dog.shop.domain.User;
 import com.dog.shop.domain.cart.Cart;
+import com.dog.shop.domain.cart.CartItem;
+import com.dog.shop.domain.product.Product;
 import com.dog.shop.dto.*;
 import com.dog.shop.help.JwtHelper;
 import com.dog.shop.product.dto.ProductResDTO;
 import com.dog.shop.product.service.CartService;
 import com.dog.shop.product.service.ProductService;
+import com.dog.shop.repository.CartItemRepository;
 import com.dog.shop.repository.CartRepository;
 import com.dog.shop.repository.UserRepository;
 import com.dog.shop.service.AuthService;
@@ -47,7 +50,7 @@ public class CartItemController {
     private final JwtHelper jwtHelper;
     private final CartRepository cartRepository;
     private final KakaoApiService kakaoApiService;
-
+    private final CartItemRepository cartItemRepository;
     @GetMapping("/getList")
     public ModelAndView getList() {
         List<CartItemResDto> cartItems = cartItemService.getCartItems();
@@ -68,9 +71,7 @@ public class CartItemController {
         String token = jwtHelper.extractTokenFromCookies(request);
         Optional<User> userOpt = jwtHelper.extractUserFromToken(token);
         Long userId = userOpt.get().getId();
-        List<CartItemResDto> cartItems = null;
-
-        cartItems = cartItemService.getUserCartItems(userId);
+        List<CartItemResDto> cartItems = cartItemService.getUserCartItems(userId);
 
         String address = userOpt.get().getAddress();
 
@@ -122,7 +123,7 @@ public class CartItemController {
     }
 
     // 상품의 정보를 가져오면서 장바구니 등록설정창 들어가기
-    @GetMapping("/signup/{id}")
+    /*@GetMapping("/signup/{id}")
     public String showSignUpForm(@PathVariable Long id, Model model, CartItemReqDto cartItemReqDto, HttpServletRequest request) {
         // 로그인 정보를 바탕으로 토큰에 등록되어있는 id를받아오기
         String token = jwtHelper.extractTokenFromCookies(request);
@@ -154,7 +155,62 @@ public class CartItemController {
             model.addAttribute("multiFormDto", multiFormDto);
 
         return "add-cartItem";
-    } // 장바구니 등록
+    }*/ // 장바구니 등록
+
+
+    @GetMapping("/signup/{id}")
+    public String productToCart(@PathVariable Long id, Model model, HttpServletRequest request) {
+
+        // 로그인 정보를 바탕으로 토큰에 등록되어있는 id를받아오기
+        String token = jwtHelper.extractTokenFromCookies(request);
+        Optional<User> userOpt = jwtHelper.extractUserFromToken(token);
+        Long userId = userOpt.get().getId();
+        // 처음 계정 생성시 Cart(장바구니가 없을시에 User Entity 를먼저 가져오는로직)
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + userId));
+        // 처음 계정 생성시 Cart(장바구니가 없을때) 장바구니를 눌렀을때 장바구니를 새로 생성하고 장바구니로 들어가기
+        // 이부분은 Cart 테이블과 user_id 를 초기화하면 user_id와 id가 동일하게되면 정상작동
+        Cart cart = cartRepository.findByUserId(userId)
+                .orElseGet(() -> {
+                    Cart newCart = new Cart();
+                    newCart.setUser(user);
+                    return cartRepository.save(newCart);
+                });
+
+
+
+        // product_id 가져오는부분
+        Product product = productService.fetchProductById(id);
+        int stock = 1; // 수량
+
+        CartItem cartItem = new CartItem();
+        cartItem.setProduct(product);
+        cartItem.setQuantity(stock);
+        cartItem.setCart(cart);
+        cartItem.setUnitPrice(product.getPrice());
+        cartItem.setSubTotal(product.getPrice() * stock);
+
+        cartItemRepository.save(cartItem);
+
+        String address = userOpt.get().getAddress();
+
+        int fee = kakaoApiService.calculateDistance(address);
+
+
+        model.addAttribute("cart", cart);
+        model.addAttribute("fee", fee);
+
+
+        return "test-test3";
+    }
+
+
+
+
+
+
+
+
 
 // 장바구니 수정폼가기
     @GetMapping("/edit/{id}")
@@ -176,7 +232,8 @@ public class CartItemController {
         }
 //        cartItemService.updateCustomerForm(cartItem);
         cartItemService.updateCartItem(id,cartItem);
-        return "redirect:/cartItem/getCartItem"; // 업데이트시에도 장바구니에 배송비를 가져오기위해 리다이렉트
+        return "redirect:/cartItem/getCartItem"; // 업데이트시에도 장바구니에 배송비를 가져오기위해 리다이렉트 
+                                                 // 카카오API로 fee 가져오는 로직 다시진행
     }
 
     // 장바구니 삭제
