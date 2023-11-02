@@ -117,6 +117,51 @@
         .notice {
             text-align: center;
         }
+         .review {
+             max-width: 95%;
+             margin: auto;
+             /*text-align: center;*/
+         }
+
+        .review ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .review li {
+            background-color: #f9f9f9;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+
+        .review h5.rating::before {
+            content: "★★★★★";
+            letter-spacing: 3px;
+            opacity: 0.3;
+        }
+
+        .review h5.rating[data-rating="4"]::before {
+            content: "★★★★☆";
+        }
+
+        /* 별점에 다른 스타일을 적용하려면 이와 같이 추가하세요. */
+        .review h5.rating[data-rating="3"]::before {
+            content: "★★★☆☆";
+        }
+
+        .review h5.rating[data-rating="2"]::before {
+            content: "★★☆☆☆";
+        }
+
+        .review h5.rating[data-rating="1"]::before {
+            content: "★☆☆☆☆";
+        }
+        h3 {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.2); /* 이 부분은 투명도를 조절합니다. 0.1은 10% 투명도를 의미합니다. */
+            padding-bottom: 5px; /* 제목 아래의 여백을 추가합니다. */
+            margin-bottom: 10px; /* 선 아래의 여백을 추가합니다. */
+        }
     </style>
 </head>
 <body>
@@ -188,138 +233,28 @@
     </div>
 </div>
 <nav><h1>　　　　　　상품정보</h1></nav>
+<h3></h3>
 <article class="detail">
     <img src="/test/test2.jpg" alt="상세페이지1">
     <img src="/test/test3.jpg" alt="상세페이지2">
     <img src="/test/test4.jpg" alt="상세페이지3">
 </article>
-<article class="notice">
-    <nav>
-        <h1>상품 정보 제공 고시</h1>
-        <p>[전자상거래에 관한 상품정보 제공에 관한 고시] 항목에 의거 등록된 정보입니다.</p>
-    </nav>
-    <table>
-        <tr>
-            <td>상품번호</td>
-            <td>11111111111</td>
-        </tr>
-        <tr>
-            <td>상품상태</td>
-            <td>새상품</td>
-        </tr>
-        <tr>
-            <td>부가세 면세여부</td>
-            <td>과세상품</td>
-        </tr>
-        <tr>
-            <td>영수증발행</td>
-            <td>발행가능 - 신용카드 전표, 온라인 현금영수증</td>
-        </tr>
-        <tr>
-            <td>사업자구분</td>
-            <td>사업자 판매자</td>
-        </tr>
-        <tr>
-            <td>브랜드</td>
-            <td>블루포스</td>
-        </tr>
-        <tr>
-            <td>원산지</td>
-            <td>국내생산</td>
-        </tr>
-    </table>
-    <table>
-        <tr>
-            <td>제품소재</td>
-            <td>상세정보 직접입력</td>
-        </tr>
-        <tr>
-            <td>색상</td>
-            <td>상세정보 직접입력</td>
-        </tr>
-        <tr>
-            <td>치수</td>
-            <td>상세정보 직접입력</td>
-        </tr>
-        <tr>
-            <td>제소사/수입국</td>
-            <td>상세정보 직접입력</td>
-        </tr>
-        <tr>
-            <td>제조국</td>
-            <td>상세정보 직접입력</td>
-        </tr>
-        <tr>
-            <td>취급시 주의사항</td>
-            <td>상세정보 직접입력</td>
-        </tr>
-        <tr>
-            <td>제조연월</td>
-            <td>상세정보 직접입력</td>
-        </tr>
-        <tr>
-            <td>품질보증기준</td>
-            <td>상세정보 직접입력</td>
-        </tr>
-        <tr>
-            <td>A/S 책임자와 전화번호</td>
-            <td>상세정보 직접입력</td>
-        </tr>
-        <tr>
-            <td>주문후 예상 배송기간</td>
-            <td>상세정보 직접입력</td>
-        </tr>
-        <tr>
-            <td colspan="2">
-                구매, 교환, 반품, 배송, 설치 등과 관련하여 추가비용, 제한조건 등의 특이사항이 있는 경우
-            </td>
-        </tr>
-    </table>
-    <p class="notice">
-        소비자가 전자상거래등에서 소비자 보호에 관한 법률 제 17조 제1항 또는 제3항에 따라 청약철회를 하고
-        동법 제 18조 제1항 에 따라 청약철회한 물품을 판매자에게 반환하였음에도 불구 하고 결제 대금의
-        환급이 3영업일을 넘게 지연된 경우, 소비자 는 전자상거래등에서 소비자보호에 관한 법률 제18조
-        제2항 및 동법 시행령 제21조 2에 따라 지연일수에 대하여 전상법 시행령으로 정하는 이율을 곱하여
-        산정한 지연이자(“지연배상금”)를 신청할 수 있습니다. 아울러, 교환∙반품∙보증 및 결제대금의
-        환급신청은 [나의쇼핑정보]에서 하실 수 있으며, 자세한 문의는 개별 판매자에게 연락하여 주시기 바랍니다.
-    </p>
-</article>
+
 <article class="review">
-    <nav><h1>상품리뷰</h1></nav>
+    <nav><h1>　상품리뷰</h1></nav>
+    <h3></h3>
     <ul>
         <li>
             <div>
-                <h5 class="rating star4">상품평</h5>
+                <h5 class="rating" data-rating="4"></h5>
                 <span>seo****** 2018-07-10</span>
             </div>
-            <h3>상품명1/BLUE/L</h3>
-            <p> 가격대비 정말 괜찮은 옷이라 생각되네요 핏은 음...제가 입기엔 어깨선이 맞고 루즈핏이라 하기도 좀 힘드네요.
-                아주 약간 루즈한정도...?그래도 이만한 옷은 없다고 봅니다 깨끗하고 포장도 괜찮고 다음에도 여기서 판매하는
-                제품들을 구매하고 싶네요 정말 만족하고 후기 남깁니다 많이 파시길 바래요 ~ ~ ~
-            </p>
+            <h3>상품명/BLUE/L</h3>
+            <p>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
         </li>
-        <li>
-            <div>
-                <h5 class="rating star4">상품평</h5>
-                <span>seo****** 2018-07-10</span>
-            </div>
-            <h3>상품명1/BLUE/L</h3>
-            <p> 가격대비 정말 괜찮은 옷이라 생각되네요 핏은 음...제가 입기엔 어깨선이 맞고 루즈핏이라 하기도 좀 힘드네요.
-                아주 약간 루즈한정도...?그래도 이만한 옷은 없다고 봅니다 깨끗하고 포장도 괜찮고 다음에도 여기서 판매하는
-                제품들을 구매하고 싶네요 정말 만족하고 후기 남깁니다 많이 파시길 바래요 ~ ~ ~
-            </p>
-        </li>
-        <li>
-            <div>
-                <h5 class="rating star4">상품평</h5>
-                <span>seo****** 2018-07-10</span>
-            </div>
-            <h3>상품명1/BLUE/L</h3>
-            <p> 가격대비 정말 괜찮은 옷이라 생각되네요 핏은 음...제가 입기엔 어깨선이 맞고 루즈핏이라 하기도 좀 힘드네요.
-                아주 약간 루즈한정도...?그래도 이만한 옷은 없다고 봅니다 깨끗하고 포장도 괜찮고 다음에도 여기서 판매하는
-                제품들을 구매하고 싶네요 정말 만족하고 후기 남깁니다 많이 파시길 바래요 ~ ~ ~
-            </p>
-        </li>
+        <!-- 다른 리뷰 항목도 같은 방식으로 추가 -->
+    </ul>
+</article>
 
 <div th:insert="~{/index/footer :: footer}"></div>
 
