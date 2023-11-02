@@ -34,6 +34,19 @@ public class EmailController {
         return ResponseEntity.ok("success");
     }
 
+    @PostMapping("/send/email/bypassword")
+    public ResponseEntity<String> findPassword2(@RequestBody EmailRequest emailRequest) throws MessagingException, UnsupportedEncodingException {
+        String email = emailRequest.getEmail();
+        Random random = new Random();
+        String verificationCode = String.format("%06d", random.nextInt(1000000));
+
+        // 인증 코드와 현재 시간을 세션에 저장합니다.
+
+        emailService.sendMailPasswordChange(email, verificationCode);
+
+        return ResponseEntity.ok("success");
+    }
+
 
 
 }

@@ -22,6 +22,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -159,7 +161,7 @@ public class CartItemController {
 
 
     @GetMapping("/signup/{id}")
-    public String productToCart(@PathVariable Long id, Model model, HttpServletRequest request) {
+    public String productToCart(@PathVariable Long id, @RequestParam int stock ,Model model, HttpServletRequest request) {
 
         // 로그인 정보를 바탕으로 토큰에 등록되어있는 id를받아오기
         String token = jwtHelper.extractTokenFromCookies(request);
@@ -181,7 +183,7 @@ public class CartItemController {
 
         // product_id 가져오는부분
         Product product = productService.fetchProductById(id);
-        int stock = 1; // 수량
+        //int stock = 1; // 수량
 
         CartItem cartItem = new CartItem();
         cartItem.setProduct(product);
@@ -203,14 +205,6 @@ public class CartItemController {
 
         return "test-test3";
     }
-
-
-
-
-
-
-
-
 
 // 장바구니 수정폼가기
     @GetMapping("/edit/{id}")
@@ -245,9 +239,15 @@ public class CartItemController {
 
     @PostMapping("/deleteSelected")
     @ResponseBody
-    public void deleteSelectedCartItems(@RequestBody List<Long> selectedItems) {
-        cartItemService.deleteSelectedCartItems(selectedItems);
+    public ResponseEntity<String> deleteSelectedCartItems(@RequestBody List<Long> selectedItems) {
+        try {
+            cartItemService.deleteSelectedCartItems(selectedItems);
+            return ResponseEntity.ok("삭제 성공"); // 성공적으로 삭제되었음을 클라이언트에 알리는 응답
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("삭제 실패: " + e.getMessage());
+        }
     }
+
 
 }
 /*if (token != null) {
