@@ -17,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.BufferedReader;
@@ -49,17 +50,22 @@ public class PaymentController {
     // private static final String moid = "mnoid1234567890";
     private static final String returnURL = "http://localhost:8080/nicepay3.0_utf-8/payResult_utf.jsp";
 
-    @GetMapping("/payment")
-    public String payment(Model model) {
+    @PostMapping("/payment")
+    public String payment(@RequestParam("orderer") String orderer,
+                          @RequestParam("hp") String phoneNumber,
+                          @RequestParam("moid") String moid,
+                          @RequestParam("goodsName") String goodsName,
+                          @RequestParam("price") int price,
+                          Model model) {
         model.addAttribute("merchantID", merchantID);
-        //model.addAttribute("goodsName", goodsName);
-        //model.addAttribute("price", price);
+        model.addAttribute("goodsName", goodsName);
+        model.addAttribute("price", price);
         // Model에서 price 값을 가져옴
-        Integer price = (Integer) model.getAttribute("price"); // 배달비 + 주문금액
-        model.addAttribute("buyerName", buyerName);
-        model.addAttribute("buyerTel", buyerTel);
-        model.addAttribute("buyerEmail", buyerEmail);
-        Object moid = (Object) model.getAttribute("moid");
+        // Integer price = (Integer) model.getAttribute("price"); // 배달비 + 주문금액
+        model.addAttribute("buyerName", orderer);
+        model.addAttribute("buyerTel", phoneNumber);
+        //model.addAttribute("buyerEmail", buyerEmail);
+        // Object moid = (Object) model.getAttribute("moid");
         model.addAttribute("moid", moid);
         model.addAttribute("returnURL", returnURL);
         model.addAttribute("ediDate", getyyyyMMddHHmmss());
