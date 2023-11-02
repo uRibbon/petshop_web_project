@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -128,6 +129,8 @@ public class OrderController {
             order.setTotalPrice(totalPrice);
             orderRepository.save(order);
 
+            List<OrderItem> orderItemList = new ArrayList<>(); // orderItemList 생성
+
             for (CartItem cartItem : cartItemList) {
                 OrderItem orderItem = new OrderItem();
                 orderItem.setProduct(cartItem.getProduct());
@@ -136,16 +139,22 @@ public class OrderController {
                 orderItem.setUnitPrice(cartItem.getUnitPrice());
                 orderItem.setOrder(order);
                 orderItemRepository.save(orderItem);
+                orderItemList.add(orderItem); // orderItemList에 추가
             }
 
             // 2. 삭제 (Delete)
             // 즉, cartItemList에 포함되지 않은 다른 CartItem 객체들은 그대로 데이터베이스에 남아 있게 됩니다.
             cartItemRepository.deleteAll(cartItemList);
 
+            int productTotalPrice = orderItemList.stream()
+                    .mapToInt(item -> item.getUnitPrice() * item.getQuantity())
+                    .sum();
 
 
-            redirectAttributes.addFlashAttribute("goodsName", goodsName);
-            redirectAttributes.addFlashAttribute("price", totalPrice);
+            // redirectAttributes.addFlashAttribute("goodsName", goodsName);
+            // redirectAttributes.addFlashAttribute("price", totalPrice);
+            redirectAttributes.addFlashAttribute("orderItemList", orderItemList);
+            redirectAttributes.addFlashAttribute("productTotalPrice", productTotalPrice);
             redirectAttributes.addFlashAttribute("feePrice", feePrice);
             redirectAttributes.addFlashAttribute("moid", order.getId()); // moid는 주문번호를 넣어줌!
             redirectAttributes.addFlashAttribute("user", user);

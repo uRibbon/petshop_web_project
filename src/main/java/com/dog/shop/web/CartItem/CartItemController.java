@@ -159,7 +159,7 @@ public class CartItemController {
 
 
     @GetMapping("/signup/{id}")
-    public String productToCart(@PathVariable Long id, Model model, HttpServletRequest request) {
+    public String productToCart(@PathVariable Long id, @RequestParam int stock ,Model model, HttpServletRequest request) {
 
         // 로그인 정보를 바탕으로 토큰에 등록되어있는 id를받아오기
         String token = jwtHelper.extractTokenFromCookies(request);
@@ -181,7 +181,7 @@ public class CartItemController {
 
         // product_id 가져오는부분
         Product product = productService.fetchProductById(id);
-        int stock = 1; // 수량
+        //int stock = 1; // 수량
 
         CartItem cartItem = new CartItem();
         cartItem.setProduct(product);

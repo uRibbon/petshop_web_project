@@ -124,10 +124,10 @@
         <p th:text="${'수량 ' + product.stock}"></p>
         <h3 class="product-price" th:text="${'판매가 ' + product.price + '원'}"></h3>
         </br>
-
+        <!-- 폼 내용 코드 -->
         <form id="yourFormId" action="#" th:action="@{/cartItem/addcartItem}" th:object="${multiFormDto}" method="post" onsubmit="return false;">
-            <!-- 폼 내용 코드 -->
-<!--            <label for="cartItemReqDto.quantity">수량</label>-->
+
+
             <button type="button" onclick="decreaseQuantity()">━</button>
             <input type="number" th:field="*{cartItemReqDto.quantity}" id="cartItemReqDto.quantity" oninput="calculateSubtotal()">
             <span th:if="${#fields.hasErrors('cartItemReqDto.quantity')}" th:errors="*{cartItemReqDto.quantity}"></span>
@@ -135,7 +135,7 @@
             <br/>
             </br>
 
-<!--            <label for="cartItemReqDto.subTotal">합계 금액</label>-->
+
             <span id="cartItemReqDto.subTotal"></span>
             </br>
             <br/>
@@ -152,15 +152,15 @@
             <label for="productResDTO.stock"><!--product_id--></label>
             <input type="hidden" th:field="*{productResDTO.id}" id="productResDTO.stock">
 
-<!--            <div class="button-container">-->
 
-<!--&lt;!&ndash;                <button id="submitButton">장바구니 담기</button>&ndash;&gt;-->
-<!--            </div>-->
         </form>
 
         <div>
-            <a th:if="${product.salesStatus != '품절'}" th:href="@{/cartItem/signup/{id}(id=${product.id})}" class="button add-to-cart">장바구니 담기</a>
+<!--            <a th:if="${product.salesStatus != '품절'}" th:href="@{/cartItem/signup/{id}(id=${product.id})}" class="button add-to-cart">장바구니 담기</a>-->
+<!--            <a th:if="${product.salesStatus != '품절'}" th:href="@{/cartItem/signup/{id}(id=${product.id}, stock=${product.stock})}" class="button add-to-cart">장바구니 담기</a>-->
+            <a th:if="${product.salesStatus != '품절'}" onclick="updateLinkWithQuantity();" th:href="@{/cartItem/signup/{id}(id=${product.id})}" id="addToCartLink" class="button add-to-cart">장바구니 담기</a>
             <span th:if="${product.salesStatus == '품절'}" style="color: red;">품절된 상품입니다.</span>
+
             <a th:href="@{/api/inquiry/register/{id}(id=${product.id})}" class="button purchase">상품 문의하기</a>
         </div>
         </br>
@@ -171,6 +171,15 @@
 <div th:insert="~{/index/footer :: footer}"></div>
 
 <script th:inline="javascript">
+
+    function updateLinkWithQuantity() {
+        var quantity = document.getElementById("cartItemReqDto.quantity").value;
+        var link = document.getElementById("addToCartLink");
+        var baseUrl = link.href;  // 실제 href 값을 가져옵니다.
+        link.href = baseUrl + "?stock=" + quantity;  // 수량을 URL에 추가합니다.
+    }
+
+
     /*<![CDATA[*/
     function increaseQuantity() {
         var quantity = parseInt(document.getElementById("cartItemReqDto.quantity").value);
@@ -212,3 +221,9 @@
 
 </body>
 </html>
+<!--            <label for="cartItemReqDto.quantity">수량</label>-->
+<!--            <label for="cartItemReqDto.subTotal">합계 금액</label>-->
+<!--            <div class="button-container">-->
+
+<!--&lt;!&ndash;                <button id="submitButton">장바구니 담기</button>&ndash;&gt;-->
+<!--            </div>-->
