@@ -177,6 +177,7 @@
     <div class="product-info">
         <h2 class="product-title" th:text="${product.productName}"></h2>
         <p th:text="${'수량 ' + product.stock}"></p>
+        <input type="hidden" th:value="${product.stock}" id="product_stock" />
         <p th:text="${product.description}"></p>
         <h3 class="product-price" th:text="${'판매가 ' + product.price + '원'}"></h3>
         </br>
@@ -311,10 +312,17 @@
     /*<![CDATA[*/
     function increaseQuantity() {
         var quantity = parseInt(document.getElementById("cartItemReqDto.quantity").value);
-        quantity += 1;
-        document.getElementById("cartItemReqDto.quantity").value = quantity;
-        calculateSubtotal();
+        var stock = parseInt(document.getElementById("product_stock").value); // 재고 값을 가져옵니다.
+
+        if (quantity < stock) {
+            quantity += 1;
+            document.getElementById("cartItemReqDto.quantity").value = quantity;
+            calculateSubtotal();
+        } else {
+            alert("재고가 부족합니다."); // 사용자에게 재고 부족 메시지를 표시합니다.
+        }
     }
+
 
     function decreaseQuantity() {
         var quantity = parseInt(document.getElementById("cartItemReqDto.quantity").value);
