@@ -126,6 +126,8 @@ public class ProductController {
                     return cartRepository.save(newCart);
                 });
 
+        Long cartId = cart.getId();
+
 // product_id 가져오는부분
         ProductResDTO productResDTO = productService.getProductById(id);
 
@@ -135,7 +137,7 @@ public class ProductController {
 // productId를 showReviewByProductId 메서드에 전달합니다.
         List<ReviewResDto> reviews = reviewService.showReviewByProductId(productId);
 
-        CartResDto cartResDto = cartService.getCartById(userId);
+        CartResDto cartResDto = cartService.getCartById(cartId);
         MultiFormDto multiFormDto = new MultiFormDto();
         //CartItemReqDto 객체 넣어주기 값은디폴트값들어있음
         multiFormDto.setCartItemReqDto(cartItemReqDto);

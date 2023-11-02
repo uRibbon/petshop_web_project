@@ -9,19 +9,28 @@
         body {
             font-family: Arial, sans-serif;
             padding: 20px;
-            max-width: 600px;
-            margin: auto;
+            /*max-width: 600px;*/
+            /*margin-top: 60px;*/
+            margin-bottom: 60px;
         }
         .header {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 50px;
+            margin-top: 70px;
+        }
+        hr {
+            margin-top: 280px !important;
         }
         .category-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 20px;
             margin-bottom: 20px;
+            max-width: 600px;
+            margin-left: auto; /* 자동 왼쪽 마진 */
+            margin-right: auto; /* 자동 오른쪽 마진 */
         }
+
         .category-item {
             border: 1px solid #e0e0e0;
             padding: 15px;
@@ -80,17 +89,37 @@
     </script>
 </head>
 <body>
+<div th:insert="~{/index/header :: header}"></div>
+<div class="content">
+    <div class="header">
+        <h1>마이페이지</h1>
+    </div>
+    <div class="category-grid">
+        <div class="category-item"><a href="/order/check">주문조회</a></div>
+<!--   <a href="https://www.flaticon.com/kr/free-icons/" title="배달 아이콘">배달 아이콘  제작자: Vectors Market - Flaticon</a>     -->
+        <div class="category-item"><a href="/user-detail">회원정보</a></div>
+<!--        &lt;!&ndash;userId를 토큰으로받을거라 2삭제&ndash;&gt;-->
+        <div class="category-item"><a href="/review/myReview/get">리뷰조회</a></div>
+        <div class="category-item"><a href="/api/inquiry">문의조회</a></div>
+    </div>
+</div>
+<div th:insert="~{/index/footer :: footer}"></div>
+</body>
+</html>
+
+<!--
+<body>
+<div th:insert="~{/index/header :: header}"></div>
 <div class="header">
-    <h1>사용자 이름</h1>
+    <h1>마이페이지</h1>
 </div>
 <div class="category-grid">
     <div class="category-item"><a href="/order/check">주문조회</a></div>
     <div class="category-item"><a href="/user-detail">회원정보</a></div>
-    <div class="category-item"><a href="/review/myReview/get">리뷰조회</a></div> <!--userId를 토큰으로받을거라 2삭제-->
+    <div class="category-item"><a href="/review/myReview/get">리뷰조회</a></div> &lt;!&ndash;userId를 토큰으로받을거라 2삭제&ndash;&gt;
     <div class="category-item"><a href="/api/inquiry">문의조회</a></div>
 </div>
-<div class="back-button-container">
-    <button class="back-button" onclick="goBack()">뒤로가기</button>
-</div>
+
+<div th:insert="~{/index/footer :: footer}"></div>
 </body>
-</html>
+</html>-->

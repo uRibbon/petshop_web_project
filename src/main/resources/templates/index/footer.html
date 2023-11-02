@@ -1,26 +1,47 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <style>
+  body, html {
+    height: 100%;
+    margin: 0;
+  }
+  /* Wrapper for page content to push down footer */
+  .wrap {
+    min-height: 100%;
+    height: auto !important;
+    height: 100%;
+    /* Avoid the footer to overlap your content with a negative margin */
+    margin-bottom: -297px;
+  }
   /*footer*/
-  footer{
+  footer {
     background: #E6E6E6;
     display: block;
     clear: both;
     position: relative;
-    z-index: 1;
-    margin-top: 110px;
     width: 100%;
-    min-width: 960px;
     height: 297px;
+    /* same height as the footer */
   }
-  .inner{
+  .inner {
     position: relative;
     margin: 0 auto;
     padding: 60px 0 21px 260px;
-    width: 960px;
     box-sizing: border-box;
   }
+  /* Placeholder for pushing the footer down */
+  .push {
+    height: 297px; /* same height as the footer */
+  }
 </style>
+<body>
+<div class="wrap">
+  <!-- Your website's content goes here -->
+
+  <!-- This div is used to push the footer to the bottom of the page -->
+  <div class="push"></div>
+</div>
+<!-- Your footer -->
 <th:block th:fragment="footerFragment">
   <footer>
     <hr style="margin-top: 20px;">
@@ -36,4 +57,5 @@
     </div>
   </footer>
 </th:block>
+</body>
 </html>
