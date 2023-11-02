@@ -9,17 +9,15 @@
         body {
             font-family: Arial, sans-serif;
             padding: 20px;
-            /*max-width: 600px;*/
-            /*margin-top: 60px;*/
             margin-bottom: 60px;
         }
         .header {
             text-align: center;
             margin-bottom: 50px;
-            margin-top: 70px;
+            /*margin-top: 70px;*/
         }
         hr {
-            margin-top: 280px !important;
+            margin-top: 240px !important;
         }
         .category-grid {
             display: grid;
@@ -95,12 +93,22 @@
         <h1>마이페이지</h1>
     </div>
     <div class="category-grid">
-        <div class="category-item"><a href="/order/check">주문조회</a></div>
-<!--   <a href="https://www.flaticon.com/kr/free-icons/" title="배달 아이콘">배달 아이콘  제작자: Vectors Market - Flaticon</a>     -->
-        <div class="category-item"><a href="/user-detail">회원정보</a></div>
-<!--        &lt;!&ndash;userId를 토큰으로받을거라 2삭제&ndash;&gt;-->
-        <div class="category-item"><a href="/review/myReview/get">리뷰조회</a></div>
-        <div class="category-item"><a href="/api/inquiry">문의조회</a></div>
+        <div class="category-item" style="text-align: center;">
+            <img src="/img/icon/myPage/order.png" width="70px" height="70px" style="margin-bottom: 10px;">
+            <div><a href="/order/check">주문조회</a></div>
+        </div>
+        <div class="category-item" style="text-align: center;">
+            <img src="/img/icon/myPage/userInfo.png" width="70px" height="70px" style="margin-bottom: 10px;">
+            <div><a href="/user-detail">회원정보</a></div>
+        </div>
+        <div class="category-item" style="text-align: center;">
+            <img src="/img/icon/myPage/review.png" width="70px" height="70px" style="margin-bottom: 10px;">
+            <div><a href="/review/myReview/get">리뷰조회</a></div>
+        </div>
+        <div class="category-item" style="text-align: center;">
+            <img src="/img/icon/myPage/inquiry.png" width="70px" height="70px" style="margin-bottom: 10px;">
+            <div><a href="/api/inquiry">문의조회</a></div>
+        </div>
     </div>
 </div>
 <div th:insert="~{/index/footer :: footer}"></div>
