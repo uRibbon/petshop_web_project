@@ -68,7 +68,10 @@ public class OrderController {
                 Long userId = user.getId();
                 orderList = orderRepository.findByUserId(userId)
                         .stream()
-                        .filter(order -> "completed".equals(order.getStatus()))
+                        .filter(order ->
+                                "completed".equals(order.getStatus()) ||
+                                        "requireRefund".equals(order.getStatus()) ||
+                                        "refund".equals(order.getStatus()))
                         .collect(Collectors.toList());
             }
         }

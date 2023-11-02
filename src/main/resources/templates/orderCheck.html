@@ -3,8 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>주문 조회 페이지</title>
-    <script th:src="@{/js/scripts.js}" defer></script>
+    <title>Title</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript">
+        function goBack() {
+            window.history.back();
+        }
+        $(document).on('click', '.trackBtn', function() {
+            var invoice = $(this).data('invoice');  // 운송장 번호 가져오기
+            $.ajax({
+                type: "POST",
+                url: "http://info.sweettracker.co.kr/tracking/5",
+                data: {
+                    t_key: "R5R7h5Iw6IoSyY0X3TN5Ug",
+                    t_code: "04",
+                    t_invoice: invoice
+                },
+                success: function(response) {
+                    // 여기에 배송 정보를 웹 페이지에 표시하는 코드를 추가합니다.
+                    // 예: alert(response);
+                },
+                error: function(error) {
+                    console.log("Error:", error);
+                }
+            });
+        });
+    </script>
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -69,33 +94,22 @@
             <th>주문 가격</th>
             <th>운송장 번호</th>
             <th>택배 조회</th>
+            <th>환불 요청</th>
         </tr>
         </thead>
         <tbody>
         <!-- Example for iterating over a list of orders -->
-        <tr th:each="order : ${orders}">
+        <tr th:each="order : ${orderList}">
             <td th:text="${order.id}"></td>
             <td th:text="${order.status}"></td>
             <td th:text="${order.totalPrice}"></td>
             <td th:text="${order.trackingNumber}"></td>
-            <td><button th:onclick="'trackOrder(\'' + ${order.trackingNumber} + '\')'">택배 조회</button></td>
-            <div>
-                <form action="http://info.sweettracker.co.kr/tracking/5" method="post">
-                    <div class="form-group">
-                        <label for="t_key"><!--API key--></label>
-                        <input type="hidden" class="form-control" id="t_key" name="t_key" placeholder="제공받은 APIKEY" value="R5R7h5Iw6IoSyY0X3TN5Ug">
-                    </div>
-                    <div class="form-group">
-                        <label for="t_code"><!--택배사 코드--></label>
-                        <input type="hidden" class="form-control" name="t_code" id="t_code" placeholder="택배사 코드" value="04">
-                    </div>
-                    <div class="form-group">
-                        <label for="t_invoice"><!--운송장 번호--></label>
-                        <input type="hidden" class="form-control" name="t_invoice" id="t_invoice" placeholder="운송장 번호" value="657776463660">
-                    </div>
-                    <button type="submit" class="btn btn-default">배송조회</button>
+            <td><button class="trackBtn" data-invoice="${order.trackingNumber}">택배조회</button></td>
+            <td>
+                <form th:action="@{/refund/order/{orderId}(orderId=${order.id})}" method="get">
+                    <button type="submit">환불요청</button>
                 </form>
-            </div>
+            </td>
         </tr>
         </tbody>
     </table>

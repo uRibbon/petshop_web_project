@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Poducts List</title>
+    <title>Products List</title>
     <link th:href="@{/css/main.css}" rel="stylesheet">
     <style>
         .active {
@@ -47,7 +47,7 @@
                 <a th:href="@{/products/{id}(id=${product.id})}">
                     <div style="position: relative; width: 100%; height: auto;">
                         <img th:if="${product.mainImageUrl != null}" th:src="${product.mainImageUrl}" alt="Invalid url" width="100%"/>
-                        <img th:unless="${product.mainImageUrl != null}" src="/img.png" alt="No image" width="100%"/>
+                        <img th:unless="${product.mainImageUrl != null}" src="/img/icon/product_list/product_01.jpeg" alt="No image" width="100%"/>
                         <!-- 어둡게 처리 (품절 상태일 경우에만 표시) -->
                         <div th:if="${product.salesStatus == '품절'}" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5);"></div>
 
@@ -58,7 +58,7 @@
                 <div th:onclick="'window.location.href=\'/products/' + ${product.id} + '\''" style="cursor: pointer;">
                     <h3 th:text="${product.productName}"></h3>
                 </div>
-                <div th:text="${product.salesStatus}"></div>
+<!--                <div th:text="${product.salesStatus}"></div>-->
                 <div th:text="${product.price + '원'}"></div>
             </div>
         </div>
