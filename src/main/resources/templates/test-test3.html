@@ -152,6 +152,11 @@
         /*.shift-right > article > div {
             padding-left: 10%; !* 원하는 위치로 정확하게 이동시키기 위해 이 값을 조절해 보세요. *!
         }*/
+
+        .product-total-price {
+            text-align: left;
+        }
+
     </style>
     <script>
 
@@ -210,6 +215,7 @@
                 }
             }
             if (selectedItems.length > 0) {
+                console.log("테스트 진행중");
                 fetch('/cartItem/deleteSelected', {
                     method: 'POST',
                     headers: {
@@ -220,29 +226,27 @@
                 })
                     .then(response => response.text())
                     .then(data => {
-                        if (data === '삭제 성공') {
+                        if (data === "삭제 성공") {
                             // 성공적으로 삭제된 경우 선택된 항목을 화면에서 제거합니다.
                             selectedItems.forEach(itemId => {
                                 $(`tr[data-item-id="${itemId}"]`).remove();
                             });
                             // 삭제 후 합계 업데이트
                             updateTotals();
-                            // 화면 새로고침
-                            location.reload();
+                            // 여기서 location.reload();를 제거합니다.
                         } else {
-                            console.error('삭제 실패:', data);
-                            alert('삭제에 실패했습니다: ' + data);
+                            console.error("삭제 실패:", data);
+                            alert("삭제에 실패했습니다: " + data);
                         }
                     })
                     .catch(error => {
-                        console.error('오류 발생:', error);
+                        console.error("오류 발생:", error);
                         alert('오류가 발생했습니다: ' + error);
                     });
             } else {
                 alert('삭제할 상품을 선택해주세요.');
             }
-        }
-        function getCsrfToken() { // JavaScript 단에 Fetch Web API 사용할때 사용하는 제이슨 속성값
+        }        function getCsrfToken() { // JavaScript 단에 Fetch Web API 사용할때 사용하는 제이슨 속성값
             // 'X-CSRF-TOKEN': getCsrfToken() // CSRF 토큰을 헤더에 포함
             return document.querySelector('meta[name="_csrf"]').getAttribute('content');
         }
@@ -353,7 +357,7 @@
                         <!-- 전체합계 표시 -->
                         <tr>
                             <td>상품금액</td>
-                            <td class="product-total-price" th:text="0"></td>
+                            <td class="product-total-price" style="text-align: left;">0</td>
                         </tr>
                         <tr>
                             <td>배송비</td>

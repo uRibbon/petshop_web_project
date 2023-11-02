@@ -244,7 +244,7 @@ public class CartItemController {
             cartItemService.deleteSelectedCartItems(selectedItems);
             return ResponseEntity.ok("삭제 성공"); // 성공적으로 삭제되었음을 클라이언트에 알리는 응답
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("삭제 실패: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.OK).body("삭제 실패: " + e.getMessage());
         }
     }
 
