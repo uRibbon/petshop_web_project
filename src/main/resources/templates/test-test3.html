@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Kmarket::main layout 장바구니</title>
+    <meta charset="UTF-8" name="_csrf" content="your_csrf_token_value_here">
+    <title>Kmarket::main layout</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
     <script src="https://kit.fontawesome.com/20962f3e4b.js" crossorigin="anonymous"></script>
@@ -13,26 +13,20 @@
     <!--<link rel="stylesheet" href="../css/common.css">
     <link rel="stylesheet" href="./css/product.css">-->
     <style>
-
-
         #product > .cart > form {
         }
-
         #product > .cart > form > table {
             width: 100%;
             border-bottom: 1px solid #d3d3d3;
             border-collapse: collapse;
             border-spacing: 0;
         }
-
         #product > .cart > form > table tr {
             border-bottom: 1px solid #d3d3d3;
         }
-
         #product > .cart > form > table th:first-child {
             width: 60px;
         }
-
         #product > .cart > form > table th {
             padding: 12px 0;
             border-top: 2px solid #000;
@@ -215,6 +209,52 @@
             // 숨겨진 입력 필드에 값을 설정
             $("#hiddenTotalPrice").val(totalWithShipping);
         }
+        function deleteSelectedItems() {
+            var checkboxes = document.getElementsByName('selectedItems');
+            var selectedItems = [];
+
+            for (var i = 0; i < checkboxes.length; i++) {
+                if (checkboxes[i].checked) {
+                    selectedItems.push(checkboxes[i].value);
+                }
+            }
+            if (selectedItems.length > 0) {
+                fetch('/cartItem/deleteSelected', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': getCsrfToken()
+                    },
+                    body: JSON.stringify(selectedItems)
+                })
+                    .then(response => response.text())
+                    .then(data => {
+                        if (data === '삭제 성공') {
+                            // 성공적으로 삭제된 경우 선택된 항목을 화면에서 제거합니다.
+                            selectedItems.forEach(itemId => {
+                                $(`tr[data-item-id="${itemId}"]`).remove();
+                            });
+                            // 삭제 후 합계 업데이트
+                            updateTotals();
+                            // 화면 새로고침
+                            location.reload();
+                        } else {
+                            console.error('삭제 실패:', data);
+                            alert('삭제에 실패했습니다: ' + data);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('오류 발생:', error);
+                        alert('오류가 발생했습니다: ' + error);
+                    });
+            } else {
+                alert('삭제할 상품을 선택해주세요.');
+            }
+        }
+        function getCsrfToken() { // JavaScript 단에 Fetch Web API 사용할때 사용하는 제이슨 속성값
+            // 'X-CSRF-TOKEN': getCsrfToken() // CSRF 토큰을 헤더에 포함
+            return document.querySelector('meta[name="_csrf"]').getAttribute('content');
+        }
 
     </script>
     <script>
@@ -260,6 +300,7 @@
             });
 
         });
+
     </script>
 </head>
 <body>
@@ -314,12 +355,11 @@
 
                     </tr>
                 </table>
-                <input type="button" name="del" value="선택삭제">
+                <input type="button" name="del" value="선택삭제" onclick="deleteSelectedItems();">
                 <div class="total">
                     <h2>전체합계</h2>
                     <table>
                         <!-- 전체합계 표시 -->
-
                         <tr>
                             <td>상품금액</td>
                             <td class="product-total-price" th:text="0"></td>
@@ -341,8 +381,6 @@
         </section>
     </main>
     <!--    <footer>
-
-
         </footer>-->
     <button type="button" id="top">상단이동</button>
 </div>
