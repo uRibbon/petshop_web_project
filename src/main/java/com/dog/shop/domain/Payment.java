@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -31,5 +33,8 @@ public class Payment extends BaseTimeEntity { // 주문이 일어나고 그 다�
     @OneToOne
     @JoinColumn(name = "order_id")
     private Order order;
+
+    @OneToMany(mappedBy = "payment")
+    private List<PaymentCancellation> paymentCancellationList;
 
 }
