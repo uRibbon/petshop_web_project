@@ -3,21 +3,48 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>인기 검색어 리스트</title>
+    <title>List of popular search words</title>
     <style>
+        .content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
 
+        table {
+            margin-top: 20px;
+            border-collapse: collapse;
+            width: 50%;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #ffffff;
+            color: #333;
+            text-transform: uppercase;
+        }
+
+        .yellow-row {
+            background-color: yellow;
+        }
     </style>
 </head>
 <body>
-<h1>인기 검색어</h1>
+<h1 style="text-align: center;">인기 검색어</h1>
 <div class="content">
-    <img src="/img/icon/trophy.png">
-    <table border="1">
+    <img src="/img/icon/trophy.png" style="width: 100px; height: 100px;">
+    <table>
         <tr>
             <th>순위</th>
             <th>상품명</th>
         </tr>
-        <tr th:each="keyword, userState : ${keywords}">
+        <tr th:each="keyword, userState : ${keywords}" th:class="${userState.index lt 3} ? 'yellow-row'">
             <td th:text="${userState.count}"></td>
             <td th:text="${keyword.productName}"></td>
         </tr>
