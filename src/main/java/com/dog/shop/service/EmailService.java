@@ -53,6 +53,7 @@ public class EmailService {
         mailSender.send(message);
     }
 
+}
 
     /*@Async
     public void sendMail(String recipient, String password) throws UnsupportedEncodingException, MessagingException {
@@ -74,4 +75,4 @@ public class EmailService {
     
     
 
-}
+//}

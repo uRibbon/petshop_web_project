@@ -52,8 +52,6 @@ public class OrderController {
     @Autowired
     private OrderItemRepository orderItemRepository;
 
-
-
     @GetMapping("/order/check")
     public String orderCheckPage(Model model, HttpServletRequest request) { // 주문 조회 페이지
         String token = getJwtTokenFromCookies(request); // 쿠키에서 jwtToken 가져오기
@@ -79,7 +77,6 @@ public class OrderController {
         model.addAttribute("orderList", orderList);
         return "orderCheck";
     }
-
     @GetMapping("/order/{orderId}")
     public String orderDetails(@PathVariable Long orderId, Model model) {
         // TODO 에러처리 필요
@@ -89,8 +86,6 @@ public class OrderController {
         model.addAttribute("orderItems", orderItems);
         return "orderDetails";
     }
-
-
     @PostMapping("/preparePayment")
     public String preparePayment(@RequestParam String selectedItems, @RequestParam int feePrice, @RequestParam int totalPrice, Model model, HttpServletRequest request, RedirectAttributes redirectAttributes) {
         // ... 기존 코드 ...
@@ -109,7 +104,6 @@ public class OrderController {
                 user = userRepository.findByEmail(email).orElseThrow(); // 이메일을 통해 userId 가져오기
                 // 이후 로직 처리...
                 Long userId = user.getId();
-
 
                 Cart cart = cartRepository.findByUserId(userId).orElseThrow();
                 cartItemList = cartItemRepository.findAllById(selectedItemsList);
@@ -153,7 +147,6 @@ public class OrderController {
                     .mapToInt(item -> item.getUnitPrice() * item.getQuantity())
                     .sum();
 
-
             // redirectAttributes.addFlashAttribute("goodsName", goodsName);
             // redirectAttributes.addFlashAttribute("price", totalPrice);
             redirectAttributes.addFlashAttribute("orderItemList", orderItemList);
@@ -166,12 +159,6 @@ public class OrderController {
         return "redirect:/testTest"; // payment.html로 리다이렉트
     }
 
-
-
-
-
-
-
     private String getJwtTokenFromCookies(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
@@ -183,6 +170,4 @@ public class OrderController {
         }
         return null;
     }
-
-
 }

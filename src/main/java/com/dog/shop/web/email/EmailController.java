@@ -97,7 +97,4 @@ public class EmailController {
 
         return password.toString();
     }
-
-
-
 }

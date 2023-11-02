@@ -42,7 +42,6 @@ public class ReviewController {
         return "reviewWrite";
     }
 
-
     @PostMapping("/writeReview/{orderItemId}")
     public String writeReview(@PathVariable Long orderItemId, ReviewReqDto reviewReqDto, HttpServletRequest request) {
         String token = jwtHelper.extractTokenFromCookies(request);

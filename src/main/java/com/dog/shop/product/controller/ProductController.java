@@ -55,7 +55,6 @@ public class ProductController {
     private final ProductService productService;
     private final PopularKeywordService popularKeywordService;
 
-
     private final CartService cartService;
     private final UserRepository userRepository;
     private final JwtHelper jwtHelper;
@@ -63,9 +62,8 @@ public class ProductController {
     private final ReviewService reviewService;
     private final ProductRepository productRepository;
 
-
     @GetMapping("/list")
-    public ModelAndView listProducts(@RequestParam(defaultValue = "0") int page, Model model) {
+    public ModelAndView listProducts(@RequestParam(defaultValue = "0") int page, Model model,HttpServletRequest request) {
         Pageable pageable = PageRequest.of(page, 6);
         Page<ProductResDTO> products = productService.findAllProducts(pageable);
         List<PopularSearchedKeywordResDTO> popularSearchedKeywordResDTOList = popularKeywordService.getResult();
@@ -76,11 +74,15 @@ public class ProductController {
                 .boxed()
                 .collect(Collectors.toList());
 
+        String token = jwtHelper.extractTokenFromCookies(request);
+        Optional<User> userOpt = jwtHelper.extractUserFromToken(token);
+        Long userId = userOpt.get().getId();
+
         model.addAttribute("currentPage", pageable.getPageNumber() + 1); // 페이지 번호는 0부터 시작하므로 1을 더해줍니다.
         model.addAttribute("totalPages", totalPages);
         model.addAttribute("products", products);
         model.addAttribute("pageNumbers", pageNumbers);
-
+        model.addAttribute("userId",userId);
         model.addAttribute("keywords", popularSearchedKeywordResDTOList);
         return new ModelAndView("product-list", "products", products);
     }
@@ -145,8 +147,6 @@ public class ProductController {
         // product_id만 담겨있는 ProductResDTO값 가져오기 부트가 자동으로 외래키를 매핑함
         multiFormDto.setProductResDTO(productResDTO);
 
-
-
         model.addAttribute("reviews", reviews);
 
         model.addAttribute("multiFormDto", multiFormDto);
@@ -161,8 +161,6 @@ public class ProductController {
         model.addAttribute("product",productResDTO);
         return "update-product";
     }
-
-
 
     @GetMapping("/delete/{id}")
     public String deleteProduct(@PathVariable("id") long id) {

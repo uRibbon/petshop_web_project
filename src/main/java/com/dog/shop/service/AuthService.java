@@ -11,6 +11,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -106,6 +107,22 @@ public class AuthService {
         userRepository.save(user);
         return true;
     }
+
+    //비밀번호 변경
+//    public void updatePassword(String email, String verificationCode) {
+//        // 1. 사용자 찾기
+//        User user = userRepository.findByEmail(email)
+//                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
+//
+//        // 2. 비밀번호 인코딩
+//        String encodedPassword = passwordEncoder.encode(verificationCode);
+//
+//        // 3. 비밀번호 업데이트
+//        user.setPassword(encodedPassword);
+//
+//        // 4. DB에 저장
+//        userRepository.save(user);
+//    }
 
     public Long findUserIdByEmail(String email) {
         // TODO 에러처리 필요
