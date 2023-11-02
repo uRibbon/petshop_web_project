@@ -106,7 +106,7 @@ input[id="menuicon"]:checked + label span:nth-child(3) {
 /* menu sidebar */
 div[class="sidebar"] {
     width:200px;
-    height:50%;
+    height:48%;
     background: rgba(246, 245, 245, 0.52);
     position: fixed;
     top:68px;
