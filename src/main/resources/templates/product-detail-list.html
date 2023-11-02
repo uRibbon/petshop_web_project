@@ -50,7 +50,7 @@
             left: 0;
             width: 100%;
             height: 2px;
-            background: rgba(0, 0, 0, 0.1); /* 반투명 선 */
+            /*background: rgba(0, 0, 0, 0.1); !* 반투명 선 *!*/
         }
         .product-price {
             font-size: 20px;
@@ -118,7 +118,7 @@
             text-align: center;
         }
          .review {
-             max-width: 95%;
+             max-width: 93%;
              margin: auto;
              /*text-align: center;*/
          }
@@ -126,6 +126,8 @@
         .review ul {
             list-style-type: none;
             padding: 0;
+            background-color: #f9f9f9;
+            padding: 20px;
         }
 
         .review li {
@@ -157,7 +159,7 @@
         .review h5.rating[data-rating="1"]::before {
             content: "★☆☆☆☆";
         }
-        h3 {
+        h2 {
             border-bottom: 1px solid rgba(0, 0, 0, 0.2); /* 이 부분은 투명도를 조절합니다. 0.1은 10% 투명도를 의미합니다. */
             padding-bottom: 5px; /* 제목 아래의 여백을 추가합니다. */
             margin-bottom: 10px; /* 선 아래의 여백을 추가합니다. */
@@ -244,15 +246,22 @@
     <nav><h1>　상품리뷰</h1></nav>
     <h3></h3>
     <ul>
-        <li>
+            <h2></h2>
             <div>
                 <h5 class="rating" data-rating="4"></h5>
                 <span>seo****** 2018-07-10</span>
             </div>
             <h3>상품명/BLUE/L</h3>
             <p>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
-        </li>
+       <h2></h2>
         <!-- 다른 리뷰 항목도 같은 방식으로 추가 -->
+            <div>
+                <h5 class="rating" data-rating="3"></h5>
+                <span>heo****** 2023-07-10</span>
+            </div>
+            <h3>상품명/RED/M</h3>
+            <p>bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb</p>
+            <h2></h2>
     </ul>
 </article>
 
