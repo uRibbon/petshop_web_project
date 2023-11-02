@@ -104,7 +104,26 @@
             <td th:text="${order.status}"></td>
             <td th:text="${order.totalPrice}"></td>
             <td th:text="${order.trackingNumber}"></td>
-            <td><button class="trackBtn" data-invoice="${order.trackingNumber}">택배조회</button></td>
+<!--            <td><button class="trackBtn" data-invoice="${order.trackingNumber}">택배조회</button></td>-->
+            <td>
+                <div>
+                    <form action="http://info.sweettracker.co.kr/tracking/5" method="post">
+                        <div class="form-group">
+                            <label for="t_key"><!--API key--></label>
+                            <input type="hidden" class="form-control" id="t_key" name="t_key" placeholder="제공받은 APIKEY" value="R5R7h5Iw6IoSyY0X3TN5Ug">
+                        </div>
+                        <div class="form-group">
+                            <label for="t_code"><!--택배사 코드--></label>
+                            <input type="hidden" class="form-control" name="t_code" id="t_code" placeholder="택배사 코드" value="04">
+                        </div>
+                        <div class="form-group">
+                            <label for="t_invoice"><!--운송장 번호--></label>
+                            <input type="hidden" class="form-control" name="t_invoice" id="t_invoice" placeholder="운송장 번호" value="575901183120">
+                        </div>
+                        <button type="submit" class="btn btn-default">배송조회</button>
+                    </form>
+                </div>
+            </td>
             <td>
                 <form th:action="@{/refund/order/{orderId}(orderId=${order.id})}" method="get">
                     <button type="submit">환불요청</button>
@@ -114,21 +133,6 @@
         </tbody>
     </table>
     <button onclick="goBack()">뒤로가기</button>
-    <form action="http://info.sweettracker.co.kr/tracking/5" method="post">
-        <div class="form-group">
-            <label for="t_key"><!--API key--></label>
-            <input type="hidden" class="form-control" id="t_key" name="t_key" placeholder="제공받은 APIKEY" value="R5R7h5Iw6IoSyY0X3TN5Ug">
-        </div>
-        <div class="form-group">
-            <label for="t_code"><!--택배사 코드--></label>
-            <input type="hidden" class="form-control" name="t_code" id="t_code" placeholder="택배사 코드" value="04">
-        </div>
-        <div class="form-group">
-            <label for="t_invoice"><!--운송장 번호--></label>
-            <input type="hidden" class="form-control" name="t_invoice" id="t_invoice" placeholder="운송장 번호" value="657776463660">
-        </div>
-        <button type="submit" class="btn btn-default">배송조회</button>
-    </form>
 </div>
 </body>
 </html>
